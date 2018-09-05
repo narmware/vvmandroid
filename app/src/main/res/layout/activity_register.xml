@@ -1,9 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.RegisterActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:progress="40"
+        android:progressTint="@color/colorAccent"
+        android:id="@+id/progress" />
+
+
+    <com.narmware.vvmexam.support.CustomViewPager
+        android:id="@+id/container"
+        android:layout_above="@+id/linear_bottom"
+        android:layout_below="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+         />
+
+    <LinearLayout
+        android:id="@+id/linear_bottom"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_previous"
+            android:text="Cancel Registeration"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:background="@android:color/white"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"></LinearLayout>
+        <Button
+            android:id="@+id/btn_next"
+            android:text="Next Step"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</RelativeLayout>

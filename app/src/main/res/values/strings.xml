@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">VVMExam</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="location_title">Select your state and city</string>
+    <string name="personal_info">Set your name,gender and preferred exam location</string>
+    <string name="mobile_varification">Enter mobile number and set login password</string>
+    <string name="required_mobile">Mobile number required for receiving OTP</string>
+    <string name="note">Login credentials will be sent on registered mobile number after successfull registration</string>
 </resources>

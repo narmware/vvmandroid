@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/location_padding"
+    tools:context=".fragment.SelectLocationFragment">
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:text="@string/location_title"
+        android:textSize="@dimen/location_text_size"
+        android:textStyle="bold"
+        android:textColor="@color/text_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_below="@+id/txt_title"
+        android:layout_marginTop="@dimen/location_btn_margin_top"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Spinner
+            android:id="@+id/spinner_state"
+            android:layout_margin="@dimen/location_spinner_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Spinner
+            android:id="@+id/spinner_district"
+            android:layout_margin="@dimen/location_spinner_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Spinner
+            android:id="@+id/spinner_city"
+            android:layout_margin="@dimen/location_spinner_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</RelativeLayout>

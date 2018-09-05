@@ -32,6 +32,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void init() {
         ButterKnife.bind(this);
+
+        mBtnForgot.setOnClickListener(this);
+        mBtnLogin.setOnClickListener(this);
+        mTxtRegister.setOnClickListener(this);
     }
 
     @Override
