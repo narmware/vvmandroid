@@ -18,7 +18,7 @@
     <dimen name="location_text_size">20dp</dimen>
     <dimen name="location_padding">15dp</dimen>
     <dimen name="location_btn_margin_top">30dp</dimen>
-    <dimen name="location_spinner_margin">8dp</dimen>
+    <dimen name="location_spinner_margin">10dp</dimen>
 
     <dimen name="otp_text_width">200dp</dimen>
 

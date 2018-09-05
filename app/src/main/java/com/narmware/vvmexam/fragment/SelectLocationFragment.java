@@ -7,8 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.narmware.vvmexam.R;
+
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +34,18 @@ public class SelectLocationFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    @BindView(R.id.spinner_state) Spinner mSpinnState;
+    @BindView(R.id.spinner_city) Spinner mSpinnCity;
+    @BindView(R.id.spinner_district) Spinner mSpinndistrict;
+
+    ArrayAdapter arrayAdapterState;
+    ArrayList<String> mStates;
+
+    ArrayAdapter arrayAdapterCities;
+    ArrayList<String> mCities;
+
+    ArrayAdapter arrayAdapterDistrict;
+    ArrayList<String> mDists;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +84,34 @@ public class SelectLocationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_select_location, container, false);
+        View view= inflater.inflate(R.layout.fragment_select_location, container, false);
+        init(view);
+        return view;
+    }
+
+    private void init(View view) {
+        ButterKnife.bind(this,view);
+
+        mStates=new ArrayList<>();
+        mStates.add("Maharashtra");
+        mStates.add("Telangana");
+
+        mCities=new ArrayList<>();
+        mCities.add("Maharashtra");
+        mCities.add("Telangana");
+
+        mDists=new ArrayList<>();
+        mDists.add("Maharashtra");
+        mDists.add("Telangana");
+
+        arrayAdapterState=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mStates);
+        mSpinnState.setAdapter(arrayAdapterState);
+
+        arrayAdapterDistrict=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mDists);
+        mSpinndistrict.setAdapter(arrayAdapterDistrict);
+
+        arrayAdapterCities=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mCities);
+        mSpinnCity.setAdapter(arrayAdapterCities);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
