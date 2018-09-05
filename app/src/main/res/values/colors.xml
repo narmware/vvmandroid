@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="login_text_border">@color/grey_800</color>
+    <color name="text_color">@color/grey_900</color>
 </resources>
