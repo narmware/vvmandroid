@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.narmware.vvmexam.R;
+import com.narmware.vvmexam.activity.RegisterActivity;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -73,6 +76,7 @@ public class ConfirmFragment extends Fragment {
     }
 
     private void init(View view) {
+
         mEdtOtp=view.findViewById(R.id.edt_otp);
     }
 

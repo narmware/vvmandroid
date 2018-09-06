@@ -10,6 +10,7 @@
         android:layout_marginTop="@dimen/personal_info_padding"
         android:layout_marginRight="@dimen/personal_info_padding"
         android:layout_marginLeft="@dimen/personal_info_padding"
+        style="@style/title_text_style"
         android:text="@string/personal_info"
         android:textSize="@dimen/location_text_size"
         android:textStyle="bold"
@@ -27,6 +28,8 @@
     <EditText
         android:id="@+id/edt_name"
         style="@style/edittext_style"
+        android:drawableLeft="@drawable/ic_user"
+        android:drawablePadding="15dp"
         android:hint="Name"
         android:inputType="text"
         android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFJHIJKLMNOPQRSTUVWXYZ"

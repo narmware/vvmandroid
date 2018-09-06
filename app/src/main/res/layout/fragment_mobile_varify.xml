@@ -13,6 +13,7 @@
         android:layout_marginRight="@dimen/personal_info_padding"
         android:layout_marginLeft="@dimen/personal_info_padding"
         android:text="@string/mobile_varification"
+        style="@style/title_text_style"
         android:textSize="@dimen/location_text_size"
         android:textStyle="bold"
         android:textColor="@color/text_color"
@@ -27,6 +28,8 @@
         android:layout_height="wrap_content">
     <EditText
         android:id="@+id/edt_mobile"
+        android:drawableLeft="@drawable/ic_mobile"
+        android:drawablePadding="15dp"
         style="@style/edittext_style"
         android:inputType="phone"
         android:maxLength="10"
@@ -58,6 +61,8 @@
             android:layout_height="wrap_content">
     <EditText
         android:id="@+id/edt_password"
+        android:drawableStart="@drawable/ic_vpn_key"
+        android:drawablePadding="15dp"
         style="@style/edittext_style"
         android:hint="Password"
         android:inputType="textPassword"

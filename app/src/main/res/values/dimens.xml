@@ -10,6 +10,8 @@
     <dimen name="login_img_margin_bottom">40dp</dimen>
     <dimen name="logo_height">200dp</dimen>
     <dimen name="login_width">200dp</dimen>
+    <dimen name="help_btn_height">40dp</dimen>
+    <dimen name="help_btn_width">40dp</dimen>
 
     <dimen name="login_btn_margin_bottom">40dp</dimen>
     <dimen name="login_btn_margin_left">50dp</dimen>

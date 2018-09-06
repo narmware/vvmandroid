@@ -26,12 +26,13 @@
 
             <ImageButton
                 android:id="@+id/btn_help"
+                android:foreground="?attr/selectableItemBackground"
                 android:background="@android:color/transparent"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 app:srcCompat="@drawable/ic_help"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="@dimen/help_btn_width"
+                android:layout_height="@dimen/help_btn_height" />
     <LinearLayout
         android:orientation="vertical"
         android:layout_centerInParent="true"
@@ -49,7 +50,7 @@
             android:id="@+id/edt_username"
             android:hint="Username"
             style="@style/edittext_style"
-            android:drawableLeft="@drawable/ic_person"
+            android:drawableLeft="@drawable/ic_user"
             android:drawablePadding="15dp"
             android:layout_margin="@dimen/login_txt_margin"
             android:background="@drawable/custom_edt"
