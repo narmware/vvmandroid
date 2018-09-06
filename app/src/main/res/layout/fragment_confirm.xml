@@ -37,7 +37,7 @@
         android:layout_height="wrap_content">
 
     <EditText
-        android:id="@+id/edt_password"
+        android:id="@+id/edt_otp"
         android:hint="Enter OTP"
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/login_txt_margin"
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/btn_forgot"
+            android:id="@+id/btn_resend"
             android:text="Resend OTP"
             android:textAllCaps="false"
             android:layout_gravity="center_horizontal"

@@ -9,4 +9,7 @@
     <string name="mobile_varification">Enter mobile number and set login password</string>
     <string name="required_mobile">Mobile number required for receiving OTP</string>
     <string name="note">Login credentials will be sent on registered mobile number after successfull registration</string>
+
+    <string name="no_internet">Server not reachable at this moment.\n Please check your internet connection or try again later</string>
+
 </resources>

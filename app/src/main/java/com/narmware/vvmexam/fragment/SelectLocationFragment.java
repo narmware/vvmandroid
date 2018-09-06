@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -39,13 +40,15 @@ public class SelectLocationFragment extends Fragment {
     @BindView(R.id.spinner_district) Spinner mSpinndistrict;
 
     ArrayAdapter arrayAdapterState;
-    ArrayList<String> mStates;
+    ArrayList<String> mStatesList;
 
     ArrayAdapter arrayAdapterCities;
-    ArrayList<String> mCities;
+    ArrayList<String> mCitiesList;
 
     ArrayAdapter arrayAdapterDistrict;
-    ArrayList<String> mDists;
+    ArrayList<String> mDistsList;
+
+    public static String mState,mCity,mDistrict;
 
     private OnFragmentInteractionListener mListener;
 
@@ -92,26 +95,62 @@ public class SelectLocationFragment extends Fragment {
     private void init(View view) {
         ButterKnife.bind(this,view);
 
-        mStates=new ArrayList<>();
-        mStates.add("Maharashtra");
-        mStates.add("Telangana");
+        mStatesList=new ArrayList<>();
+        mStatesList.add("Maharashtra");
+        mStatesList.add("Telangana");
 
-        mCities=new ArrayList<>();
-        mCities.add("Maharashtra");
-        mCities.add("Telangana");
+        mCitiesList=new ArrayList<>();
+        mCitiesList.add("Maharashtra");
+        mCitiesList.add("Telangana");
 
-        mDists=new ArrayList<>();
-        mDists.add("Maharashtra");
-        mDists.add("Telangana");
+        mDistsList=new ArrayList<>();
+        mDistsList.add("Maharashtra");
+        mDistsList.add("Telangana");
 
-        arrayAdapterState=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mStates);
+        arrayAdapterState=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mStatesList);
         mSpinnState.setAdapter(arrayAdapterState);
 
-        arrayAdapterDistrict=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mDists);
+        arrayAdapterDistrict=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mDistsList);
         mSpinndistrict.setAdapter(arrayAdapterDistrict);
 
-        arrayAdapterCities=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mCities);
+        arrayAdapterCities=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mCitiesList);
         mSpinnCity.setAdapter(arrayAdapterCities);
+
+        mSpinnState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mState=mStatesList.get(0);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        mSpinndistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mDistrict=mDistsList.get(0);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        mSpinnCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mCity=mCitiesList.get(0);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event

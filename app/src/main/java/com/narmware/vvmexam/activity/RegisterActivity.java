@@ -38,7 +38,16 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
 
     private PagerAdapter pagerAdapter;
     int pagerCount=0;
+    int validData=0;
 
+    String mName,mMobile,mPassword,mOtp;
+    String preffExamState,preffExamCity;
+
+    /*pos 0 : select location
+    pos 1 : select personal info
+    pos 2 : mobile varfication
+    pos 3 : confirm all details
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +59,78 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
             @Override
             public void onClick(View view) {
                 if(pagerCount<mViewPager.getChildCount()) {
-                    mViewPager.setCurrentItem(pagerCount + 1);
-                    pagerCount++;
+                    validData=0;
+
+
+                    if(pagerCount==0)
+                    {
+                        if(SelectLocationFragment.mState==null || SelectLocationFragment.mState.isEmpty())
+                        {
+                            validData=1;
+                            Toast.makeText(RegisterActivity.this, "Please select state", Toast.LENGTH_SHORT).show();
+                        }
+                        if(SelectLocationFragment.mCity==null || SelectLocationFragment.mCity.isEmpty())
+                        {
+                            validData=1;
+                            Toast.makeText(RegisterActivity.this, "Please select city", Toast.LENGTH_SHORT).show();
+                        }
+                        if(SelectLocationFragment.mDistrict==null || SelectLocationFragment.mDistrict.isEmpty())
+                        {
+                            validData=1;
+                            Toast.makeText(RegisterActivity.this, "Please select district", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    if(pagerCount==1)
+                    {
+                        mName=PersonalInfoFragment.mEdtName.getText().toString().trim();
+                        if(mName==null || mName.isEmpty())
+                        {
+                            validData=1;
+                            PersonalInfoFragment.mEdtName.setError("Enter your name");
+                        }
+                        if(PersonalInfoFragment.mState==null || PersonalInfoFragment.mState.isEmpty())
+                        {
+                            validData=1;
+                            Toast.makeText(RegisterActivity.this, "Please select state", Toast.LENGTH_SHORT).show();
+                        }
+                        if(PersonalInfoFragment.mCity==null || PersonalInfoFragment.mCity.isEmpty())
+                        {
+                            validData=1;
+                            Toast.makeText(RegisterActivity.this, "Please select city", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    if(pagerCount==2)
+                    {
+                        mMobile=MobileVarifyFragment.mEdtMobile.getText().toString().trim();
+                        mPassword=MobileVarifyFragment.mEdtPassword.getText().toString().trim();
+
+                        if(mMobile.length()<10)
+                        {
+                            validData=1;
+                            MobileVarifyFragment.mEdtMobile.setError("Enter valid mobile number");
+                        }
+                        if(mPassword==null || mPassword.isEmpty()){
+                            validData=1;
+                            MobileVarifyFragment.mEdtPassword.setError("Enter password");
+                        }
+                    }
+
+                    if(pagerCount==3)
+                    {
+                        mOtp=ConfirmFragment.mEdtOtp.getText().toString().trim();
+
+                        if(mOtp==null || mOtp.isEmpty()){
+                            validData=1;
+                            ConfirmFragment.mEdtOtp.setError("Enter OTP");
+                        }
+                    }
+
+                    if(validData==0) {
+                        mViewPager.setCurrentItem(pagerCount + 1);
+                        pagerCount++;
+                    }
                 }
             }
         });

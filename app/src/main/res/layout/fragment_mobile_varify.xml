@@ -26,6 +26,10 @@
         android:layout_height="wrap_content">
     <EditText
         android:id="@+id/edt_mobile"
+        android:inputType="phone"
+        android:maxLength="10"
+        android:maxLines="1"
+        android:digits="1234567890"
         android:hint="Mobile Number"
         android:layout_margin="@dimen/login_txt_margin"
         android:background="@drawable/custom_edt"
@@ -48,6 +52,7 @@
     <EditText
         android:id="@+id/edt_password"
         android:hint="Password"
+        android:inputType="textPassword"
         android:layout_margin="@dimen/login_txt_margin"
         android:background="@drawable/custom_edt"
         android:padding="@dimen/login_txt_padding"

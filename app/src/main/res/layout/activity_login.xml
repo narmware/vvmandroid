@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView
     android:fillViewport="true"
+    android:background="@drawable/science_background"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/login_screen_padding"
-    tools:context="com.narmware.vvmexam.activity.MainActivity">
+    tools:context="com.narmware.vvmexam.activity.LoginActivity">
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <RelativeLayout
+            android:background="#6effffff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></RelativeLayout>
+
+        <RelativeLayout
+            android:layout_margin="@dimen/login_screen_padding"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
     <LinearLayout
         android:orientation="vertical"
         android:padding="2dp"
@@ -41,6 +51,7 @@
         <EditText
             android:id="@+id/edt_password"
             android:hint="Password"
+            android:inputType="textPassword"
             android:drawableLeft="@drawable/ic_vpn_key"
             android:drawablePadding="15dp"
             android:layout_margin="@dimen/login_txt_margin"
@@ -96,5 +107,9 @@
 
     </LinearLayout>
 
+        </RelativeLayout>
+
+
     </RelativeLayout>
+
 </android.support.v4.widget.NestedScrollView>

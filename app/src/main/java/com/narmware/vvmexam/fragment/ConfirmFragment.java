@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.narmware.vvmexam.R;
 
@@ -29,6 +30,7 @@ public class ConfirmFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    public static EditText mEdtOtp;
 
     public ConfirmFragment() {
         // Required empty public constructor
@@ -65,7 +67,13 @@ public class ConfirmFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_confirm, container, false);
+        View view= inflater.inflate(R.layout.fragment_confirm, container, false);
+        init(view);
+        return view;
+    }
+
+    private void init(View view) {
+        mEdtOtp=view.findViewById(R.id.edt_otp);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
