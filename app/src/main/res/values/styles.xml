@@ -10,5 +10,12 @@
 
     <style name="text_view_style">
         <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
+
+    <style name="title_text_style">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
 </resources>

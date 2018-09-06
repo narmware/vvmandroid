@@ -6,6 +6,17 @@
     tools:context=".fragment.ConfirmFragment">
 
 
+    <ScrollView
+        android:layout_alignParentTop="true"
+        android:padding="@dimen/confirm_padding"
+        android:layout_above="@+id/horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/content_confirm"></include>
+
+    </ScrollView>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_above="@+id/linear_bottom"
@@ -13,7 +24,8 @@
         android:layout_below="@+id/linear_top"
         android:background="@color/text_color"
         android:layout_width="match_parent"
-        android:layout_height="1dp"></LinearLayout>
+        android:layout_height="1dp">
+    </LinearLayout>
 
 
     <LinearLayout
