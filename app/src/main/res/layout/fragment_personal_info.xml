@@ -26,7 +26,10 @@
         android:layout_height="wrap_content">
     <EditText
         android:id="@+id/edt_name"
+        style="@style/edittext_style"
         android:hint="Name"
+        android:inputType="text"
+        android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFJHIJKLMNOPQRSTUVWXYZ"
         android:layout_margin="@dimen/login_txt_margin"
         android:background="@drawable/custom_edt"
         android:padding="@dimen/login_txt_padding"

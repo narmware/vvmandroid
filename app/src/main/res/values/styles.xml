@@ -18,4 +18,9 @@
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
 
+    <style name="edittext_style">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
 </resources>

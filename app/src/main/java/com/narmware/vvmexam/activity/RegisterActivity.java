@@ -2,6 +2,7 @@ package com.narmware.vvmexam.activity;
 
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
@@ -16,17 +18,30 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.narmware.vvmexam.R;
 import com.narmware.vvmexam.fragment.ConfirmFragment;
 import com.narmware.vvmexam.fragment.MobileVarifyFragment;
 import com.narmware.vvmexam.fragment.PersonalInfoFragment;
 import com.narmware.vvmexam.fragment.SelectLocationFragment;
+import com.narmware.vvmexam.pojo.Register;
+import com.narmware.vvmexam.support.Constants;
+import com.narmware.vvmexam.support.EndPoints;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class RegisterActivity extends AppCompatActivity implements SelectLocationFragment.OnFragmentInteractionListener,
 PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragmentInteractionListener,ConfirmFragment.OnFragmentInteractionListener{
@@ -41,7 +56,9 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
     int validData=0;
 
     String mName,mMobile,mPassword,mOtp;
-    String preffExamState,preffExamCity;
+
+    public Dialog mNoConnectionDialog;
+    public RequestQueue mVolleyRequest;
 
     /*pos 0 : select location
     pos 1 : select personal info
@@ -58,9 +75,13 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
         mBtnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(pagerCount<mViewPager.getChildCount()) {
+                if(pagerCount<=mViewPager.getAdapter().getCount()) {
                     validData=0;
-
+                    int currentProgress = mProgressBar.getProgress();
+                    int progress = currentProgress + 25;
+                    final ObjectAnimator progressAnimator = ObjectAnimator.ofInt(mProgressBar, "progress", currentProgress, progress);
+                    progressAnimator.setDuration(500);
+                    progressAnimator.setInterpolator(new LinearInterpolator());
 
                     if(pagerCount==0)
                     {
@@ -128,8 +149,31 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
                     }
 
                     if(validData==0) {
-                        mViewPager.setCurrentItem(pagerCount + 1);
-                        pagerCount++;
+
+                        if(pagerCount==3)
+                        {
+                            RegisterUser();
+
+                            new SweetAlertDialog(RegisterActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                    .setTitleText("Registeration Successfull !")
+                                    //.setContentText("Your want to Logout")
+                                    .setConfirmText("OK")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sDialog) {
+                                            sDialog.dismissWithAnimation();
+                                            finish();
+                                        }
+                                    })
+                                    .show();
+                            //Toast.makeText(RegisterActivity.this, "Registartion Successfull", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            progressAnimator.start();
+                            mViewPager.setCurrentItem(pagerCount + 1);
+                            pagerCount++;
+                        }
+
                     }
                 }
             }
@@ -140,8 +184,20 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
             public void onClick(View view) {
                 if(pagerCount>0) {
 
+                    int currentProgress = mProgressBar.getProgress();
+                    int progress = currentProgress - 25;
+                    final ObjectAnimator progressAnimator = ObjectAnimator.ofInt(mProgressBar, "progress", currentProgress, progress);
+                    progressAnimator.setDuration(500);
+                    progressAnimator.setInterpolator(new LinearInterpolator());
+
                     mViewPager.setCurrentItem(pagerCount - 1);
                     pagerCount--;
+                    progressAnimator.start();
+                }
+
+                if(pagerCount==0)
+                {
+                    finish();
                 }
             }
         });
@@ -149,6 +205,8 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
 
     private void init() {
         ButterKnife.bind(this);
+        mVolleyRequest = Volley.newRequestQueue(RegisterActivity.this);
+        mNoConnectionDialog = new Dialog(RegisterActivity.this, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
 
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         // Set up the ViewPager with the sections adapter.
@@ -166,12 +224,6 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
 
             @Override
             public void onPageSelected(int position) {
-                int currentProgress = mProgressBar.getProgress();
-                int progress = currentProgress + 30;
-                final ObjectAnimator progressAnimator = ObjectAnimator.ofInt(mProgressBar, "progress", currentProgress, progress);
-                progressAnimator.setDuration(500);
-                progressAnimator.setInterpolator(new LinearInterpolator());
-                progressAnimator.start();
 
                 if (position == 0)
                 {
@@ -249,4 +301,78 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
         }
     }
 
+    public void RegisterUser() {
+        final ProgressDialog dialog = new ProgressDialog(RegisterActivity.this);
+        dialog.setTitle(Constants.PLEASE_WAIT);
+        dialog.setMessage(Constants.REGISTER_DIALOG_TITLE);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Register register=new Register();
+        register.setState(SelectLocationFragment.mState);
+        register.setDistrict(SelectLocationFragment.mDistrict);
+        register.setCity(SelectLocationFragment.mCity);
+        register.setName(mName);
+        register.setPassword(mPassword);
+        register.setMobile(mMobile);
+        register.setExamState(PersonalInfoFragment.mState);
+        register.setExamCity(PersonalInfoFragment.mCity);
+
+        Gson gson=new Gson();
+        String json_string =gson.toJson(register);
+        Log.e("Json_string",json_string);
+
+      /*  String url= EndPoints.USER_LOGIN;
+
+        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET,url,null,
+                new Response.Listener<JSONObject>() {
+
+                    // Takes the response from the JSON request
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try
+                        {
+                           // Log.e("Cat Json_string",response.toString());
+                            Gson gson = new Gson();
+
+                        } catch (Exception e) {
+
+                            e.printStackTrace();
+                            dialog.dismiss();
+                        }
+                        if(mNoConnectionDialog.isShowing()==true)
+                        {
+                            mNoConnectionDialog.dismiss();
+                        }
+                        dialog.dismiss();
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    // Handles errors that occur due to Volley
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Volley", "Test Error");
+                        dialog.dismiss();
+                        showNoConnectionDialog();
+                    }
+                }
+        );
+        mVolleyRequest.add(obreq);*/
+    }
+
+    public void showNoConnectionDialog() {
+        mNoConnectionDialog.setContentView(R.layout.dialog_no_internet);
+        mNoConnectionDialog.setCancelable(false);
+        mNoConnectionDialog.show();
+
+        Button tryAgain = mNoConnectionDialog.findViewById(R.id.txt_retry);
+        tryAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RegisterUser();
+            }
+        });
+    }
 }

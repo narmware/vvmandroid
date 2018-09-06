@@ -38,7 +38,11 @@
 
     <EditText
         android:id="@+id/edt_otp"
+        style="@style/edittext_style"
         android:hint="Enter OTP"
+        android:inputType="number"
+        android:maxLines="1"
+        android:digits="1234567890"
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/login_txt_margin"
         android:background="@drawable/custom_edt"

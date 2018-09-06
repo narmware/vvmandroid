@@ -7,8 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,9 +22,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.gson.Gson;
 import com.narmware.vvmexam.R;
 import com.narmware.vvmexam.fragment.PersonalInfoFragment;
+import com.narmware.vvmexam.support.Constants;
 import com.narmware.vvmexam.support.EndPoints;
 
 import org.json.JSONObject;
@@ -35,6 +42,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @BindView(R.id.btn_forgot) Button mBtnForgot;
     @BindView(R.id.btn_login) Button mBtnLogin;
     @BindView(R.id.txt_register) TextView mTxtRegister;
+    @BindView(R.id.lin_register) LinearLayout mLinearRegister;
+    @BindView(R.id.btn_help) ImageButton mImgBtnHelp;
 
     String username,password;
     int validData=0;
@@ -60,6 +69,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mBtnForgot.setOnClickListener(this);
         mBtnLogin.setOnClickListener(this);
         mTxtRegister.setOnClickListener(this);
+        mLinearRegister.setOnClickListener(this);
+
     }
 
     @Override
@@ -96,12 +107,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
                 startActivity(intent);
                 break;
+
+            case R.id.lin_register:
+                Intent intentReg=new Intent(LoginActivity.this,RegisterActivity.class);
+                startActivity(intentReg);
+                break;
         }
     }
 
-    public void GetCategories() {
+    public void LoginUser() {
         final ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
-        dialog.setMessage("Getting Categories...");
+        dialog.setTitle(Constants.PLEASE_WAIT);
+        dialog.setMessage(Constants.LOGIN_DIALOG_TITLE);
         dialog.setCancelable(false);
         dialog.show();
 
@@ -155,7 +172,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tryAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                LoginUser();
             }
         });
     }

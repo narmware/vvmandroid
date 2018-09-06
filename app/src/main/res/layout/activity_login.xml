@@ -23,9 +23,17 @@
             android:layout_margin="@dimen/login_screen_padding"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/btn_help"
+                android:background="@android:color/transparent"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                app:srcCompat="@drawable/ic_help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
     <LinearLayout
         android:orientation="vertical"
-        android:padding="2dp"
         android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -34,12 +42,13 @@
             app:srcCompat="@drawable/vvm_logo"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/login_img_margin_bottom"
-            android:layout_width="200dp"
-            android:layout_height="200dp" />
+            android:layout_width="@dimen/login_width"
+            android:layout_height="@dimen/logo_height" />
 
         <EditText
             android:id="@+id/edt_username"
             android:hint="Username"
+            style="@style/edittext_style"
             android:drawableLeft="@drawable/ic_person"
             android:drawablePadding="15dp"
             android:layout_margin="@dimen/login_txt_margin"
@@ -48,20 +57,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <android.support.design.widget.TextInputLayout
+            app:passwordToggleEnabled="true"
+            app:hintEnabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <EditText
             android:id="@+id/edt_password"
+            style="@style/edittext_style"
             android:hint="Password"
             android:inputType="textPassword"
-            android:drawableLeft="@drawable/ic_vpn_key"
+            android:drawableStart="@drawable/ic_vpn_key"
             android:drawablePadding="15dp"
             android:layout_margin="@dimen/login_txt_margin"
             android:background="@drawable/custom_edt"
             android:padding="@dimen/login_txt_padding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/btn_login"
+            android:foreground="?attr/selectableItemBackground"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/login_btn_margin_bottom"
             android:layout_marginLeft="@dimen/login_btn_margin_left"
@@ -74,6 +91,7 @@
 
         <Button
             android:id="@+id/btn_forgot"
+            android:foreground="?attr/selectableItemBackground"
             android:text="Forgot Password?"
             android:textAllCaps="false"
             android:layout_gravity="center_horizontal"
@@ -84,10 +102,13 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lin_register"
+        android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView

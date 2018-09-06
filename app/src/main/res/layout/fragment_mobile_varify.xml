@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="@dimen/mobile_padding"
     tools:context=".fragment.MobileVarifyFragment">
 
@@ -26,6 +27,7 @@
         android:layout_height="wrap_content">
     <EditText
         android:id="@+id/edt_mobile"
+        style="@style/edittext_style"
         android:inputType="phone"
         android:maxLength="10"
         android:maxLines="1"
@@ -49,8 +51,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+        <android.support.design.widget.TextInputLayout
+            app:passwordToggleEnabled="true"
+            app:hintEnabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
     <EditText
         android:id="@+id/edt_password"
+        style="@style/edittext_style"
         android:hint="Password"
         android:inputType="textPassword"
         android:layout_margin="@dimen/login_txt_margin"
@@ -58,6 +66,7 @@
         android:padding="@dimen/login_txt_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
     <LinearLayout
