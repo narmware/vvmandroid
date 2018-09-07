@@ -2,14 +2,19 @@ package com.narmware.vvmexam.activity;
 
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -26,6 +31,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.narmware.vvmexam.R;
+import com.narmware.vvmexam.dialogs.TnCDialogFragment;
 import com.narmware.vvmexam.fragment.ConfirmFragment;
 import com.narmware.vvmexam.fragment.MobileVarifyFragment;
 import com.narmware.vvmexam.fragment.PersonalInfoFragment;
@@ -33,6 +39,7 @@ import com.narmware.vvmexam.fragment.SelectLocationFragment;
 import com.narmware.vvmexam.pojo.Register;
 import com.narmware.vvmexam.support.Constants;
 import com.narmware.vvmexam.support.EndPoints;
+import com.narmware.vvmexam.support.SharedPreferencesHelper;
 
 import org.json.JSONObject;
 
@@ -65,6 +72,7 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
     pos 2 : mobile varfication
     pos 3 : confirm all details
     */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,11 +108,18 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
                             validData=1;
                             Toast.makeText(RegisterActivity.this, "Please select district", Toast.LENGTH_SHORT).show();
                         }
+                        if(SharedPreferencesHelper.getIsTcAccpted(RegisterActivity.this)==false)
+                        {
+                            validData=1;
+                            Toast.makeText(RegisterActivity.this, "Please accept Terms and Conditions", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     if(pagerCount==1)
                     {
                         mName=PersonalInfoFragment.mEdtName.getText().toString().trim();
+                        SharedPreferencesHelper.setUserName(mName,RegisterActivity.this);
+
                         if(mName==null || mName.isEmpty())
                         {
                             validData=1;
@@ -126,6 +141,9 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
                     {
                         mMobile=MobileVarifyFragment.mEdtMobile.getText().toString().trim();
                         mPassword=MobileVarifyFragment.mEdtPassword.getText().toString().trim();
+
+                        SharedPreferencesHelper.setUserMobile(mMobile,RegisterActivity.this);
+                        SharedPreferencesHelper.setUserPassword(mPassword,RegisterActivity.this);
 
                         if(mMobile.length()<10)
                         {
@@ -182,6 +200,11 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
         mBtnPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(pagerCount==0)
+                {
+                    finish();
+                }
+
                 if(pagerCount>0) {
 
                     int currentProgress = mProgressBar.getProgress();
@@ -195,14 +218,12 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
                     progressAnimator.start();
                 }
 
-                if(pagerCount==0)
-                {
-                    finish();
-                }
+
             }
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void init() {
         ButterKnife.bind(this);
         mVolleyRequest = Volley.newRequestQueue(RegisterActivity.this);
@@ -257,6 +278,12 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
         });
         mViewPager.setAdapter(pagerAdapter);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        super.onBackPressed();
     }
 
     @Override

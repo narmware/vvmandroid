@@ -11,7 +11,7 @@
     <string name="note">Login credentials will be sent on registered mobile number after successfull registration</string>
 
     <string name="no_internet">Server not reachable at this moment.\n Please check your internet connection or try again later</string>
-    <string name="tnc">I accept Terms and Conditions</string>
+    <string name="tnc">I accept <i><font color='red'>Terms and Conditions</font></i> </string>
 
     <string name="terms_conditions">Date for the examination will be pre-selected and students will not be allowed to make any further changes in the same. For individually registered student examination date will be 25th November 2018. Student will have to come with his/her own device with good internet connectivity on the day and date mentioned against his/her centre. Centre might/might not be able to provide the devices for all the students as its main focus will be to provide venue for conduct in the exam. Please make sure your school name and address is correct as it will be considered for final evaluation.</string>
 </resources>

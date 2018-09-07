@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.narmware.vvmexam.R;
+import com.narmware.vvmexam.support.SharedPreferencesHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,6 +78,16 @@ public class MobileVarifyFragment extends Fragment {
 
         mEdtMobile=view.findViewById(R.id.edt_mobile);
         mEdtPassword=view.findViewById(R.id.edt_password);
+
+        if(SharedPreferencesHelper.getUserMobile(getContext())!=null)
+        {
+            mEdtMobile.setText(SharedPreferencesHelper.getUserMobile(getContext()));
+        }
+        if(SharedPreferencesHelper.getUserPassword(getContext())!=null)
+        {
+            mEdtPassword.setText(SharedPreferencesHelper.getUserPassword(getContext()));
+        }
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

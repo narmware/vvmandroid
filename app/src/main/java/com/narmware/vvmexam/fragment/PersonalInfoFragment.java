@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.narmware.vvmexam.R;
+import com.narmware.vvmexam.support.SharedPreferencesHelper;
 
 import java.util.ArrayList;
 
@@ -100,31 +101,54 @@ public class PersonalInfoFragment extends Fragment {
         ButterKnife.bind(this,view);
         mEdtName=view.findViewById(R.id.edt_name);
 
+        if(SharedPreferencesHelper.getUserName(getContext())!=null)
+        {
+            mEdtName.setText(SharedPreferencesHelper.getUserName(getContext()));
+        }
         mStatesList=new ArrayList<>();
         mStatesList.add("Maharashtra");
         mStatesList.add("Telangana");
 
         mCitiesList=new ArrayList<>();
-        mCitiesList.add("Maharashtra");
-        mCitiesList.add("Telangana");
+        mCitiesList.add("Pune");
+        mCitiesList.add("Mumbai");
+        mCitiesList.add("Nashik");
+        mCitiesList.add("Nagpur");
 
         mGenderList=new ArrayList<>();
         mGenderList.add("Male");
         mGenderList.add("Female");
+        mGenderList.add("Other");
 
         arrayAdapterState=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mStatesList);
         mSpinnState.setAdapter(arrayAdapterState);
+        if(SharedPreferencesHelper.getPreffExamState(getContext())!=null)
+        {
+            mSpinnState.setSelection(mStatesList.indexOf(SharedPreferencesHelper.getPreffExamState(getContext())));
+            arrayAdapterState.notifyDataSetChanged();
+        }
 
         arrayAdapterGender=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mGenderList);
         mSpinnGender.setAdapter(arrayAdapterGender);
+        if(SharedPreferencesHelper.getUserGender(getContext())!=null)
+        {
+            mSpinnGender.setSelection(mGenderList.indexOf(SharedPreferencesHelper.getUserGender(getContext())));
+            arrayAdapterGender.notifyDataSetChanged();
+        }
 
         arrayAdapterCities=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mCitiesList);
         mSpinnCity.setAdapter(arrayAdapterCities);
+        if(SharedPreferencesHelper.getPreffExamCity(getContext())!=null)
+        {
+            mSpinnCity.setSelection(mCitiesList.indexOf(SharedPreferencesHelper.getPreffExamCity(getContext())));
+            arrayAdapterCities.notifyDataSetChanged();
+        }
 
         mSpinnState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mState=mStatesList.get(0);
+                mState=mStatesList.get(i);
+                SharedPreferencesHelper.setPreffExamState(mState,getContext());
             }
 
             @Override
@@ -136,7 +160,8 @@ public class PersonalInfoFragment extends Fragment {
         mSpinnGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mGender=mGenderList.get(0);
+                mGender=mGenderList.get(i);
+                SharedPreferencesHelper.setUserGender(mGender,getContext());
             }
 
             @Override
@@ -148,7 +173,8 @@ public class PersonalInfoFragment extends Fragment {
         mSpinnCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mCity=mCitiesList.get(0);
+                mCity=mCitiesList.get(i);
+                SharedPreferencesHelper.setPreffExamCity(mCity,getContext());
             }
 
             @Override

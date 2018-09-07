@@ -33,7 +33,9 @@
     <dimen name="content_card_margin_left">6dp</dimen>
     <dimen name="content_card_margin_top">6dp</dimen>
     <dimen name="content_card_padding">4dp</dimen>
-
     <dimen name="content_title_margin">5dp</dimen>
+
+    <dimen name="tc_dialog_padding">15dp</dimen>
+    <dimen name="tc_dialog_text_size">17dp</dimen>
 
 </resources>

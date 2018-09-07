@@ -2,16 +2,28 @@ package com.narmware.vvmexam.fragment;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.narmware.vvmexam.R;
+import com.narmware.vvmexam.activity.RegisterActivity;
+import com.narmware.vvmexam.dialogs.TnCDialogFragment;
+import com.narmware.vvmexam.support.SharedPreferencesHelper;
 
 import java.util.ArrayList;
 
@@ -38,6 +50,8 @@ public class SelectLocationFragment extends Fragment {
     @BindView(R.id.spinner_state) Spinner mSpinnState;
     @BindView(R.id.spinner_city) Spinner mSpinnCity;
     @BindView(R.id.spinner_district) Spinner mSpinndistrict;
+    @BindView(R.id.check_tnc) CheckBox mCheckTnc;
+    @BindView(R.id.txt_terms) TextView mTxtTermsConditions;
 
     ArrayAdapter arrayAdapterState;
     ArrayList<String> mStatesList;
@@ -51,6 +65,7 @@ public class SelectLocationFragment extends Fragment {
     public static String mState,mCity,mDistrict;
 
     private OnFragmentInteractionListener mListener;
+    DialogFragment dialogFragment;
 
     public SelectLocationFragment() {
         // Required empty public constructor
@@ -109,17 +124,33 @@ public class SelectLocationFragment extends Fragment {
 
         arrayAdapterState=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mStatesList);
         mSpinnState.setAdapter(arrayAdapterState);
+        if(SharedPreferencesHelper.getUserState(getContext())!=null)
+        {
+            mSpinnState.setSelection(mStatesList.indexOf(SharedPreferencesHelper.getUserState(getContext())));
+            arrayAdapterState.notifyDataSetChanged();
+        }
 
         arrayAdapterDistrict=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mDistsList);
         mSpinndistrict.setAdapter(arrayAdapterDistrict);
+        if(SharedPreferencesHelper.getUserDistrict(getContext())!=null)
+        {
+            mSpinndistrict.setSelection(mDistsList.indexOf(SharedPreferencesHelper.getUserDistrict(getContext())));
+            arrayAdapterDistrict.notifyDataSetChanged();
+        }
 
         arrayAdapterCities=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mCitiesList);
         mSpinnCity.setAdapter(arrayAdapterCities);
+        if(SharedPreferencesHelper.getUserCity(getContext())!=null)
+        {
+            mSpinnCity.setSelection(mCitiesList.indexOf(SharedPreferencesHelper.getUserCity(getContext())));
+            arrayAdapterCities.notifyDataSetChanged();
+        }
 
         mSpinnState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mState=mStatesList.get(0);
+                mState=mStatesList.get(i);
+                SharedPreferencesHelper.setUserState(mState,getContext());
             }
 
             @Override
@@ -131,7 +162,8 @@ public class SelectLocationFragment extends Fragment {
         mSpinndistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mDistrict=mDistsList.get(0);
+                mDistrict=mDistsList.get(i);
+                SharedPreferencesHelper.setUserDistrict(mDistrict,getContext());
             }
 
             @Override
@@ -143,11 +175,50 @@ public class SelectLocationFragment extends Fragment {
         mSpinnCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mCity=mCitiesList.get(0);
+                mCity=mCitiesList.get(i);
+                SharedPreferencesHelper.setUserCity(mCity,getContext());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        if(SharedPreferencesHelper.getIsTcAccpted(getContext())==true)
+        {
+            mCheckTnc.setChecked(true);
+        }
+        mCheckTnc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b==true)
+                {
+                    SharedPreferencesHelper.setIsTcAccpted(true,getContext());
+                }
+                if(b==false)
+                {
+                    SharedPreferencesHelper.setIsTcAccpted(false,getContext());
+                }
+            }
+        });
+
+        mTxtTermsConditions.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onClick(View view) {
+            dialogFragment = TnCDialogFragment.newInstance();
+            //Bundle args = new Bundle();
+            //args.putString("name",name);
+            //newFragment.setArguments(args);
+
+            FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
+            android.support.v4.app.FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+
+            dialogFragment.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
+            dialogFragment.setCancelable(false);
+            dialogFragment.show(fragmentTransaction, "dialog");
 
             }
         });

@@ -23,4 +23,9 @@
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
 
+    <style name="button_style">
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
 </resources>
