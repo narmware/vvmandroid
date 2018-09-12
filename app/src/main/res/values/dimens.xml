@@ -38,4 +38,10 @@
     <dimen name="tc_dialog_padding">15dp</dimen>
     <dimen name="tc_dialog_text_size">17dp</dimen>
 
+    <dimen name="view_pager_margin">10dp</dimen>
+    <dimen name="profile_txt_padding">15dp</dimen>
+    <dimen name="profile_txt_margin">10dp</dimen>
+    <dimen name="profile_spinner_margin">10dp</dimen>
+    <dimen name="profile_padding">8dp</dimen>
+
 </resources>
