@@ -16,21 +16,29 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.gson.Gson;
 import com.narmware.vvmexam.R;
 import com.narmware.vvmexam.fragment.PersonalInfoFragment;
+import com.narmware.vvmexam.pojo.States;
+import com.narmware.vvmexam.pojo.StatesResponse;
 import com.narmware.vvmexam.support.Constants;
 import com.narmware.vvmexam.support.EndPoints;
+import com.narmware.vvmexam.support.SharedPreferencesHelper;
 
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -115,53 +123,73 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public void LoginUser() {
-        final ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
-        dialog.setTitle(Constants.PLEASE_WAIT);
-        dialog.setMessage(Constants.LOGIN_DIALOG_TITLE);
-        dialog.setCancelable(false);
-        dialog.show();
+    private void LoginUser() {
 
-        String url= EndPoints.USER_LOGIN;
-
-        Log.e("Cat url",url);
-        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET,url,null,
-                new Response.Listener<JSONObject>() {
-
-                    // Takes the response from the JSON request
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoints.BASE_URL,
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(String response) {
+                        // Display the response string.
+                        Log.e("RESPONSE",response);
 
-                        try
-                        {
-                            Log.e("Cat Json_string",response.toString());
-                            Gson gson = new Gson();
+                        Gson gson=new Gson();
 
-                        } catch (Exception e) {
-
-                            e.printStackTrace();
-                            dialog.dismiss();
-                        }
-                        if(mNoConnectionDialog.isShowing()==true)
-                        {
-                            mNoConnectionDialog.dismiss();
-                        }
-                        dialog.dismiss();
                     }
-                },
-
-                new Response.ErrorListener() {
-                    @Override
-                    // Handles errors that occur due to Volley
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Volley", "Test Error");
-                        dialog.dismiss();
-                        showNoConnectionDialog();
-                    }
-                }
-        );
-        mVolleyRequest.add(obreq);
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("RESPONSE ERR","That didn't work!");
+            }
+        }) {
+            //adding parameters to the request
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("key","VVM");
+                params.put("param", Constants.LOGIN);
+                params.put(Constants.MOBILE_NUMBER,username);
+                params.put(Constants.PASSWORD,password);
+                return params;
+            }
+        };
+        // Add the request to the RequestQueue.
+        mVolleyRequest.add(stringRequest);
     }
+
+    private void ForgetPassword() {
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoints.BASE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the response string.
+                        Log.e("RESPONSE",response);
+
+                        Gson gson=new Gson();
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("RESPONSE ERR","That didn't work!");
+            }
+        }) {
+            //adding parameters to the request
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("key","VVM");
+                params.put("param", Constants.LOGIN);
+                params.put(Constants.MOBILE_NUMBER,username);
+                return params;
+            }
+        };
+        // Add the request to the RequestQueue.
+        mVolleyRequest.add(stringRequest);
+    }
+
 
     public void showNoConnectionDialog() {
         mNoConnectionDialog.setContentView(R.layout.dialog_no_internet);

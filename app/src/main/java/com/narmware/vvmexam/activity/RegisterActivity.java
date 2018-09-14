@@ -23,11 +23,13 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.narmware.vvmexam.R;
@@ -36,6 +38,9 @@ import com.narmware.vvmexam.fragment.ConfirmFragment;
 import com.narmware.vvmexam.fragment.MobileVarifyFragment;
 import com.narmware.vvmexam.fragment.PersonalInfoFragment;
 import com.narmware.vvmexam.fragment.SelectLocationFragment;
+import com.narmware.vvmexam.pojo.City;
+import com.narmware.vvmexam.pojo.CityResponse;
+import com.narmware.vvmexam.pojo.OtpResponse;
 import com.narmware.vvmexam.pojo.Register;
 import com.narmware.vvmexam.support.Constants;
 import com.narmware.vvmexam.support.EndPoints;
@@ -44,7 +49,9 @@ import com.narmware.vvmexam.support.SharedPreferencesHelper;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,7 +73,7 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
 
     public Dialog mNoConnectionDialog;
     public RequestQueue mVolleyRequest;
-
+    String otp;
     /*pos 0 : select location
     pos 1 : select personal info
     pos 2 : mobile varfication
@@ -162,30 +169,55 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
 
                         if(mOtp==null || mOtp.isEmpty()){
                             validData=1;
-                            ConfirmFragment.mEdtOtp.setError("Enter OTP");
+                            ConfirmFragment.mEdtOtp.setError("Enter valid OTP");
                         }
+
                     }
 
                     if(validData==0) {
 
+                        if(pagerCount==2)
+                        {
+                            RequestOTP();
+                        }
                         if(pagerCount==3)
                         {
-                            RegisterUser();
 
-                            new SweetAlertDialog(RegisterActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                                    .setTitleText("Registeration Successfull !")
-                                    //.setContentText("Your want to Logout")
-                                    .setConfirmText("OK")
-                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sDialog) {
-                                            sDialog.dismissWithAnimation();
-                                            finish();
-                                        }
-                                    })
-                                    .show();
-                            //Toast.makeText(RegisterActivity.this, "Registartion Successfull", Toast.LENGTH_SHORT).show();
-                        }
+                            if(mOtp.equals(otp))
+                            {
+                                new SweetAlertDialog(RegisterActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                        .setTitleText("Registeration Successfull !")
+                                        //.setContentText("Your want to Logout")
+                                        .setConfirmText("OK")
+                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sDialog) {
+                                                sDialog.dismissWithAnimation();
+                                                finish();
+                                            }
+                                        })
+                                        .show();
+                            }
+                            else{
+                                ConfirmFragment.mEdtOtp.setError("Enter valid OTP");
+                            }
+                           /* if(ConfirmFragment.mEdtOtp.getText().toString().trim().equals())
+                            {
+                                new SweetAlertDialog(RegisterActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                        .setTitleText("Registeration Successfull !")
+                                        //.setContentText("Your want to Logout")
+                                        .setConfirmText("OK")
+                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sDialog) {
+                                                sDialog.dismissWithAnimation();
+                                                finish();
+                                            }
+                                        })
+                                        .show();
+                            }*/
+
+                            }
                         else{
                             progressAnimator.start();
                             mViewPager.setCurrentItem(pagerCount + 1);
@@ -328,66 +360,85 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
         }
     }
 
-    public void RegisterUser() {
-        final ProgressDialog dialog = new ProgressDialog(RegisterActivity.this);
-        dialog.setTitle(Constants.PLEASE_WAIT);
-        dialog.setMessage(Constants.REGISTER_DIALOG_TITLE);
-        dialog.setCancelable(false);
-        dialog.show();
+    private void RegisterStudent() {
 
-        Register register=new Register();
-        register.setState(SelectLocationFragment.mState);
-        register.setDistrict(SelectLocationFragment.mDistrict);
-        register.setCity(SelectLocationFragment.mCity);
-        register.setName(mName);
-        register.setPassword(mPassword);
-        register.setMobile(mMobile);
-        register.setExamState(PersonalInfoFragment.mState);
-        register.setExamCity(PersonalInfoFragment.mCity);
-
-        Gson gson=new Gson();
-        String json_string =gson.toJson(register);
-        Log.e("Json_string",json_string);
-
-      /*  String url= EndPoints.USER_LOGIN;
-
-        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET,url,null,
-                new Response.Listener<JSONObject>() {
-
-                    // Takes the response from the JSON request
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoints.BASE_URL,
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(String response) {
+                        // Display the response string.
+                        Log.e("REGISTER RESPONSE",response);
 
-                        try
-                        {
-                           // Log.e("Cat Json_string",response.toString());
-                            Gson gson = new Gson();
-
-                        } catch (Exception e) {
-
-                            e.printStackTrace();
-                            dialog.dismiss();
-                        }
-                        if(mNoConnectionDialog.isShowing()==true)
-                        {
-                            mNoConnectionDialog.dismiss();
-                        }
-                        dialog.dismiss();
+                        Gson gson=new Gson();
                     }
-                },
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("RESPONSE ERR","That didn't work!");
+            }
+        }) {
+            //adding parameters to the request
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("key","VVM");
+                params.put("param", Constants.REGISTER);
+                params.put(Constants.STD_NAME, mName);
+                params.put(Constants.STD_MOBILE, mMobile);
+                params.put(Constants.PASSWORD, mPassword);
+                params.put(Constants.GENDER, PersonalInfoFragment.mGender);
+                params.put(Constants.DIST_ID, SelectLocationFragment.mDistrict_id);
+                params.put(Constants.CITY_ID, SelectLocationFragment.mCity_id);
+                params.put(Constants.STATE_ID, SelectLocationFragment.mState_id);
+                params.put(Constants.SCHOOL_STATE_ID,"1");
+                params.put(Constants.SCHOOL_CITY_ID, "1");
+                params.put(Constants.SCHOOL_DIST_ID,"1");
 
-                new Response.ErrorListener() {
-                    @Override
-                    // Handles errors that occur due to Volley
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Volley", "Test Error");
-                        dialog.dismiss();
-                        showNoConnectionDialog();
-                    }
-                }
-        );
-        mVolleyRequest.add(obreq);*/
+                return params;
+            }
+        };
+        // Add the request to the RequestQueue.
+        mVolleyRequest.add(stringRequest);
     }
+
+    private void RequestOTP() {
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoints.BASE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the response string.
+                        Log.e("REGISTER RESPONSE",response);
+
+                        Gson gson=new Gson();
+                        OtpResponse dataResponse=gson.fromJson(response,OtpResponse.class);
+                        String res=dataResponse.getResult();
+                        String[] separated = res.split(" - ");
+                        otp = separated[1];
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("RESPONSE ERR","That didn't work!");
+            }
+        }) {
+            //adding parameters to the request
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("key","VVM");
+                params.put("param", Constants.OTP);
+                params.put(Constants.MOBILE_NUMBER, mMobile);
+
+                return params;
+            }
+        };
+        // Add the request to the RequestQueue.
+        mVolleyRequest.add(stringRequest);
+    }
+
 
     public void showNoConnectionDialog() {
         mNoConnectionDialog.setContentView(R.layout.dialog_no_internet);
@@ -398,7 +449,6 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
         tryAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RegisterUser();
             }
         });
     }
