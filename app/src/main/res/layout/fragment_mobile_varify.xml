@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/mobile_padding"
+    tools:context=".fragment.MobileVarifyFragment">
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_marginTop="@dimen/personal_info_padding"
+        android:layout_marginRight="@dimen/personal_info_padding"
+        android:layout_marginLeft="@dimen/personal_info_padding"
+        android:text="@string/mobile_varification"
+        style="@style/title_text_style"
+        android:textSize="@dimen/location_text_size"
+        android:textStyle="bold"
+        android:textColor="@color/text_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_below="@+id/txt_title"
+        android:layout_marginTop="@dimen/location_btn_margin_top"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/edt_mobile"
+        android:drawableLeft="@drawable/ic_mobile"
+        android:drawablePadding="15dp"
+        style="@style/edittext_style"
+        android:inputType="phone"
+        android:maxLength="10"
+        android:maxLines="1"
+        android:digits="1234567890"
+        android:hint="Mobile Number"
+        android:layout_margin="@dimen/login_txt_margin"
+        android:background="@drawable/custom_edt"
+        android:padding="@dimen/login_txt_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/txt_register"
+            android:drawableLeft="@drawable/ic_info"
+            android:drawablePadding="8sp"
+            android:gravity="center"
+            android:text="@string/required_mobile"
+            android:textColor="@color/text_color"
+            android:layout_marginLeft="@dimen/login_txt_margin"
+            android:layout_marginBottom="@dimen/login_txt_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.design.widget.TextInputLayout
+            app:passwordToggleEnabled="true"
+            app:hintEnabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/edt_password"
+        android:drawableStart="@drawable/ic_vpn_key"
+        android:drawablePadding="15dp"
+        style="@style/edittext_style"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:layout_margin="@dimen/login_txt_margin"
+        android:background="@drawable/custom_edt"
+        android:padding="@dimen/login_txt_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="Note :"
+            style="@style/text_view_style"
+            android:textColor="@color/text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            style="@style/text_view_style"
+            android:text="@string/note"
+            android:textColor="@color/text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</RelativeLayout>

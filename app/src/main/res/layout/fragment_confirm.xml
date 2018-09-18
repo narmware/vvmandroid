@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.ConfirmFragment">
+
+
+    <ScrollView
+        android:layout_alignParentTop="true"
+        android:padding="@dimen/confirm_padding"
+        android:layout_above="@+id/horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/content_confirm"></include>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_above="@+id/linear_bottom"
+        android:id="@+id/horizontal"
+        android:layout_below="@+id/linear_top"
+        android:background="@color/text_color"
+        android:layout_width="match_parent"
+        android:layout_height="1dp">
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linear_bottom"
+        android:padding="@dimen/confirm_padding"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/edt_otp"
+        style="@style/edittext_style"
+        android:hint="Enter OTP"
+        android:inputType="number"
+        android:maxLines="1"
+        android:digits="1234567890"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/login_txt_margin"
+        android:background="@drawable/custom_edt"
+        android:padding="@dimen/login_txt_padding"
+        android:gravity="center"
+        android:layout_width="@dimen/otp_text_width"
+        android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_resend"
+            android:text="Resend OTP"
+            android:textAllCaps="false"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:textColor="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/confirm_padding"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="Note :"
+                style="@style/text_view_style"
+                android:textColor="@color/text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                style="@style/text_view_style"
+                android:text="@string/note"
+                android:textColor="@color/text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
