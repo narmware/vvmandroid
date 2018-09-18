@@ -93,6 +93,7 @@
 
         <Button
             android:id="@+id/btn_forgot"
+            android:visibility="gone"
             android:foreground="?attr/selectableItemBackground"
             android:text="Forgot Password?"
             android:textAllCaps="false"

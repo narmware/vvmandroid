@@ -44,4 +44,13 @@
     <dimen name="profile_spinner_margin">10dp</dimen>
     <dimen name="profile_padding">8dp</dimen>
 
+    <dimen name="note_padding">12dp</dimen>
+    <dimen name="note_round_img_height">50dp</dimen>
+    <dimen name="note_round_margin_top">20dp</dimen>
+    <dimen name="note_card_margin">5dp</dimen>
+    <dimen name="note_card_corners">2dp</dimen>
+    <dimen name="note_card_margin_left">30dp</dimen>
+    <dimen name="note_relative_margin_left">30dp</dimen>
+    <dimen name="note_line_margin">5dp</dimen>
+
 </resources>

@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -29,6 +31,8 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.google.gson.Gson;
 import com.narmware.vvmexam.R;
 import com.narmware.vvmexam.fragment.PersonalInfoFragment;
+import com.narmware.vvmexam.pojo.Login;
+import com.narmware.vvmexam.pojo.LoginResponse;
 import com.narmware.vvmexam.pojo.States;
 import com.narmware.vvmexam.pojo.StatesResponse;
 import com.narmware.vvmexam.support.Constants;
@@ -74,6 +78,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mVolleyRequest = Volley.newRequestQueue(LoginActivity.this);
         mNoConnectionDialog = new Dialog(LoginActivity.this, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
 
+        mEdtUsername.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+
+            }
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+            }
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                String s=arg0.toString();
+                if(!s.equals(s.toUpperCase()))
+                {
+                    s=s.toUpperCase();
+                    mEdtUsername.setText(s);
+                    mEdtUsername.setSelection(s.length());
+                }
+            }
+        });
+
         mBtnForgot.setOnClickListener(this);
         mBtnLogin.setOnClickListener(this);
         mTxtRegister.setOnClickListener(this);
@@ -107,7 +133,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 if(validData==0)
                 {
-                    Toast.makeText(this, "Valid data", Toast.LENGTH_SHORT).show();
+                    LoginUser();
                 }
                 break;
 
@@ -133,8 +159,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         // Display the response string.
                         Log.e("RESPONSE",response);
 
-                        Gson gson=new Gson();
-
+                        try {
+                            Gson gson = new Gson();
+                            LoginResponse dataResponse = gson.fromJson(response, LoginResponse.class);
+                            Login data = dataResponse.getResult();
+                            if (dataResponse.getStatus_code().equals(Constants.ERROR)) {
+                                Toast.makeText(LoginActivity.this, dataResponse.getError_message(), Toast.LENGTH_SHORT).show();
+                            }
+                            if (dataResponse.getStatus_code().equals(Constants.SUCCESS)) {
+                                SharedPreferencesHelper.setIsLogin(true, LoginActivity.this);
+                                Toast.makeText(LoginActivity.this, "Login Successfull", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }catch (Exception e)
+                        {e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -148,7 +189,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Map<String, String> params = new HashMap<>();
                 params.put("key","VVM");
                 params.put("param", Constants.LOGIN);
-                params.put(Constants.MOBILE_NUMBER,username);
+                params.put(Constants.USERNAME,username);
                 params.put(Constants.PASSWORD,password);
                 return params;
             }
@@ -182,7 +223,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Map<String, String> params = new HashMap<>();
                 params.put("key","VVM");
                 params.put("param", Constants.LOGIN);
-                params.put(Constants.MOBILE_NUMBER,username);
+                params.put(Constants.USERNAME,username);
                 return params;
             }
         };

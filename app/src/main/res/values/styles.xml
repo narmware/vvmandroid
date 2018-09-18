@@ -10,6 +10,7 @@
 
     <style name="text_view_style">
         <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/grey_900</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
 
@@ -27,5 +28,7 @@
         <item name="android:textSize">15sp</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
 </resources>
