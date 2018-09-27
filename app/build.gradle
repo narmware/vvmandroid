@@ -49,4 +49,7 @@ dependencies {
 
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
+    compile 'io.realm:realm-android:0.87.4'
+    annotationProcessor 'io.realm:realm-android:0.87.4'
+
 }

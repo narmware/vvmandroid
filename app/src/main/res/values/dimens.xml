@@ -53,4 +53,11 @@
     <dimen name="note_relative_margin_left">30dp</dimen>
     <dimen name="note_line_margin">5dp</dimen>
 
+
+    <!--question-->
+    <dimen name="q_btn_height">45dp</dimen>
+    <dimen name="q_btn_width">45dp</dimen>
+    <dimen name="q_btn_margin">5dp</dimen>
+    <dimen name="q_img_height">200dp</dimen>
+
 </resources>

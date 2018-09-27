@@ -6,4 +6,6 @@
 
     <color name="login_text_border">@color/grey_600</color>
     <color name="text_color">@color/grey_900</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

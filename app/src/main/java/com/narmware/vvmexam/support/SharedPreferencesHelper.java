@@ -22,6 +22,7 @@ public class SharedPreferencesHelper {
     private static final String USER_MOBILE="mobile";
     private static final String USER_PASSWORD="password";
 
+    private static final String MINIMIZE_COUNT="minimize_count";
 
     public static void setIsLogin(boolean login, Context context)
     {
@@ -188,6 +189,22 @@ public class SharedPreferencesHelper {
         SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(context);
         String str=pref.getString(PREFF_EXAM_CITY,null);
         return str;
+    }
+
+
+    public static void setMinimizeCount(String count, Context context)
+    {
+        SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor edit=pref.edit();
+        edit.putString(MINIMIZE_COUNT,count);
+        edit.commit();
+    }
+
+    public static String getMinimizeCount(Context context)
+    {
+        SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(context);
+        String count=pref.getString(MINIMIZE_COUNT,null);
+        return count;
     }
 
 }
