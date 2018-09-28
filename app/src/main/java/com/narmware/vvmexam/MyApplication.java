@@ -5,9 +5,15 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.narmware.vvmexam.support.SharedPreferencesHelper;
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -28,7 +34,61 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
 
     }
 
+/*
+    public static String ipAddress()    {
+        String ipAddress = "N/A";
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface
+                    .getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
 
+                for (Enumeration<InetAddress> enumIpAddr = intf
+                        .getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+
+                    if (!inetAddress.isLoopbackAddress()) {
+                        ipAddress = inetAddress.getHostAddress().toString();
+                       //get the hardware address (MAC) of the interface
+                        byte[] macBytes = intf.getHardwareAddress();
+                        if (macBytes == null) {
+                            return "";
+                        }
+
+                        //Log.e("Ip address : MAC ",ipAddress+" : "+macBytes);
+                    }
+
+                }
+            }
+
+        } catch (SocketException ex) {
+        }
+
+        return ipAddress;
+    }
+*/
+
+    public static String ipAddress() {
+        String ipAddress = "N/A";
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface
+                    .getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+
+                for (Enumeration<InetAddress> enumIpAddr = intf
+                        .getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+
+                    if (!inetAddress.isLoopbackAddress()) {
+                        ipAddress = inetAddress.getHostAddress().toString();
+                    }
+                }
+            }
+
+        } catch (SocketException ex) {
+        }
+
+        return ipAddress;
+    }
 
     @Override
     public void onCreate() {

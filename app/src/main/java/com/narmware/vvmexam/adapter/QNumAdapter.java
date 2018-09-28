@@ -60,6 +60,14 @@ public class QNumAdapter extends RecyclerView.Adapter<QNumAdapter.MyViewHolder> 
         {
             holder.mTxtQnum.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.custom_round_attempted));
         }
+        if(question.getqAnswertype()==Constants.NOT_VIEWED)
+        {
+            holder.mTxtQnum.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.custom_round_notviewed));
+        }
+        if(question.getqAnswertype()==Constants.REVIEW)
+        {
+            holder.mTxtQnum.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.custom_round_marked));
+        }
         holder.mItem=question;
     }
 

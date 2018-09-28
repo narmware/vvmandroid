@@ -8,4 +8,10 @@
     <color name="text_color">@color/grey_900</color>
 
     <color name="black_overlay">#66000000</color>
+
+    <color name="col_attempted">@color/green_500</color>
+    <color name="col_viewed">@color/amber_500</color>
+    <color name="col_notviewed">@color/red_500</color>
+    <color name="col_marked">@color/blue_500</color>
+
 </resources>

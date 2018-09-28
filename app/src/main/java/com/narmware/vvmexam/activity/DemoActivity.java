@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -87,6 +88,9 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
         init();
 
         setDialog();
+
+       String ip= MyApplication.ipAddress();
+        Log.e("Ip address",ip);
     }
 
     public void setQnumAdapter(RecyclerView.LayoutManager layoutManager)
@@ -165,6 +169,11 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
 
                 position=linearLayoutManager.findLastCompletelyVisibleItemPosition();
 
+                if(position==-1)
+                {
+                    setButtonColors("");
+                }
+
                 try {
                     if (position >= 0) {
 
@@ -175,14 +184,7 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
                             realm.commitTransaction();
                         }
 
-                        if (questionsList.get(position).getAnswer().equals("A")) {
-                            mBtnOptA.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round_selected));
-                            mBtnOptA.setTextColor(Color.WHITE);
-                        }
-                        if (questionsList.get(position).getAnswer().equals("D")) {
-                            mBtnOptD.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round_selected));
-                            mBtnOptD.setTextColor(Color.WHITE);
-                        }
+                          setButtonColors(questionsList.get(position).getAnswer());
                     }
                 }catch (Exception e)
                 {}
@@ -191,6 +193,73 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
         });
 
 
+    }
+
+    public void setButtonColors(String answer)
+    {
+        if(answer.equals(""))
+        {
+            mBtnOptA.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round));
+            mBtnOptB.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round));
+            mBtnOptC.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round));
+            mBtnOptD.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round));
+
+            mBtnOptA.setTextColor(getResources().getColor(R.color.colorPrimary));
+            mBtnOptB.setTextColor(getResources().getColor(R.color.colorPrimary));
+            mBtnOptC.setTextColor(getResources().getColor(R.color.colorPrimary));
+            mBtnOptD.setTextColor(getResources().getColor(R.color.colorPrimary));
+        }
+
+        if (answer.equals(Constants.OPT_A)) {
+            mBtnOptA.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round_selected));
+            mBtnOptB.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round));
+            mBtnOptC.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round));
+            mBtnOptD.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round));
+
+            mBtnOptA.setTextColor(Color.WHITE);
+            mBtnOptB.setTextColor(getResources().getColor(R.color.colorPrimary));
+            mBtnOptC.setTextColor(getResources().getColor(R.color.colorPrimary));
+            mBtnOptD.setTextColor(getResources().getColor(R.color.colorPrimary));
+        }
+
+        if (answer.equals(Constants.OPT_B)) {
+            mBtnOptB.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round_selected));
+            mBtnOptA.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round));
+            mBtnOptC.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round));
+            mBtnOptD.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round));
+
+            mBtnOptB.setTextColor(Color.WHITE);
+            mBtnOptA.setTextColor(getResources().getColor(R.color.colorPrimary));
+            mBtnOptC.setTextColor(getResources().getColor(R.color.colorPrimary));
+            mBtnOptD.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        }
+
+        if (answer.equals(Constants.OPT_C)) {
+            mBtnOptC.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round_selected));
+            mBtnOptA.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round));
+            mBtnOptB.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round));
+            mBtnOptD.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round));
+
+            mBtnOptC.setTextColor(Color.WHITE);
+            mBtnOptA.setTextColor(getResources().getColor(R.color.colorPrimary));
+            mBtnOptB.setTextColor(getResources().getColor(R.color.colorPrimary));
+            mBtnOptD.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        }
+
+        if (answer.equals(Constants.OPT_D)) {
+            mBtnOptD.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round_selected));
+            mBtnOptA.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round));
+            mBtnOptB.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round));
+            mBtnOptC.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round));
+
+            mBtnOptD.setTextColor(Color.WHITE);
+            mBtnOptA.setTextColor(getResources().getColor(R.color.colorPrimary));
+            mBtnOptB.setTextColor(getResources().getColor(R.color.colorPrimary));
+            mBtnOptC.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        }
     }
 
     public void setAnswer(int position,String answer)
@@ -237,19 +306,31 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btn_opt_a:
-                setAnswer(position,"A");
+                setAnswer(position,Constants.OPT_A);
+                setButtonColors(Constants.OPT_A);
+
+                //mBtnOptA.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round_selected));
                 break;
 
             case R.id.btn_opt_b:
-                setAnswer(position,"B");
+                setAnswer(position,Constants.OPT_B);
+                setButtonColors(Constants.OPT_B);
+
+                //mBtnOptB.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round_selected));
                 break;
 
             case R.id.btn_opt_c:
-                setAnswer(position,"C");
+                setAnswer(position,Constants.OPT_C);
+                setButtonColors(Constants.OPT_C);
+
+                // mBtnOptC.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round_selected));
                 break;
 
             case R.id.btn_opt_d:
-                setAnswer(position,"D");
+                setAnswer(position,Constants.OPT_D);
+                setButtonColors(Constants.OPT_D);
+
+                //mBtnOptD.setBackgroundDrawable(getResources().getDrawable(R.drawable.custom_round_selected));
                 break;
 
             case R.id.btn_switch:
