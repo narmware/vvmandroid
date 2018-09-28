@@ -1,10 +1,14 @@
 package com.narmware.vvmexam;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
+import android.support.v4.app.ActivityCompat;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,11 +23,10 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
-public class MyApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks{
-    int count=0;
+public class MyApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
+    int count = 0;
 
-    public static void config_realm(Context context)
-    {
+    public static void config_realm(Context context) {
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(context)
                 .name(Realm.DEFAULT_REALM_NAME)
                 .schemaVersion(0)
@@ -34,29 +37,41 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
 
     }
 
-/*
-    public static String ipAddress()    {
-        String ipAddress = "N/A";
+    public static String macAddress()    {
+        String macAddress = "N/A";
+
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface
                     .getNetworkInterfaces(); en.hasMoreElements();) {
                 NetworkInterface intf = en.nextElement();
 
+                //get the hardware address (MAC) of the interface
+                byte[] macbyte =intf.getHardwareAddress();
+                macAddress= String.valueOf(macbyte);
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+
+
+        return macAddress;
+    }
+
+
+    public static String ipAddress() {
+        String ipAddress = "N/A";
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface
+                    .getNetworkInterfaces(); en.hasMoreElements(); ) {
+                NetworkInterface intf = en.nextElement();
+
                 for (Enumeration<InetAddress> enumIpAddr = intf
-                        .getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                        .getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
 
                     if (!inetAddress.isLoopbackAddress()) {
                         ipAddress = inetAddress.getHostAddress().toString();
-                       //get the hardware address (MAC) of the interface
-                        byte[] macBytes = intf.getHardwareAddress();
-                        if (macBytes == null) {
-                            return "";
-                        }
-
-                        //Log.e("Ip address : MAC ",ipAddress+" : "+macBytes);
                     }
-
                 }
             }
 
@@ -65,29 +80,21 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
 
         return ipAddress;
     }
-*/
 
-    public static String ipAddress() {
-        String ipAddress = "N/A";
-        try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface
-                    .getNetworkInterfaces(); en.hasMoreElements();) {
-                NetworkInterface intf = en.nextElement();
-
-                for (Enumeration<InetAddress> enumIpAddr = intf
-                        .getInetAddresses(); enumIpAddr.hasMoreElements();) {
-                    InetAddress inetAddress = enumIpAddr.nextElement();
-
-                    if (!inetAddress.isLoopbackAddress()) {
-                        ipAddress = inetAddress.getHostAddress().toString();
-                    }
-                }
-            }
-
-        } catch (SocketException ex) {
+    public static String imei(Activity activity) {
+        TelephonyManager telephonyManager = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return "";
         }
-
-        return ipAddress;
+        System.out.println("IMEI::" + telephonyManager.getDeviceId());
+        return telephonyManager.getDeviceId();
     }
 
     @Override
@@ -136,4 +143,6 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
     public void onActivityDestroyed(Activity activity) {
 
     }
+
+
 }
