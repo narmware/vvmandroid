@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.support.v4.app.Fragment;
 
+import com.narmware.vvmexam.pojo.QuestionSequenceType;
 import com.narmware.vvmexam.pojo.Questions;
 
 import io.realm.Realm;
@@ -71,6 +72,11 @@ public class RealmController {
     public RealmResults<Questions> getQuestions() {
  
         return realm.where(Questions.class).findAll();
+    }
+
+    public RealmResults<QuestionSequenceType> getQuestionSequence() {
+
+        return realm.where(QuestionSequenceType.class).findAll();
     }
 
     public RealmResults<Questions> getQuestionsLike() {

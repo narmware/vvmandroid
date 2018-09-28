@@ -35,6 +35,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.MyVi
         mData.addChangeListener(this);
     }
 
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(context).inflate(R.layout.item_questions, parent, false);
@@ -50,70 +51,10 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.MyVi
         byte[] decodedString = Base64.decode(question.getQname(), Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         holder.mImgQuestion.setImageBitmap(decodedByte);
-
-        holder.mBtnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(position==mData.size()-1) {
-                    Toast.makeText(context, "No questions", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    DemoActivity.mRecyclerView.smoothScrollToPosition(position + 1);
-                }
-            }
-        });
-
-        holder.mBtnPrevious.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if(position==0) {
-                    Toast.makeText(context, "No questions", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    DemoActivity.mRecyclerView.smoothScrollToPosition(position - 1);
-                }
-            }
-        });
-
-        holder.mBtnOptA.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              setAnswer(position,"A");
-            }
-        });
-
-        holder.mBtnOptB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setAnswer(position,"B");
-            }
-        });
-
-        holder.mBtnOptC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setAnswer(position,"C");
-            }
-        });
-
-        holder.mBtnOptD.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setAnswer(position,"D");
-
-            }
-        });
-
         holder.mTxtSelectedOpt.setText(question.getAnswer());
     }
 
-    public void setAnswer(int position,String answer)
-    {
-        realm.beginTransaction();
-        mData.get(position).setAnswer(answer);
-        realm.commitTransaction();
-    }
+
     @Override
     public int getItemCount() {
         return mData.size();
@@ -127,22 +68,13 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.MyVi
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         ImageView mImgQuestion;
-        Button mBtnNext,mBtnPrevious;
-        Button mBtnOptA,mBtnOptB,mBtnOptC,mBtnOptD;
         TextView mTxtSelectedOpt;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             mImgQuestion=itemView.findViewById(R.id.img_question);
-            mBtnNext=itemView.findViewById(R.id.btn_next);
-            mBtnPrevious=itemView.findViewById(R.id.btn_previous);
             mTxtSelectedOpt=itemView.findViewById(R.id.selected_opt);
-
-            mBtnOptA=itemView.findViewById(R.id.btn_opt_a);
-            mBtnOptB=itemView.findViewById(R.id.btn_opt_b);
-            mBtnOptC=itemView.findViewById(R.id.btn_opt_c);
-            mBtnOptD=itemView.findViewById(R.id.btn_opt_d);
 
         }
     }

@@ -192,18 +192,18 @@ public class SharedPreferencesHelper {
     }
 
 
-    public static void setMinimizeCount(String count, Context context)
+    public static void setMinimizeCount(int count, Context context)
     {
         SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor edit=pref.edit();
-        edit.putString(MINIMIZE_COUNT,count);
+        edit.putInt(MINIMIZE_COUNT,count);
         edit.commit();
     }
 
-    public static String getMinimizeCount(Context context)
+    public static int getMinimizeCount(Context context)
     {
         SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(context);
-        String count=pref.getString(MINIMIZE_COUNT,null);
+        int count=pref.getInt(MINIMIZE_COUNT,0);
         return count;
     }
 

@@ -2,19 +2,9 @@ package com.narmware.vvmexam.pojo;
 
 import io.realm.RealmObject;
 
-public class Questions extends RealmObject{
+public class QuestionsSetB extends RealmObject{
 
     private String qid,qname,answer;
-    private int qAnswertype;
-
-    public int getqAnswertype() {
-        return qAnswertype;
-    }
-
-    public void setqAnswertype(int qAnswertype) {
-        this.qAnswertype = qAnswertype;
-    }
-
     public String getQid() {
         return qid;
     }

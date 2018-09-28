@@ -32,4 +32,8 @@ public class Constants {
     public static final String SUCCESS="200";
     public static final String ERROR="404";
 
+    public static final int VIEWED=1;
+    public static final int ATTEMPTED=2;
+    public static final int REVIEW=3;
+    public static final int NOT_VIEWED=4;
 }
