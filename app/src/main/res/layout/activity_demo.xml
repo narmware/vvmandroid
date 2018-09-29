@@ -1,9 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.DemoActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/custom_toolbar"></include>
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_below="@+id/header"
+        android:layout_above="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_alignParentBottom="true"
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_centerVertical="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="Next"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_toLeftOf="@+id/btn_next"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_toRightOf="@+id/btn_previous"
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btn_opt_a"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="A"
+                android:background="@drawable/custom_round"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="@dimen/q_btn_margin"
+                android:layout_width="@dimen/q_btn_width"
+                android:layout_height="@dimen/q_btn_height" />
+
+            <Button
+                android:id="@+id/btn_opt_b"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="B"
+                android:background="@drawable/custom_round"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="@dimen/q_btn_margin"
+                android:layout_width="@dimen/q_btn_width"
+                android:layout_height="@dimen/q_btn_height" />
+
+            <Button
+                android:id="@+id/btn_opt_c"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="C"
+                android:background="@drawable/custom_round"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="@dimen/q_btn_margin"
+                android:layout_width="@dimen/q_btn_width"
+                android:layout_height="@dimen/q_btn_height" />
+
+            <Button
+                android:id="@+id/btn_opt_d"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="D"
+                android:background="@drawable/custom_round"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="@dimen/q_btn_margin"
+                android:layout_width="@dimen/q_btn_width"
+                android:layout_height="@dimen/q_btn_height"/>
+
+            <TextView
+                android:id="@+id/selected_opt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_previous"
+            android:layout_centerVertical="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="Previous"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+<ImageView
+    android:id="@+id/btn_switch"
+    app:srcCompat="@drawable/ic_arrow_drop"
+    android:padding="8dp"
+    android:foreground="?attr/selectableItemBackground"
+    android:layout_alignParentRight="true"
+    android:layout_centerVertical="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+</RelativeLayout>
