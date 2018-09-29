@@ -5,13 +5,35 @@
     android:background="@color/colorPrimary"
     android:layout_width="match_parent"
     android:layout_height="50dp">
-<ImageView
+
+    <TextView
+        android:id="@+id/txt_timer"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+<ImageButton
     android:id="@+id/btn_switch"
     app:srcCompat="@drawable/ic_arrow_drop"
     android:padding="8dp"
+    android:background="@android:color/transparent"
     android:foreground="?attr/selectableItemBackground"
     android:layout_alignParentRight="true"
     android:layout_centerVertical="true"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
+
+    <ImageButton
+        android:id="@+id/btn_mark_review"
+        android:layout_toLeftOf="@+id/btn_switch"
+        app:srcCompat="@drawable/ic_bookmark"
+        android:padding="8dp"
+        android:background="@android:color/transparent"
+        android:foreground="?attr/selectableItemBackground"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>

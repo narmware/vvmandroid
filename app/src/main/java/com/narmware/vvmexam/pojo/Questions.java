@@ -1,11 +1,21 @@
 package com.narmware.vvmexam.pojo;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class Questions extends RealmObject{
+    private String qid;
 
-    private String qid,qname,answer;
+    private String qname,answer,date_time;
     private int qAnswertype;
+
+    public String getDate_time() {
+        return date_time;
+    }
+
+    public void setDate_time(String date_time) {
+        this.date_time = date_time;
+    }
 
     public int getqAnswertype() {
         return qAnswertype;
