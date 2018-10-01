@@ -42,4 +42,8 @@ public class Constants {
     public static final String OPT_C="C";
     public static final String OPT_D="D";
 
+    public static final String SET_A="set_a";
+    public static final String SET_B="set_b";
+
+
 }

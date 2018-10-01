@@ -10,6 +10,7 @@ import com.narmware.vvmexam.pojo.Questions;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class RealmController {
  
@@ -72,6 +73,16 @@ public class RealmController {
     public RealmResults<Questions> getQuestions() {
  
         return realm.where(Questions.class).findAll();
+    }
+
+    public RealmResults<Questions> getQuestionsSetB() {
+
+        return realm.where(Questions.class).findAllSorted("set_b_id");
+    }
+
+    public RealmResults<Questions> getQuestionsSetC() {
+
+        return realm.where(Questions.class).findAllSorted("set_c_id");
     }
 
     public RealmResults<QuestionSequenceType> getQuestionSequence() {

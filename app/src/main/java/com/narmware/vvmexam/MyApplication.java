@@ -5,6 +5,11 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
@@ -16,13 +21,16 @@ import android.widget.Toast;
 
 import com.narmware.vvmexam.support.SharedPreferencesHelper;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -42,6 +50,74 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
 
     }
 
+    public static String getLocation(final Activity activity) throws IOException {
+        final Double[] latitude = new Double[1];
+        final Double[] longitude= new Double[1];
+        final String[] address = {null};
+        final String[] city = {null};
+
+        LocationManager mLocationManager = (LocationManager) activity.getSystemService(LOCATION_SERVICE);
+        LocationListener mLocationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(final Location location) {
+                //your code here
+
+                latitude[0] =location.getLatitude();
+                longitude[0] =location.getLongitude();
+
+                try {
+                    Geocoder geocoder;
+                    List<Address> addresses = new ArrayList<>();
+                    geocoder = new Geocoder(activity, Locale.getDefault());
+
+                    addresses = geocoder.getFromLocation(latitude[0], longitude[0], 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+                    address[0] = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                    city[0] = addresses.get(0).getLocality();
+                    String state = addresses.get(0).getAdminArea();
+                    String country = addresses.get(0).getCountryName();
+                    String postalCode = addresses.get(0).getPostalCode();
+                    String knownName = addresses.get(0).getFeatureName();
+
+                    Log.e("Current location", address[0]);
+                }catch (Exception e)
+                {
+
+                }
+
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+
+            }
+        };
+
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return "";
+        }
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,
+                0, mLocationListener);
+
+       return address[0] +""+ city[0];
+    }
     public static String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;

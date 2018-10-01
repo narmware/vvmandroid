@@ -8,6 +8,23 @@ public class Questions extends RealmObject{
 
     private String qname,answer,date_time;
     private int qAnswertype;
+    private String set_b_id,set_c_id;
+
+    public String getSet_c_id() {
+        return set_c_id;
+    }
+
+    public void setSet_c_id(String set_c_id) {
+        this.set_c_id = set_c_id;
+    }
+
+    public String getSet_b_id() {
+        return set_b_id;
+    }
+
+    public void setSet_b_id(String set_b_id) {
+        this.set_b_id = set_b_id;
+    }
 
     public String getDate_time() {
         return date_time;

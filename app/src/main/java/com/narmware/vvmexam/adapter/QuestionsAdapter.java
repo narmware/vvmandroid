@@ -48,10 +48,11 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.MyVi
 
         Questions question=mData.get(position);
 
-        byte[] decodedString = Base64.decode(question.getQname(), Base64.DEFAULT);
+     /*   byte[] decodedString = Base64.decode(question.getQname(), Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        holder.mImgQuestion.setImageBitmap(decodedByte);
+        holder.mImgQuestion.setImageBitmap(decodedByte);*/
         holder.mTxtSelectedOpt.setText(question.getAnswer());
+        holder.mTxtQue.setText(question.getQname());
     }
 
 
@@ -68,13 +69,14 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.MyVi
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         ImageView mImgQuestion;
-        TextView mTxtSelectedOpt;
+        TextView mTxtSelectedOpt,mTxtQue;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             mImgQuestion=itemView.findViewById(R.id.img_question);
             mTxtSelectedOpt=itemView.findViewById(R.id.selected_opt);
+            mTxtQue=itemView.findViewById(R.id.txt_question);
 
         }
     }
