@@ -8,8 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 
 import com.narmware.vvmexam.R;
+import com.narmware.vvmexam.db.RealmController;
+import com.narmware.vvmexam.pojo.Login;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import io.realm.Realm;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +37,11 @@ public class SchoolProfileFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    @BindView(R.id.edt_sch_state) EditText mEdtSchState;
+    @BindView(R.id.edt_sch_district) EditText mEdtSchDistrict;
+    @BindView(R.id.edt_sch_city) EditText mEdtSchCity;
+    @BindView(R.id.edt_sch_name) EditText mEdtSchName;
+    Realm realm;
 
     public SchoolProfileFragment() {
         // Required empty public constructor
@@ -68,7 +80,22 @@ public class SchoolProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_school_profile, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        init(view);
         return view;
+    }
+
+    private void init(View view) {
+        ButterKnife.bind(this,view);
+        realm= Realm.getInstance(getActivity());
+
+        Login login= RealmController.with(getActivity()).getStudentDetails();
+
+        if(login!=null) {
+            mEdtSchState.setText(login.getSch_state());
+            mEdtSchDistrict.setText(login.getSch_dist());
+            mEdtSchCity.setText(login.getSch_city());
+            mEdtSchName.setText(login.getSch_name());
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

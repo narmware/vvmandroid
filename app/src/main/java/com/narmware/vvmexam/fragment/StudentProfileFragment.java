@@ -44,6 +44,9 @@ public class StudentProfileFragment extends Fragment {
     @BindView(R.id.edt_std_email) EditText mEdtStdEmail;
     @BindView(R.id.edt_std_address) EditText mEdtStdAddress;
     @BindView(R.id.edt_std_pincode) EditText mEdtStdPincode;
+    @BindView(R.id.edt_std_state) EditText mEdtStdState;
+    @BindView(R.id.edt_std_district) EditText mEdtStdDistrict;
+    @BindView(R.id.edt_std_city) EditText mEdtStdCity;
 
     private OnFragmentInteractionListener mListener;
     Realm realm;
@@ -97,6 +100,9 @@ public class StudentProfileFragment extends Fragment {
         Login login= RealmController.with(getActivity()).getStudentDetails();
 
         if(login!=null) {
+            mEdtStdState.setText(login.getStudent_state());
+            mEdtStdDistrict.setText(login.getStudent_dist());
+            mEdtStdCity.setText(login.getStudent_city());
             mEdtStdPincode.setText(login.getStudent_pincode());
             mEdtStdAddress.setText(login.getStudent_address());
             mEdtStdName.setText(login.getStudent_name());

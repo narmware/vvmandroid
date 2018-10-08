@@ -292,7 +292,16 @@ public class NotificationFragment extends Fragment {
 
                         try {
                             Gson gson = new Gson();
-                            LoginResponse dataResponse = gson.fromJson(response, LoginResponse.class);
+                            NotificationResponse dataResponse = gson.fromJson(response, NotificationResponse.class);
+                            NotificationItems[] notilist=dataResponse.getResult();
+
+                            if(dataResponse.getStatus_code().equals(Constants.SUCCESS))
+                            {
+                                for(NotificationItems item:notilist){
+                                    notificationItems.add(item);
+                                }
+                                mAdapter.notifyDataSetChanged();
+                            }
 
                             dialog.dismiss();
                         }catch (Exception e)

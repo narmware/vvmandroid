@@ -32,10 +32,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
+                android:paddingTop="@dimen/profile_card_padding"
+                android:paddingBottom="@dimen/profile_padding"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <LinearLayout
+                <!--<LinearLayout
                     android:layout_margin="@dimen/profile_spinner_margin"
                     android:background="@drawable/custom_edt"
                     android:layout_width="match_parent"
@@ -67,15 +69,87 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
+-->
 
                 <android.support.design.widget.TextInputLayout
                     app:hintAnimationEnabled="true"
+                    android:textColorHint="@color/color_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edt_std_state"
+                        style="@style/edittext_style"
+                        android:background="@drawable/single_line_bg"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:editable="false"
+                        android:hint="State"
+                        android:gravity="center_vertical"
+                        android:layout_margin="@dimen/profile_txt_margin"
+                        android:padding="@dimen/login_txt_padding"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    app:hintAnimationEnabled="true"
+                    android:textColorHint="@color/color_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edt_std_district"
+                        style="@style/edittext_style"
+                        android:background="@drawable/single_line_bg"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:editable="false"
+                        android:hint="District"
+                        android:gravity="center_vertical"
+                        android:layout_margin="@dimen/profile_txt_margin"
+                        android:padding="@dimen/login_txt_padding"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    app:hintAnimationEnabled="true"
+                    android:textColorHint="@color/color_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edt_std_city"
+                        style="@style/edittext_style"
+                        android:background="@drawable/single_line_bg"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:editable="false"
+                        android:hint="City"
+                        android:gravity="center_vertical"
+                        android:layout_margin="@dimen/profile_txt_margin"
+                        android:padding="@dimen/login_txt_padding"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    app:hintAnimationEnabled="true"
+                    android:textColorHint="@color/color_hint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edt_std_pincode"
                         style="@style/edittext_style"
+                        android:background="@drawable/single_line_bg"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:editable="false"
                         android:hint="Pincode"
                         android:gravity="center_vertical"
                         android:layout_margin="@dimen/profile_txt_margin"
@@ -87,12 +161,17 @@
 
                 <android.support.design.widget.TextInputLayout
                     app:hintAnimationEnabled="true"
+                    android:textColorHint="@color/color_hint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/edt_std_address"
                         style="@style/edittext_style"
+                        android:background="@drawable/single_line_bg"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:editable="false"
                         android:hint="Student Address"
                         android:gravity="center_vertical"
                         android:layout_margin="@dimen/profile_txt_margin"
@@ -124,16 +203,23 @@
         android:layout_height="wrap_content">
     <LinearLayout
         android:orientation="vertical"
+        android:paddingTop="@dimen/profile_card_padding"
+        android:paddingBottom="@dimen/profile_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <android.support.design.widget.TextInputLayout
             app:hintAnimationEnabled="true"
+            android:textColorHint="@color/color_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/edt_std_name"
                 style="@style/edittext_style"
+                android:background="@drawable/single_line_bg"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:editable="false"
                 android:hint="Student Name"
                 android:gravity="center_vertical"
                 android:layout_margin="@dimen/profile_txt_margin"
@@ -145,12 +231,17 @@
 
         <android.support.design.widget.TextInputLayout
             app:hintAnimationEnabled="true"
+            android:textColorHint="@color/color_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/edt_std_date"
                 style="@style/edittext_style"
+                android:background="@drawable/single_line_bg"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:editable="false"
                 android:hint="Date"
                 android:gravity="center_vertical"
                 android:layout_margin="@dimen/profile_txt_margin"
@@ -162,12 +253,17 @@
 
         <android.support.design.widget.TextInputLayout
             app:hintAnimationEnabled="true"
+            android:textColorHint="@color/color_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/edt_std_aadhar"
                 style="@style/edittext_style"
+                android:background="@drawable/single_line_bg"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:editable="false"
                 android:hint="Student Aadhar no."
                 android:gravity="center_vertical"
                 android:layout_margin="@dimen/profile_txt_margin"
@@ -179,12 +275,17 @@
 
         <android.support.design.widget.TextInputLayout
             app:hintAnimationEnabled="true"
+            android:textColorHint="@color/color_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/edt_std_mobile"
                 style="@style/edittext_style"
+                android:background="@drawable/single_line_bg"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:editable="false"
                 android:hint="Student Mobile"
                 android:gravity="center_vertical"
                 android:layout_margin="@dimen/profile_txt_margin"
@@ -196,12 +297,17 @@
 
         <android.support.design.widget.TextInputLayout
             app:hintAnimationEnabled="true"
+            android:textColorHint="@color/color_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/edt_std_email"
                 style="@style/edittext_style"
+                android:background="@drawable/single_line_bg"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:editable="false"
                 android:hint="Student Email"
                 android:gravity="center_vertical"
                 android:layout_margin="@dimen/profile_txt_margin"

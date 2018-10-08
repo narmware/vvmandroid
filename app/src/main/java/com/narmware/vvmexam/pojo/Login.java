@@ -3,7 +3,18 @@ package com.narmware.vvmexam.pojo;
 import io.realm.RealmObject;
 
 public class Login extends RealmObject {
-    private String student_id,student_name,student_email,student_mobile,student_pincode,student_address,student_dob,student_aadhar;
+    private String student_id,student_name,student_email,student_mobile,student_pincode,student_address,student_dob,student_aadhar
+            ,student_state,student_dist,student_city;
+    private String sch_state,sch_dist,sch_city,sch_name;
+    private String inst_id;
+
+    public String getInst_id() {
+        return inst_id;
+    }
+
+    public void setInst_id(String inst_id) {
+        this.inst_id = inst_id;
+    }
 
     public String getStudent_id() {
         return student_id;
@@ -67,5 +78,61 @@ public class Login extends RealmObject {
 
     public void setStudent_aadhar(String student_aadhar) {
         this.student_aadhar = student_aadhar;
+    }
+
+    public String getStudent_state() {
+        return student_state;
+    }
+
+    public void setStudent_state(String student_state) {
+        this.student_state = student_state;
+    }
+
+    public String getStudent_dist() {
+        return student_dist;
+    }
+
+    public void setStudent_dist(String student_dist) {
+        this.student_dist = student_dist;
+    }
+
+    public String getStudent_city() {
+        return student_city;
+    }
+
+    public void setStudent_city(String student_city) {
+        this.student_city = student_city;
+    }
+
+    public String getSch_state() {
+        return sch_state;
+    }
+
+    public void setSch_state(String sch_state) {
+        this.sch_state = sch_state;
+    }
+
+    public String getSch_dist() {
+        return sch_dist;
+    }
+
+    public void setSch_dist(String sch_dist) {
+        this.sch_dist = sch_dist;
+    }
+
+    public String getSch_city() {
+        return sch_city;
+    }
+
+    public void setSch_city(String sch_city) {
+        this.sch_city = sch_city;
+    }
+
+    public String getSch_name() {
+        return sch_name;
+    }
+
+    public void setSch_name(String sch_name) {
+        this.sch_name = sch_name;
     }
 }
