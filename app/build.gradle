@@ -52,6 +52,7 @@ dependencies {
     compile 'io.realm:realm-android:0.87.4'
     annotationProcessor 'io.realm:realm-android:0.87.4'
 
+    compile 'net.gotev:uploadservice:2.1'
     implementation 'com.orhanobut:dialogplus:1.11@aar'
 
 }

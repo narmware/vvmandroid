@@ -46,6 +46,7 @@ public class Constants {
 
     public static final String SET_A="set_a";
     public static final String SET_B="set_b";
+    public static final int REQUEST_CODE = 2000;
 
 
 }

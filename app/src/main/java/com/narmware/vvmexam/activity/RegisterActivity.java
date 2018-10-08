@@ -124,14 +124,7 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
 
                     if(pagerCount==1)
                     {
-                        mName=PersonalInfoFragment.mEdtName.getText().toString().trim();
-                        SharedPreferencesHelper.setUserName(mName,RegisterActivity.this);
 
-                        if(mName==null || mName.isEmpty())
-                        {
-                            validData=1;
-                            PersonalInfoFragment.mEdtName.setError("Enter your name");
-                        }
                         if(PersonalInfoFragment.mState==null || PersonalInfoFragment.mState.isEmpty())
                         {
                             validData=1;

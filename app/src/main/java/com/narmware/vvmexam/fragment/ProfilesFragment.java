@@ -13,22 +13,25 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.narmware.vvmexam.R;
+import com.narmware.vvmexam.db.RealmController;
+import com.narmware.vvmexam.pojo.Login;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link EditFragment.OnFragmentInteractionListener} interface
+ * {@link ProfilesFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link EditFragment#newInstance} factory method to
+ * Use the {@link ProfilesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EditFragment extends Fragment {
+public class ProfilesFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -40,10 +43,11 @@ public class EditFragment extends Fragment {
     PagerAdapter pagerAdapter;
     @BindView(R.id.view_pager) ViewPager mViewPager;
     @BindView(R.id.simpleTabLayout) TabLayout viewPagerTab;
+    Realm realm;
 
     private OnFragmentInteractionListener mListener;
 
-    public EditFragment() {
+    public ProfilesFragment() {
         // Required empty public constructor
     }
 
@@ -53,11 +57,11 @@ public class EditFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment EditFragment.
+     * @return A new instance of fragment ProfilesFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static EditFragment newInstance(String param1, String param2) {
-        EditFragment fragment = new EditFragment();
+    public static ProfilesFragment newInstance(String param1, String param2) {
+        ProfilesFragment fragment = new ProfilesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -78,7 +82,7 @@ public class EditFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_edit, container, false);
+        View view= inflater.inflate(R.layout.fragment_profiles, container, false);
 
         init(view);
         return view;
@@ -92,6 +96,20 @@ public class EditFragment extends Fragment {
 
        pagerAdapter.addFragment(new StudentProfileFragment(),"Student Profile");
        pagerAdapter.addFragment(new SchoolProfileFragment(),"School Profile");
+
+        realm=Realm.getInstance(getActivity());
+
+        Login login= RealmController.with(getActivity()).getStudentDetails();
+
+        if(login!=null) {
+            if(login.getInst_id().equals(""))
+            {
+                pagerAdapter.addFragment(new PersonalInfoFragment(),"Exam Center");
+            }
+            else{
+            }
+        }
+
         pagerAdapter.notifyDataSetChanged();
 
         viewPagerTab.setupWithViewPager(mViewPager);

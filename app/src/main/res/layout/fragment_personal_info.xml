@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.PersonalInfoFragment">
 
     <TextView
@@ -18,38 +19,50 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/linear_top"
         android:layout_margin="@dimen/personal_info_padding"
         android:layout_below="@+id/txt_title"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <EditText
-        android:id="@+id/edt_name"
-        style="@style/edittext_style"
-        android:drawableLeft="@drawable/ic_user"
-        android:drawablePadding="15dp"
-        android:hint="Name"
-        android:inputType="text"
-        android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFJHIJKLMNOPQRSTUVWXYZ"
-        android:layout_margin="@dimen/login_txt_margin"
-        android:background="@drawable/custom_edt"
-        android:padding="@dimen/login_txt_padding"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <LinearLayout
-        android:layout_margin="@dimen/location_spinner_margin"
-        android:background="@drawable/custom_edt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <Spinner
-        android:id="@+id/spinner_gender"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    </LinearLayout>
 
-    </LinearLayout>
+        <RelativeLayout
+            android:elevation="5dp"
+            android:layout_centerHorizontal="true"
+            app:layout_anchorGravity="top|center"
+            android:layout_width="130dp"
+            android:layout_height="130dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/prof_image"
+                android:src="@drawable/vvm_logo_old"
+                android:layout_width="120dp"
+                android:layout_margin="1dp"
+                android:layout_height="match_parent" />
+
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/btn_edit_prof_img"
+                android:foreground="?attr/selectableItemBackground"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/ic_create_color"
+                android:padding="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
 
     <LinearLayout
         android:orientation="vertical"

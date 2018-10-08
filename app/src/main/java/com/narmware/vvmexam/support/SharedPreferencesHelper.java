@@ -21,6 +21,7 @@ public class SharedPreferencesHelper {
     private static final String USER_GENDER="gender";
     private static final String USER_MOBILE="mobile";
     private static final String USER_PASSWORD="password";
+    private static final String USER_PROFILE_IMAGE="profile_image";
 
     private static final String MINIMIZE_COUNT="minimize_count";
 
@@ -206,5 +207,21 @@ public class SharedPreferencesHelper {
         int count=pref.getInt(MINIMIZE_COUNT,0);
         return count;
     }
+    public static void setUserProfileImage(String prof_img, Context context)
+    {
+        SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor edit=pref.edit();
+        edit.putString(USER_PROFILE_IMAGE,prof_img);
+        edit.commit();
+    }
+
+    public static String getUserProfileImage(Context context)
+    {
+        SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(context);
+        String prof_img=pref.getString(USER_PROFILE_IMAGE,null);
+        return prof_img;
+    }
+
+
 
 }

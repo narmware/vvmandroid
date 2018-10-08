@@ -1,8 +1,11 @@
 package com.narmware.vvmexam.fragment;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +13,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.narmware.vvmexam.R;
+import com.narmware.vvmexam.support.Constants;
 import com.narmware.vvmexam.support.SharedPreferencesHelper;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,18 +46,14 @@ public class PersonalInfoFragment extends Fragment {
     private String mParam2;
     @BindView(R.id.spinner_state) Spinner mSpinnState;
     @BindView(R.id.spinner_city) Spinner mSpinnCity;
-    @BindView(R.id.spinner_gender) Spinner mSpinnGender;
-
-    public static EditText mEdtName;
+   public static CircleImageView mImgProf;
+    @BindView(R.id.btn_edit_prof_img) ImageButton mBtnEditProf;
 
     ArrayAdapter arrayAdapterState;
     ArrayList<String> mStatesList;
 
     ArrayAdapter arrayAdapterCities;
     ArrayList<String> mCitiesList;
-
-    ArrayAdapter arrayAdapterGender;
-    ArrayList<String> mGenderList;
 
     private OnFragmentInteractionListener mListener;
 
@@ -99,12 +101,8 @@ public class PersonalInfoFragment extends Fragment {
 
     private void init(View view) {
         ButterKnife.bind(this,view);
-        mEdtName=view.findViewById(R.id.edt_name);
+        mImgProf=view.findViewById(R.id.prof_image);
 
-        if(SharedPreferencesHelper.getUserName(getContext())!=null)
-        {
-            mEdtName.setText(SharedPreferencesHelper.getUserName(getContext()));
-        }
         mStatesList=new ArrayList<>();
         mStatesList.add("Maharashtra");
         mStatesList.add("Telangana");
@@ -115,10 +113,6 @@ public class PersonalInfoFragment extends Fragment {
         mCitiesList.add("Nashik");
         mCitiesList.add("Nagpur");
 
-        mGenderList=new ArrayList<>();
-        mGenderList.add("Male");
-        mGenderList.add("Female");
-        mGenderList.add("Other");
 
         arrayAdapterState=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mStatesList);
         mSpinnState.setAdapter(arrayAdapterState);
@@ -128,13 +122,6 @@ public class PersonalInfoFragment extends Fragment {
             arrayAdapterState.notifyDataSetChanged();
         }
 
-        arrayAdapterGender=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mGenderList);
-        mSpinnGender.setAdapter(arrayAdapterGender);
-        if(SharedPreferencesHelper.getUserGender(getContext())!=null)
-        {
-            mSpinnGender.setSelection(mGenderList.indexOf(SharedPreferencesHelper.getUserGender(getContext())));
-            arrayAdapterGender.notifyDataSetChanged();
-        }
 
         arrayAdapterCities=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,mCitiesList);
         mSpinnCity.setAdapter(arrayAdapterCities);
@@ -157,18 +144,6 @@ public class PersonalInfoFragment extends Fragment {
             }
         });
 
-        mSpinnGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mGender=mGenderList.get(i);
-                SharedPreferencesHelper.setUserGender(mGender,getContext());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
         mSpinnCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -182,6 +157,20 @@ public class PersonalInfoFragment extends Fragment {
 
             }
         });
+
+        mBtnEditProf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        1);
+
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, Constants.REQUEST_CODE);
+            }
+        });
+
     }
 
 
