@@ -8,8 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 
 import com.narmware.vvmexam.R;
+import com.narmware.vvmexam.activity.DemoActivity;
+import com.narmware.vvmexam.activity.LoginActivity;
+import com.narmware.vvmexam.db.RealmController;
+import com.narmware.vvmexam.pojo.Login;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import io.realm.Realm;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,8 +37,16 @@ public class StudentProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    @BindView(R.id.edt_std_name) EditText mEdtStdName;
+    @BindView(R.id.edt_std_date) EditText mEdtStdDate;
+    @BindView(R.id.edt_std_aadhar) EditText mEdtStdAdhar;
+    @BindView(R.id.edt_std_mobile) EditText mEdtStdMobile;
+    @BindView(R.id.edt_std_email) EditText mEdtStdEmail;
+    @BindView(R.id.edt_std_address) EditText mEdtStdAddress;
+    @BindView(R.id.edt_std_pincode) EditText mEdtStdPincode;
 
     private OnFragmentInteractionListener mListener;
+    Realm realm;
 
     public StudentProfileFragment() {
         // Required empty public constructor
@@ -69,7 +86,25 @@ public class StudentProfileFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_student_profile, container, false);
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        init(view);
         return view;
+    }
+
+    private void init(View view) {
+        ButterKnife.bind(this,view);
+        realm=Realm.getInstance(getActivity());
+
+        Login login= RealmController.with(getActivity()).getStudentDetails();
+
+        if(login!=null) {
+            mEdtStdPincode.setText(login.getStudent_pincode());
+            mEdtStdAddress.setText(login.getStudent_address());
+            mEdtStdName.setText(login.getStudent_name());
+            mEdtStdDate.setText(login.getStudent_dob());
+            mEdtStdAdhar.setText(login.getStudent_aadhar());
+            mEdtStdMobile.setText(login.getStudent_mobile());
+            mEdtStdEmail.setText(login.getStudent_email());
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

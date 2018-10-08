@@ -33,6 +33,7 @@ import com.narmware.vvmexam.R;
 import com.narmware.vvmexam.fragment.PersonalInfoFragment;
 import com.narmware.vvmexam.pojo.Login;
 import com.narmware.vvmexam.pojo.LoginResponse;
+import com.narmware.vvmexam.pojo.Questions;
 import com.narmware.vvmexam.pojo.States;
 import com.narmware.vvmexam.pojo.StatesResponse;
 import com.narmware.vvmexam.support.Constants;
@@ -46,6 +47,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -62,6 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public Dialog mNoConnectionDialog;
     public RequestQueue mVolleyRequest;
+    Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void init() {
         ButterKnife.bind(this);
+        realm=Realm.getInstance(LoginActivity.this);
 
         mVolleyRequest = Volley.newRequestQueue(LoginActivity.this);
         mNoConnectionDialog = new Dialog(LoginActivity.this, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
@@ -151,6 +155,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void LoginUser() {
 
+        final ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
+        dialog.setTitle(Constants.PLEASE_WAIT);
+        dialog.setMessage(Constants.LOGIN_DIALOG_TITLE);
+        dialog.setCancelable(false);
+        dialog.show();
+
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoints.BASE_URL,
                 new Response.Listener<String>() {
@@ -168,19 +178,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }
                             if (dataResponse.getStatus_code().equals(Constants.SUCCESS)) {
                                 SharedPreferencesHelper.setIsLogin(true, LoginActivity.this);
+                                realm.beginTransaction();
+                                realm.copyToRealm(data);
+                               /* login.setStudent_id(data.getStudent_id());
+                                login.setStudent_name(data.getStudent_name());
+                                login.setStudent_email(data.getStudent_email());*/
+                                realm.commitTransaction();
+
                                 Toast.makeText(LoginActivity.this, "Login Successfull", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                 startActivity(intent);
                                 finish();
                             }
+                            dialog.dismiss();
                         }catch (Exception e)
                         {e.printStackTrace();
+                            dialog.dismiss();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("RESPONSE ERR","That didn't work!");
+                dialog.dismiss();
             }
         }) {
             //adding parameters to the request

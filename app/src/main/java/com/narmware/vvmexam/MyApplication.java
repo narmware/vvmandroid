@@ -265,7 +265,7 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
 
         if(SharedPreferencesHelper.getMinimizeCount(activity)==2)
         {
-            Toast.makeText(activity, "Exam finished", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(activity, "Exam finished", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -273,7 +273,7 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
     public void onActivityPaused(Activity activity) {
         count++;
         SharedPreferencesHelper.setMinimizeCount(count,activity);
-        Toast.makeText(activity, "Paused", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(activity, "Paused", Toast.LENGTH_SHORT).show();
     }
 
     @Override

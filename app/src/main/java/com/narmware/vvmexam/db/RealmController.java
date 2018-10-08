@@ -4,13 +4,12 @@ import android.app.Activity;
 import android.app.Application;
 import android.support.v4.app.Fragment;
 
+import com.narmware.vvmexam.pojo.Login;
 import com.narmware.vvmexam.pojo.QuestionSequenceType;
 import com.narmware.vvmexam.pojo.Questions;
 
 import io.realm.Realm;
-import io.realm.RealmQuery;
 import io.realm.RealmResults;
-import io.realm.Sort;
 
 public class RealmController {
  
@@ -90,11 +89,9 @@ public class RealmController {
         return realm.where(QuestionSequenceType.class).findAll();
     }
 
-    public RealmResults<Questions> getQuestionsLike() {
+    public Login getStudentDetails() {
 
-        return realm.where(Questions.class)
-                .equalTo("qname","Hello1")
-                .findAll();
+        return realm.where(Login.class).findFirst();
     }
 
    /*

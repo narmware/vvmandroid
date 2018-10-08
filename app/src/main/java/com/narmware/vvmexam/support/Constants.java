@@ -4,6 +4,7 @@ public class Constants {
     public static final String LOGIN_DIALOG_TITLE ="Validating Credentials...";
     public static final String REGISTER_DIALOG_TITLE ="Registering you...";
     public static final String PLEASE_WAIT="Please Wait";
+    public static final String NOTIFICATION_DIALOG ="Getting Notifications...";
 
     public static final String JSON_STRING="json_string";
     public static final String LINK="link";
@@ -15,6 +16,7 @@ public class Constants {
     public static final String OTP="otp";
     public static final String REGISTER="register";
     public static final String LOGIN="login";
+    public static final String NOTIFICATION="notification";
 
     public static final String STATE_ID="state_id";
     public static final String DIST_ID="dist_id";

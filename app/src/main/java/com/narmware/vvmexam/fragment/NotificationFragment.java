@@ -2,6 +2,7 @@ package com.narmware.vvmexam.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,25 +15,34 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.narmware.vvmexam.R;
+import com.narmware.vvmexam.activity.HomeActivity;
 import com.narmware.vvmexam.activity.LoginActivity;
 import com.narmware.vvmexam.adapter.NotificationAdapter;
+import com.narmware.vvmexam.pojo.Login;
+import com.narmware.vvmexam.pojo.LoginResponse;
 import com.narmware.vvmexam.pojo.NotificationItems;
 import com.narmware.vvmexam.pojo.NotificationResponse;
+import com.narmware.vvmexam.support.Constants;
 import com.narmware.vvmexam.support.EndPoints;
+import com.narmware.vvmexam.support.SharedPreferencesHelper;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -210,11 +220,14 @@ public class NotificationFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+/*
     public void GetNotifications(String isFirst,String not_id) {
-      /*  final ProgressDialog dialog = new ProgressDialog(getContext());
+      */
+/*  final ProgressDialog dialog = new ProgressDialog(getContext());
         dialog.setMessage("Getting Categories...");
         dialog.setCancelable(false);
-        dialog.show();*/
+        dialog.show();*//*
+
       //http://letzlearn.in/vision/getNotifications.php?isfirst=1&not_id
         String url= EndPoints.GET_NOTIFICATIONS+"?isfirst="+isFirst+"&not_id="+not_id;
 
@@ -258,6 +271,55 @@ public class NotificationFragment extends Fragment {
                 }
         );
         mVolleyRequest.add(obreq);
+    }
+*/
+
+    private void GetNotifications(final String isFirst, final String not_id) {
+
+        final ProgressDialog dialog = new ProgressDialog(getContext());
+        dialog.setTitle(Constants.PLEASE_WAIT);
+        dialog.setMessage(Constants.NOTIFICATION_DIALOG);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoints.BASE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the response string.
+                        Log.e("RESPONSE",response);
+
+                        try {
+                            Gson gson = new Gson();
+                            LoginResponse dataResponse = gson.fromJson(response, LoginResponse.class);
+
+                            dialog.dismiss();
+                        }catch (Exception e)
+                        {e.printStackTrace();
+                            dialog.dismiss();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("RESPONSE ERR","That didn't work!");
+                dialog.dismiss();
+            }
+        }) {
+            //adding parameters to the request
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("key","VVM");
+                params.put("param", Constants.NOTIFICATION);
+                params.put("isfirst",isFirst);
+                params.put("not_id",not_id);
+                return params;
+            }
+        };
+        // Add the request to the RequestQueue.
+        mVolleyRequest.add(stringRequest);
     }
 
 

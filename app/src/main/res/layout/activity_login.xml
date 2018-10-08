@@ -106,6 +106,7 @@
 
     <LinearLayout
         android:id="@+id/lin_register"
+        android:visibility="gone"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
