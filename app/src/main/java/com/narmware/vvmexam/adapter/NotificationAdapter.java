@@ -119,7 +119,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int getItemViewType(int position) {
         // Just as an example, return 0 or 2 depending on position
         // Note that unlike in ListView adapters, types don't have to be contiguous
-        Log.e("Adapter size",mData.size()+"");
 
         if(mData.get(position).getNot_type().equals("message"))
         {

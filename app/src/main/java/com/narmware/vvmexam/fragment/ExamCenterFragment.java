@@ -1,25 +1,21 @@
 package com.narmware.vvmexam.fragment;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.DialogFragment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -31,18 +27,15 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.narmware.vvmexam.R;
 import com.narmware.vvmexam.adapter.CityAdapter;
-import com.narmware.vvmexam.adapter.DistrictAdapter;
 import com.narmware.vvmexam.adapter.StateAdapter;
-import com.narmware.vvmexam.dialogs.TnCDialogFragment;
 import com.narmware.vvmexam.pojo.City;
 import com.narmware.vvmexam.pojo.CityResponse;
-import com.narmware.vvmexam.pojo.District;
-import com.narmware.vvmexam.pojo.DistrictResponse;
-import com.narmware.vvmexam.pojo.StatesResponse;
 import com.narmware.vvmexam.pojo.States;
+import com.narmware.vvmexam.pojo.StatesResponse;
 import com.narmware.vvmexam.support.Constants;
 import com.narmware.vvmexam.support.EndPoints;
 import com.narmware.vvmexam.support.SharedPreferencesHelper;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,30 +43,32 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SelectLocationFragment.OnFragmentInteractionListener} interface
+ * {@link ExamCenterFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SelectLocationFragment#newInstance} factory method to
+ * Use the {@link ExamCenterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SelectLocationFragment extends Fragment {
+public class ExamCenterFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    RequestQueue mVolleyRequest;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     @BindView(R.id.spinner_state) Spinner mSpinnState;
     @BindView(R.id.spinner_city) Spinner mSpinnCity;
-    @BindView(R.id.spinner_district) Spinner mSpinndistrict;
-    @BindView(R.id.check_tnc) CheckBox mCheckTnc;
-    @BindView(R.id.txt_terms) TextView mTxtTermsConditions;
+   public static ImageView mImgProf;
+    @BindView(R.id.btn_edit_prof_img) Button mBtnEditProf;
+    @BindView(R.id.btn_camera) Button mBtnCamera;
+
+    RequestQueue mVolleyRequest;
 
     StateAdapter arrayAdapterState;
     ArrayList<States> mStatesList;
@@ -81,16 +76,12 @@ public class SelectLocationFragment extends Fragment {
     CityAdapter arrayAdapterCities;
     ArrayList<City> mCitiesList;
 
-    DistrictAdapter arrayAdapterDistrict;
-    ArrayList<District> mDistsList;
-
-    public static String mState,mCity,mDistrict;
-    public static String mState_id,mCity_id,mDistrict_id;
-
     private OnFragmentInteractionListener mListener;
-    DialogFragment dialogFragment;
 
-    public SelectLocationFragment() {
+    public static String mState,mCity;
+    public static String mState_id,mCity_id;
+
+    public ExamCenterFragment() {
         // Required empty public constructor
     }
 
@@ -100,11 +91,11 @@ public class SelectLocationFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SelectLocationFragment.
+     * @return A new instance of fragment ExamCenterFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SelectLocationFragment newInstance(String param1, String param2) {
-        SelectLocationFragment fragment = new SelectLocationFragment();
+    public static ExamCenterFragment newInstance(String param1, String param2) {
+        ExamCenterFragment fragment = new ExamCenterFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -125,25 +116,26 @@ public class SelectLocationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_select_location, container, false);
+        View view= inflater.inflate(R.layout.fragment_exam_center, container, false);
         init(view);
         return view;
     }
 
     private void init(View view) {
         ButterKnife.bind(this,view);
+        mImgProf=view.findViewById(R.id.prof_image);
         mVolleyRequest = Volley.newRequestQueue(getContext());
 
-        mStatesList=new ArrayList<>();
-        mCitiesList=new ArrayList<>();
-        mDistsList=new ArrayList<>();
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                1);
 
+        mStatesList=new ArrayList<>();
         arrayAdapterState=new StateAdapter(mStatesList,getContext());
         mSpinnState.setAdapter(arrayAdapterState);
         getStates();
 
-        arrayAdapterDistrict=new DistrictAdapter(mDistsList,getContext());
-        mSpinndistrict.setAdapter(arrayAdapterDistrict);
+        mCitiesList=new ArrayList<>();
 
         arrayAdapterCities=new CityAdapter(mCitiesList,getContext());
         mSpinnCity.setAdapter(arrayAdapterCities);
@@ -153,23 +145,8 @@ public class SelectLocationFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 mState=mStatesList.get(i).getState_name();
                 mState_id=mStatesList.get(i).getState_id();
-                SharedPreferencesHelper.setUserState(mState,getContext());
-                getDistrict(mStatesList.get(i).getState_id());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        mSpinndistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mDistrict=mDistsList.get(i).getDistrict_name();
-                mDistrict_id=mDistsList.get(i).getDistrict_id();
-                SharedPreferencesHelper.setUserDistrict(mDistrict,getContext());
-                getCities(mDistsList.get(i).getDistrict_id());
+                SharedPreferencesHelper.setPreffExamState(mState,getContext());
+                getCities(mStatesList.get(i).getState_id());
             }
 
             @Override
@@ -182,8 +159,8 @@ public class SelectLocationFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 mCity=mCitiesList.get(i).getCity_name();
-                mCity_id=mCitiesList.get(i).getCity_id();
-                SharedPreferencesHelper.setUserCity(mCity,getContext());
+                mCity_id=mCitiesList.get(i).getExam_center_id();
+                SharedPreferencesHelper.setPreffExamCity(mCity,getContext());
             }
 
             @Override
@@ -192,44 +169,28 @@ public class SelectLocationFragment extends Fragment {
             }
         });
 
-
-        if(SharedPreferencesHelper.getIsTcAccpted(getContext())==true)
-        {
-            mCheckTnc.setChecked(true);
-        }
-        mCheckTnc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b==true)
-                {
-                    SharedPreferencesHelper.setIsTcAccpted(true,getContext());
-                }
-                if(b==false)
-                {
-                    SharedPreferencesHelper.setIsTcAccpted(false,getContext());
-                }
-            }
-        });
-
-        mTxtTermsConditions.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        mBtnEditProf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            dialogFragment = TnCDialogFragment.newInstance();
-            //Bundle args = new Bundle();
-            //args.putString("name",name);
-            //newFragment.setArguments(args);
 
-            FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
-            android.support.v4.app.FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-
-            dialogFragment.setEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.slide_right));
-            dialogFragment.setCancelable(false);
-            dialogFragment.show(fragmentTransaction, "dialog");
-
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                getActivity().startActivityForResult(photoPickerIntent,Constants.GALLERY_REQUEST_CODE);
             }
         });
+
+        mBtnCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                getActivity().startActivityForResult(cameraIntent, Constants.CAMERA_REQUEST_CODE);
+            }
+        });
+
+
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -270,6 +231,7 @@ public class SelectLocationFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+
     private void getStates() {
 
         // Request a string response from the provided URL.
@@ -287,9 +249,9 @@ public class SelectLocationFragment extends Fragment {
                         mStatesList.clear();
                         for(States item:array)
                         {
-                           // Log.e("State name",item.getState_name());
-                            mStatesList.add(item);
-                            if(SharedPreferencesHelper.getUserState(getContext()).equals(item.getState_name()))
+                            //Log.e("State name",item.getState_name());
+                           mStatesList.add(item);
+                             if(SharedPreferencesHelper.getPreffExamState(getContext()).equals(item.getState_name()))
                             {
                                 mSpinnState.setSelection(mStatesList.indexOf(item));
                             }
@@ -316,7 +278,7 @@ public class SelectLocationFragment extends Fragment {
         mVolleyRequest.add(stringRequest);
     }
 
-    private void getDistrict(final String state_id) {
+    private void getCities(final String state_id) {
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoints.BASE_URL,
@@ -324,53 +286,9 @@ public class SelectLocationFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         // Display the response string.
-                        //Log.e("RESPONSE",response);
+                        //Log.e("RESPONSE CITY",response);
 
-                        Gson gson=new Gson();
-                        DistrictResponse dataResponse=gson.fromJson(response,DistrictResponse.class);
-                        District[] array=dataResponse.getResult();
-
-                        mDistsList.clear();
-                        for(District item:array)
-                        {
-                            mDistsList.add(item);
-                            if(SharedPreferencesHelper.getUserDistrict(getContext()).equals(item.getDistrict_name()))
-                            {
-                                mSpinndistrict.setSelection(mDistsList.indexOf(item));
-                            }
-                        }
-                        arrayAdapterDistrict.notifyDataSetChanged();
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("RESPONSE ERR","That didn't work!");
-            }
-        }) {
-            //adding parameters to the request
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("key","VVM");
-                params.put("param", Constants.DISTRICT);
-                params.put(Constants.STATE_ID, state_id);
-                return params;
-            }
-        };
-        // Add the request to the RequestQueue.
-        mVolleyRequest.add(stringRequest);
-    }
-
-    private void getCities(final String dist_id) {
-
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoints.BASE_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the response string.
-                        //Log.e("RESPONSE",response);
+                        try{
 
                         Gson gson=new Gson();
                         CityResponse dataResponse=gson.fromJson(response,CityResponse.class);
@@ -380,18 +298,21 @@ public class SelectLocationFragment extends Fragment {
                         for(City item:array)
                         {
                             mCitiesList.add(item);
-                            if(SharedPreferencesHelper.getUserCity(getContext()).equals(item.getCity_name()))
+                            if(SharedPreferencesHelper.getPreffExamCity(getContext()).equals(item.getCity_name()))
                             {
                                 mSpinnCity.setSelection(mCitiesList.indexOf(item));
                             }
                         }
                         arrayAdapterCities.notifyDataSetChanged();
-
+                        }catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("RESPONSE ERR","That didn't work!");
+                //Log.e("RESPONSE ERR","That didn't work!");
             }
         }) {
             //adding parameters to the request
@@ -399,14 +320,13 @@ public class SelectLocationFragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("key","VVM");
-                params.put("param", Constants.CITY);
-                params.put(Constants.DIST_ID, dist_id);
+                params.put("param", Constants.EXAM_CITY);
+                params.put(Constants.STATE_ID, state_id);
                 return params;
             }
         };
         // Add the request to the RequestQueue.
         mVolleyRequest.add(stringRequest);
     }
-
 
 }

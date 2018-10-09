@@ -150,7 +150,7 @@ public class NotificationFragment extends Fragment {
                     totalItemCount = linearLayoutManager.getItemCount();
                     pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
                     int size=notificationItems.size();
-                    Log.v("...", ""+visibleItemCount+"  "+linearLayoutManager.findLastVisibleItemPosition()+"   "+size);
+                    //Log.v("...", ""+visibleItemCount+"  "+linearLayoutManager.findLastVisibleItemPosition()+"   "+size);
 
                     int current_id= Integer.parseInt(notificationItems.get(notificationItems.size()-1).getNot_id());
 
@@ -169,7 +169,7 @@ public class NotificationFragment extends Fragment {
                           //call service here
                             GetNotifications("0",pos);
 
-                            Log.v("...", "Last Item Wow !" + notificationItems.size()+"  "+pos);
+                           // Log.v("...", "Last Item Wow !" + notificationItems.size()+"  "+pos);
                             //Do pagination.. i.e. fetch new data
                         }
 
@@ -288,7 +288,7 @@ public class NotificationFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         // Display the response string.
-                        Log.e("RESPONSE",response);
+                        //Log.e("RESPONSE",response);
 
                         try {
                             Gson gson = new Gson();

@@ -263,7 +263,7 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             public void onFinish() {
-                Log.d( "done!", "Time's up!");
+                //Log.d( "done!", "Time's up!");
                 stopService(new Intent(DemoActivity.this, NotificationService.class));
                 finish();
             }

@@ -2,24 +2,19 @@ package com.narmware.vvmexam.activity;
 
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
-import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -28,25 +23,18 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.narmware.vvmexam.R;
-import com.narmware.vvmexam.dialogs.TnCDialogFragment;
 import com.narmware.vvmexam.fragment.ConfirmFragment;
+import com.narmware.vvmexam.fragment.ExamCenterFragment;
 import com.narmware.vvmexam.fragment.MobileVarifyFragment;
-import com.narmware.vvmexam.fragment.PersonalInfoFragment;
 import com.narmware.vvmexam.fragment.SelectLocationFragment;
-import com.narmware.vvmexam.pojo.City;
-import com.narmware.vvmexam.pojo.CityResponse;
 import com.narmware.vvmexam.pojo.OtpResponse;
-import com.narmware.vvmexam.pojo.Register;
 import com.narmware.vvmexam.support.Constants;
 import com.narmware.vvmexam.support.EndPoints;
 import com.narmware.vvmexam.support.SharedPreferencesHelper;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,7 +46,7 @@ import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class RegisterActivity extends AppCompatActivity implements SelectLocationFragment.OnFragmentInteractionListener,
-PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragmentInteractionListener,ConfirmFragment.OnFragmentInteractionListener{
+ExamCenterFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragmentInteractionListener,ConfirmFragment.OnFragmentInteractionListener{
 
     @BindView(R.id.container) ViewPager mViewPager;
     @BindView(R.id.progress) ProgressBar mProgressBar;
@@ -125,12 +113,12 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
                     if(pagerCount==1)
                     {
 
-                        if(PersonalInfoFragment.mState==null || PersonalInfoFragment.mState.isEmpty())
+                        if(ExamCenterFragment.mState==null || ExamCenterFragment.mState.isEmpty())
                         {
                             validData=1;
                             Toast.makeText(RegisterActivity.this, "Please select state", Toast.LENGTH_SHORT).show();
                         }
-                        if(PersonalInfoFragment.mCity==null || PersonalInfoFragment.mCity.isEmpty())
+                        if(ExamCenterFragment.mCity==null || ExamCenterFragment.mCity.isEmpty())
                         {
                             validData=1;
                             Toast.makeText(RegisterActivity.this, "Please select city", Toast.LENGTH_SHORT).show();
@@ -258,7 +246,7 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         pagerAdapter.addFragment(new SelectLocationFragment(),"Select Location");
-        pagerAdapter.addFragment(new PersonalInfoFragment(),"Personal Info");
+        pagerAdapter.addFragment(new ExamCenterFragment(),"Personal Info");
         pagerAdapter.addFragment(new MobileVarifyFragment(),"Mobile Varification");
         pagerAdapter.addFragment(new ConfirmFragment(),"Confirm");
 
@@ -361,14 +349,14 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
                     @Override
                     public void onResponse(String response) {
                         // Display the response string.
-                        Log.e("REGISTER RESPONSE",response);
+                        //Log.e("REGISTER RESPONSE",response);
 
                         Gson gson=new Gson();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("RESPONSE ERR","That didn't work!");
+                //Log.e("RESPONSE ERR","That didn't work!");
             }
         }) {
             //adding parameters to the request
@@ -380,7 +368,6 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
                 params.put(Constants.STD_NAME, mName);
                 params.put(Constants.STD_MOBILE, mMobile);
                 params.put(Constants.PASSWORD, mPassword);
-                params.put(Constants.GENDER, PersonalInfoFragment.mGender);
                 params.put(Constants.DIST_ID, SelectLocationFragment.mDistrict_id);
                 params.put(Constants.CITY_ID, SelectLocationFragment.mCity_id);
                 params.put(Constants.STATE_ID, SelectLocationFragment.mState_id);
@@ -403,7 +390,7 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
                     @Override
                     public void onResponse(String response) {
                         // Display the response string.
-                        Log.e("REGISTER RESPONSE",response);
+                        //Log.e("REGISTER RESPONSE",response);
 
                         Gson gson=new Gson();
                         OtpResponse dataResponse=gson.fromJson(response,OtpResponse.class);
@@ -414,7 +401,7 @@ PersonalInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragme
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("RESPONSE ERR","That didn't work!");
+                //Log.e("RESPONSE ERR","That didn't work!");
             }
         }) {
             //adding parameters to the request

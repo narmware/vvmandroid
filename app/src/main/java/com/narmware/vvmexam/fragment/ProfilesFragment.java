@@ -104,7 +104,7 @@ public class ProfilesFragment extends Fragment {
         if(login!=null) {
             if(login.getInst_id().equals(""))
             {
-                pagerAdapter.addFragment(new PersonalInfoFragment(),"Exam Center");
+                pagerAdapter.addFragment(new ExamCenterFragment(),"Exam Center");
             }
             else{
             }
@@ -190,6 +190,7 @@ public class ProfilesFragment extends Fragment {
             return POSITION_NONE;
         }
     }
+
 
 
 }

@@ -9,8 +9,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -23,24 +21,15 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.google.gson.Gson;
 import com.narmware.vvmexam.R;
-import com.narmware.vvmexam.fragment.PersonalInfoFragment;
 import com.narmware.vvmexam.pojo.Login;
 import com.narmware.vvmexam.pojo.LoginResponse;
-import com.narmware.vvmexam.pojo.Questions;
-import com.narmware.vvmexam.pojo.States;
-import com.narmware.vvmexam.pojo.StatesResponse;
 import com.narmware.vvmexam.support.Constants;
 import com.narmware.vvmexam.support.EndPoints;
 import com.narmware.vvmexam.support.SharedPreferencesHelper;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -167,7 +156,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onResponse(String response) {
                         // Display the response string.
-                        Log.e("RESPONSE",response);
+                        //Log.e("RESPONSE",response);
 
                         try {
                             Gson gson = new Gson();
@@ -199,7 +188,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("RESPONSE ERR","That didn't work!");
+                //Log.e("RESPONSE ERR","That didn't work!");
                 dialog.dismiss();
             }
         }) {
@@ -226,7 +215,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onResponse(String response) {
                         // Display the response string.
-                        Log.e("RESPONSE",response);
+                        //Log.e("RESPONSE",response);
 
                         Gson gson=new Gson();
 

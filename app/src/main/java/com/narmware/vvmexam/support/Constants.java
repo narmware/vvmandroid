@@ -13,6 +13,7 @@ public class Constants {
     public static final String STATE="state";
     public static final String DISTRICT="district";
     public static final String CITY="city";
+    public static final String EXAM_CITY="exam_city";
     public static final String OTP="otp";
     public static final String REGISTER="register";
     public static final String LOGIN="login";
@@ -46,7 +47,9 @@ public class Constants {
 
     public static final String SET_A="set_a";
     public static final String SET_B="set_b";
-    public static final int REQUEST_CODE = 2000;
+
+    public static final int GALLERY_REQUEST_CODE = 2000;
+    public static final int CAMERA_REQUEST_CODE = 3000;
 
 
 }
