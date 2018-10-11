@@ -2,6 +2,7 @@ package com.narmware.vvmexam.support;
 
 public class Constants {
     public static final String APP_VERSION="1.0";
+    public static final String VERSION_NAME="app_version";
 
     public static final String LOGIN_DIALOG_TITLE ="Validating Credentials...";
     public static final String REGISTER_DIALOG_TITLE ="Registering you...";
@@ -55,5 +56,6 @@ public class Constants {
 
     public static final String PROFILE_IMAGE="image";
     public static final String USER_ID="user_id";
+
 
 }
