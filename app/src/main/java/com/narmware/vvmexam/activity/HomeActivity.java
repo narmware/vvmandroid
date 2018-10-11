@@ -22,12 +22,14 @@ import android.widget.Toast;
 
 import com.narmware.vvmexam.R;
 import com.narmware.vvmexam.broadcast.SingleUploadBroadcastReceiver;
+import com.narmware.vvmexam.db.RealmController;
 import com.narmware.vvmexam.fragment.ExamCenterFragment;
 import com.narmware.vvmexam.fragment.ProfilesFragment;
 import com.narmware.vvmexam.fragment.NotificationFragment;
 import com.narmware.vvmexam.fragment.OtherFragment;
 import com.narmware.vvmexam.fragment.SchoolProfileFragment;
 import com.narmware.vvmexam.fragment.StudentProfileFragment;
+import com.narmware.vvmexam.pojo.Login;
 import com.narmware.vvmexam.support.Constants;
 import com.narmware.vvmexam.support.EndPoints;
 import com.narmware.vvmexam.support.SharedPreferencesHelper;
@@ -37,7 +39,10 @@ import net.gotev.uploadservice.MultipartUploadRequest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
+
+import io.realm.Realm;
 
 public class HomeActivity extends AppCompatActivity implements ProfilesFragment.OnFragmentInteractionListener,StudentProfileFragment.OnFragmentInteractionListener,
         SchoolProfileFragment.OnFragmentInteractionListener,NotificationFragment.OnFragmentInteractionListener,OtherFragment.OnFragmentInteractionListener,ExamCenterFragment.OnFragmentInteractionListener
@@ -45,6 +50,7 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
 {
 
     private TextView mTextMessage;
+    Realm realm;
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
@@ -89,6 +95,7 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        realm=Realm.getInstance(HomeActivity.this);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -119,27 +126,46 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
 
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-                Uri resultUri = result.getUri();
+            Uri resultUri = result.getUri();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
 
-            Log.e("Image path",resultUri.toString());
+                Uri tempUri = getImageUri(getApplicationContext(), bitmap);
+                File finalFile = new File(getRealPathFromURI(tempUri));
+                System.out.println(finalFile);
 
-           /*
-           File finalFile = new File(getRealPathFromURI(resultUri));
-            System.out.println("file path"+finalFile);
+                String[] filePathColumn = { MediaStore.Images.Media.DATA};
 
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver().query(tempUri,
+                        filePathColumn, null, null, null);
+                cursor.moveToFirst();
 
-            Cursor cursor = getContentResolver().query(resultUri,
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String picturePath = cursor.getString(columnIndex);
+                Log.e("Image path",picturePath);
+                uploadMultipart(picturePath);
+
+                cursor.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+
+         /*   Uri selectedImage = data.getData();
+            Log.e("Image path",selectedImage.toString());
+
+            String[] filePathColumn = { MediaStore.Images.Media.DATA};
+
+            Cursor cursor = getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);
             cursor.moveToFirst();
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();*/
-
-            uploadMultipart(resultUri.toString());
-
-                ExamCenterFragment.mImgProf.setImageURI(resultUri);
+            ExamCenterFragment.mImgProf.setImageURI(resultUri);
         }
 
         if (requestCode == Constants.CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
@@ -234,6 +260,13 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
     public void uploadMultipart(String path) {
 
         String uploadId = UUID.randomUUID().toString();
+        String student_id=null;
+
+        Login login= RealmController.with(HomeActivity.this).getStudentDetails();
+
+        if(login!=null) {
+            student_id=login.getUsername();
+        }
 
         uploadReceiver.setDelegate(this);
         uploadReceiver.setUploadID(uploadId);
@@ -243,7 +276,7 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
             //Creating a multi part request
             new MultipartUploadRequest(HomeActivity.this,uploadId, EndPoints.UPLOAD_IMAGE)
                     .addFileToUpload(path, Constants.PROFILE_IMAGE) //Adding file
-                    .addParameter(Constants.USER_ID, "1")//Adding text parameter to the request
+                    .addParameter(Constants.USER_ID, student_id)//Adding text parameter to the request
                     .setMaxRetries(2)
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .startUpload(); //Starting the upload

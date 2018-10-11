@@ -172,9 +172,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 SharedPreferencesHelper.setIsLogin(true, LoginActivity.this);
                                 realm.beginTransaction();
                                 realm.copyToRealm(data);
-                               /* login.setStudent_id(data.getStudent_id());
-                                login.setStudent_name(data.getStudent_name());
-                                login.setStudent_email(data.getStudent_email());*/
                                 realm.commitTransaction();
 
                                 Toast.makeText(LoginActivity.this, "Login Successfull", Toast.LENGTH_SHORT).show();

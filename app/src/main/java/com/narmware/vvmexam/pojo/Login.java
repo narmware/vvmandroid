@@ -3,10 +3,18 @@ package com.narmware.vvmexam.pojo;
 import io.realm.RealmObject;
 
 public class Login extends RealmObject {
-    private String student_id,student_name,student_email,student_mobile,student_pincode,student_address,student_dob,student_aadhar
+    private String student_id,username,student_name,student_email,student_mobile,student_pincode,student_address,student_dob,student_aadhar
             ,student_state,student_dist,student_city;
     private String sch_state,sch_dist,sch_city,sch_name;
     private String inst_id;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getInst_id() {
         return inst_id;
