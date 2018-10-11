@@ -93,7 +93,12 @@ public class RealmController {
 
         return realm.where(Login.class).findFirst();
     }
+    public void clearAllStudents() {
 
+        realm.beginTransaction();
+        realm.clear(Login.class);
+        realm.commitTransaction();
+    }
    /*
 
     public RealmResults<SchoolDetails> getPaidSchool() {

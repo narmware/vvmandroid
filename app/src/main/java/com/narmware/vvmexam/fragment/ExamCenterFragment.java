@@ -29,15 +29,19 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.narmware.vvmexam.R;
+import com.narmware.vvmexam.activity.HomeActivity;
 import com.narmware.vvmexam.adapter.CityAdapter;
 import com.narmware.vvmexam.adapter.StateAdapter;
+import com.narmware.vvmexam.db.RealmController;
 import com.narmware.vvmexam.pojo.City;
 import com.narmware.vvmexam.pojo.CityResponse;
+import com.narmware.vvmexam.pojo.Login;
 import com.narmware.vvmexam.pojo.States;
 import com.narmware.vvmexam.pojo.StatesResponse;
 import com.narmware.vvmexam.support.Constants;
 import com.narmware.vvmexam.support.EndPoints;
 import com.narmware.vvmexam.support.SharedPreferencesHelper;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.ArrayList;
@@ -47,6 +51,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.realm.Realm;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,6 +89,7 @@ public class ExamCenterFragment extends Fragment {
 
     public static String mState,mCity;
     public static String mState_id,mCity_id;
+    Realm realm;
 
     public ExamCenterFragment() {
         // Required empty public constructor
@@ -129,6 +135,18 @@ public class ExamCenterFragment extends Fragment {
         ButterKnife.bind(this,view);
         mImgProf=view.findViewById(R.id.prof_image);
         mVolleyRequest = Volley.newRequestQueue(getContext());
+        realm= Realm.getInstance(getActivity());
+
+        Login login= RealmController.with(getActivity()).getStudentDetails();
+        if(login!=null) {
+            String img=login.getProfile_path();
+            if(!img.equals("")) {
+                Picasso.with(getActivity())
+                        .load(img)
+                        .into(mImgProf);
+            }
+        }
+
 
         ActivityCompat.requestPermissions(getActivity(),
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},

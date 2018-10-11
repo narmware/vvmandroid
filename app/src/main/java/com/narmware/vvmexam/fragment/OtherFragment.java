@@ -1,14 +1,26 @@
 package com.narmware.vvmexam.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.narmware.vvmexam.R;
+import com.narmware.vvmexam.activity.HomeActivity;
+import com.narmware.vvmexam.activity.LoginActivity;
+import com.narmware.vvmexam.activity.SplashActivity;
+import com.narmware.vvmexam.db.RealmController;
+import com.narmware.vvmexam.support.SharedPreferencesHelper;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import io.realm.Realm;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +41,7 @@ public class OtherFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    @BindView(R.id.btn_logout) Button mBtnLogout;
 
     public OtherFragment() {
         // Required empty public constructor
@@ -65,7 +78,45 @@ public class OtherFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_other, container, false);
+        View view= inflater.inflate(R.layout.fragment_other, container, false);
+
+        init(view);
+        return view;
+    }
+
+    private void init(View view) {
+        ButterKnife.bind(this,view);
+
+        mBtnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Are you sure")
+                        .setContentText("Your want to Logout")
+                        .setConfirmText("Yes")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+
+                                SharedPreferencesHelper.setIsLogin(false,getContext());
+                                RealmController.with(getActivity()).clearAllStudents();
+
+                                Intent intent=new Intent(getContext(),LoginActivity.class);
+                                getContext().startActivity(intent);
+                                getActivity().finish();
+                            }
+                        })
+                        .showCancelButton(true)
+                        .setCancelText("Cancel")
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        })
+                        .show();
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event

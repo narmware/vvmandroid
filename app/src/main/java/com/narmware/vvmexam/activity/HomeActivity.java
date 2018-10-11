@@ -1,5 +1,7 @@
 package com.narmware.vvmexam.activity;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.narmware.vvmexam.R;
 import com.narmware.vvmexam.broadcast.SingleUploadBroadcastReceiver;
 import com.narmware.vvmexam.db.RealmController;
@@ -29,10 +32,12 @@ import com.narmware.vvmexam.fragment.NotificationFragment;
 import com.narmware.vvmexam.fragment.OtherFragment;
 import com.narmware.vvmexam.fragment.SchoolProfileFragment;
 import com.narmware.vvmexam.fragment.StudentProfileFragment;
+import com.narmware.vvmexam.pojo.ImageUploadResponse;
 import com.narmware.vvmexam.pojo.Login;
 import com.narmware.vvmexam.support.Constants;
 import com.narmware.vvmexam.support.EndPoints;
 import com.narmware.vvmexam.support.SharedPreferencesHelper;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
@@ -51,6 +56,7 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
 
     private TextView mTextMessage;
     Realm realm;
+    Dialog dialog;
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
@@ -220,37 +226,42 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
 
     @Override
     public void onProgress(int progress) {
-     /*   dialog = new ProgressDialog(MainActivity.this);
-        dialog.setMessage("Uploading...");
+        dialog = new ProgressDialog(HomeActivity.this);
+        dialog.setTitle("Uploading...");
         dialog.setCancelable(false);
-        dialog.show();*/
+        dialog.show();
         Log.e("Progress",""+progress);
     }
 
     @Override
     public void onProgress(long uploadedBytes, long totalBytes) {
-        Log.e("ServerProgress",uploadedBytes+" ");
+       // Log.e("ServerProgress",uploadedBytes+" ");
     }
 
     @Override
     public void onError(Exception exception) {
-        Log.e("ServerError","Errrrrorrrr!!!!");
-        Toast.makeText(this, "Oops! Something went wrong", Toast.LENGTH_SHORT).show();
+        //Log.e("ServerError","Errrrrorrrr!!!!");
+        Toast.makeText(this, "Oop-s! Something went wrong", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onCompleted(int serverResponseCode, byte[] serverResponseBody) {
-        Log.e("ServerResponse", new String(serverResponseBody) + "   " + serverResponseCode);
+        //Log.e("ServerResponse", new String(serverResponseBody) + "   " + serverResponseCode);
 
-     /*   dialog.dismiss();
-        Log.e("ServerResponse", new String(serverResponseBody) + "   " + serverResponseCode);
+        dialog.dismiss();
+       // Log.e("ServerResponse", new String(serverResponseBody) + "   " + serverResponseCode);
         Gson gson=new Gson();
         ImageUploadResponse imageUploadResponse=gson.fromJson(new String(serverResponseBody),ImageUploadResponse.class);
-        SharedPreferencesHelper.setUserProfileImage(imageUploadResponse.getUrl(),MainActivity.this);
-        Picasso.with(MainActivity.this)
+      //  Log.e("ServerUrl",imageUploadResponse.getUrl());
+
+     /*   realm.beginTransaction();
+        Login login=realm.createObject(Login.class);
+        login.setProfile_path(imageUploadResponse.getUrl());
+        realm.commitTransaction();*/
+
+        Picasso.with(HomeActivity.this)
                 .load(imageUploadResponse.getUrl())
-                .placeholder(R.drawable.placeholder)
-                .into(ProfileFragment.mImgProf);*/
+                .into(ExamCenterFragment.mImgProf);
     }
 
     @Override
@@ -261,11 +272,13 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
 
         String uploadId = UUID.randomUUID().toString();
         String student_id=null;
+        String student_uname=null;
 
         Login login= RealmController.with(HomeActivity.this).getStudentDetails();
 
         if(login!=null) {
-            student_id=login.getUsername();
+            student_id=login.getStudent_id();
+            student_uname=login.getUsername();
         }
 
         uploadReceiver.setDelegate(this);
@@ -276,7 +289,8 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
             //Creating a multi part request
             new MultipartUploadRequest(HomeActivity.this,uploadId, EndPoints.UPLOAD_IMAGE)
                     .addFileToUpload(path, Constants.PROFILE_IMAGE) //Adding file
-                    .addParameter(Constants.USER_ID, student_id)//Adding text parameter to the request
+                    .addParameter(Constants.USER_ID,student_id)
+                    .addParameter(Constants.USERNAME,student_uname)//Adding text parameter to the request
                     .setMaxRetries(2)
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .startUpload(); //Starting the upload

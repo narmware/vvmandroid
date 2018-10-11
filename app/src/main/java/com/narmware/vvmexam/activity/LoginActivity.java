@@ -159,7 +159,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onResponse(String response) {
                         // Display the response string.
-                        //Log.e("RESPONSE",response);
+                        Log.e("RESPONSE",response);
 
                         try {
                             Gson gson = new Gson();

@@ -4,9 +4,17 @@ import io.realm.RealmObject;
 
 public class Login extends RealmObject {
     private String student_id,username,student_name,student_email,student_mobile,student_pincode,student_address,student_dob,student_aadhar
-            ,student_state,student_dist,student_city;
+            ,student_state,student_dist,student_city,profile_path;
     private String sch_state,sch_dist,sch_city,sch_name;
     private String inst_id;
+
+    public String getProfile_path() {
+        return profile_path;
+    }
+
+    public void setProfile_path(String profile_path) {
+        this.profile_path = profile_path;
+    }
 
     public String getUsername() {
         return username;
