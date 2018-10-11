@@ -51,5 +51,7 @@ public class Constants {
     public static final int GALLERY_REQUEST_CODE = 2000;
     public static final int CAMERA_REQUEST_CODE = 3000;
 
+    public static final String PROFILE_IMAGE="image";
+    public static final String USER_ID="user_id";
 
 }

@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.android.volley.AuthFailureError;
@@ -67,6 +70,7 @@ public class ExamCenterFragment extends Fragment {
    public static ImageView mImgProf;
     @BindView(R.id.btn_edit_prof_img) Button mBtnEditProf;
     @BindView(R.id.btn_camera) Button mBtnCamera;
+    @BindView(R.id.rootview) RelativeLayout mRootView;
 
     RequestQueue mVolleyRequest;
 
@@ -240,29 +244,35 @@ public class ExamCenterFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         // Display the response string.
-                        //Log.e("RESPONSE",response);
+                        Log.e("RESPONSE",response);
 
-                        Gson gson=new Gson();
-                        StatesResponse dataResponse=gson.fromJson(response,StatesResponse.class);
-                        States[] array=dataResponse.getResult();
+                        try {
+                            Gson gson = new Gson();
+                            StatesResponse dataResponse = gson.fromJson(response, StatesResponse.class);
+                            States[] array = dataResponse.getResult();
 
-                        mStatesList.clear();
-                        for(States item:array)
-                        {
-                            //Log.e("State name",item.getState_name());
-                           mStatesList.add(item);
-                             if(SharedPreferencesHelper.getPreffExamState(getContext()).equals(item.getState_name()))
-                            {
-                                mSpinnState.setSelection(mStatesList.indexOf(item));
+                            mStatesList.clear();
+                            for (States item : array) {
+                                //Log.e("State name",item.getState_name());
+                                mStatesList.add(item);
+                                if(SharedPreferencesHelper.getPreffExamState(getContext())!=null) {
+                                    if (SharedPreferencesHelper.getPreffExamState(getContext()).equals(item.getState_name())) {
+                                        mSpinnState.setSelection(mStatesList.indexOf(item));
+                                    }
+                                }
                             }
-                        }
-                        arrayAdapterState.notifyDataSetChanged();
+                            arrayAdapterState.notifyDataSetChanged();
 
+                        }catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("RESPONSE ERR","That didn't work!");
+                showNoConnectionDialog();
             }
         }) {
             //adding parameters to the request
@@ -298,9 +308,10 @@ public class ExamCenterFragment extends Fragment {
                         for(City item:array)
                         {
                             mCitiesList.add(item);
-                            if(SharedPreferencesHelper.getPreffExamCity(getContext()).equals(item.getCity_name()))
-                            {
-                                mSpinnCity.setSelection(mCitiesList.indexOf(item));
+                            if(SharedPreferencesHelper.getPreffExamCity(getContext())!=null) {
+                                if (SharedPreferencesHelper.getPreffExamCity(getContext()).equals(item.getCity_name())) {
+                                    mSpinnCity.setSelection(mCitiesList.indexOf(item));
+                                }
                             }
                         }
                         arrayAdapterCities.notifyDataSetChanged();
@@ -313,6 +324,7 @@ public class ExamCenterFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //Log.e("RESPONSE ERR","That didn't work!");
+                showNoConnectionDialog();
             }
         }) {
             //adding parameters to the request
@@ -329,4 +341,15 @@ public class ExamCenterFragment extends Fragment {
         mVolleyRequest.add(stringRequest);
     }
 
+    public void showNoConnectionDialog(){
+        Snackbar.make(mRootView, getResources().getString(R.string.no_internet), Snackbar.LENGTH_SHORT)
+                /*.setAction("Ok", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS),10);
+                    }
+                })*/
+                //.setActionTextColor(Color.RED)
+                .show();
+    }
 }

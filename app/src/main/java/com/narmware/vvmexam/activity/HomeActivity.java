@@ -29,11 +29,15 @@ import com.narmware.vvmexam.fragment.OtherFragment;
 import com.narmware.vvmexam.fragment.SchoolProfileFragment;
 import com.narmware.vvmexam.fragment.StudentProfileFragment;
 import com.narmware.vvmexam.support.Constants;
+import com.narmware.vvmexam.support.EndPoints;
 import com.narmware.vvmexam.support.SharedPreferencesHelper;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.UUID;
 
 public class HomeActivity extends AppCompatActivity implements ProfilesFragment.OnFragmentInteractionListener,StudentProfileFragment.OnFragmentInteractionListener,
         SchoolProfileFragment.OnFragmentInteractionListener,NotificationFragment.OnFragmentInteractionListener,OtherFragment.OnFragmentInteractionListener,ExamCenterFragment.OnFragmentInteractionListener
@@ -116,14 +120,30 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 Uri resultUri = result.getUri();
-                //uploadMultipart(picturePath);
+
+            Log.e("Image path",resultUri.toString());
+
+           /*
+           File finalFile = new File(getRealPathFromURI(resultUri));
+            System.out.println("file path"+finalFile);
+
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+            Cursor cursor = getContentResolver().query(resultUri,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();*/
+
+            uploadMultipart(resultUri.toString());
 
                 ExamCenterFragment.mImgProf.setImageURI(resultUri);
         }
 
         if (requestCode == Constants.CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
-            //Log.e("result data",data.getExtras().get("data").toString());
 
             Uri tempUri = getImageUri(getApplicationContext(), photo);
             File finalFile = new File(getRealPathFromURI(tempUri));
@@ -138,9 +158,12 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
+            uploadMultipart(picturePath);
+
             //Log.e("Image path",picturePath);
 
-            ExamCenterFragment.mImgProf.setImageBitmap(photo);        }
+            ExamCenterFragment.mImgProf.setImageBitmap(photo);
+        }
     }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
@@ -191,6 +214,8 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
 
     @Override
     public void onCompleted(int serverResponseCode, byte[] serverResponseBody) {
+        Log.e("ServerResponse", new String(serverResponseBody) + "   " + serverResponseCode);
+
      /*   dialog.dismiss();
         Log.e("ServerResponse", new String(serverResponseBody) + "   " + serverResponseCode);
         Gson gson=new Gson();
@@ -206,7 +231,7 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
     public void onCancelled() {
     }
 
-   /* public void uploadMultipart(String path) {
+    public void uploadMultipart(String path) {
 
         String uploadId = UUID.randomUUID().toString();
 
@@ -216,16 +241,16 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
         //Uploading code
         try {
             //Creating a multi part request
-            new MultipartUploadRequest(HomeActivity.this,uploadId, EndPoints.SET_PROFILE_IMG)
-                    .addFileToUpload(path, Constants.PROF_IMG) //Adding file
-                    .addParameter(Constants.USER_ID, SharedPreferencesHelper.getUserId(MainActivity.this))//Adding text parameter to the request
+            new MultipartUploadRequest(HomeActivity.this,uploadId, EndPoints.UPLOAD_IMAGE)
+                    .addFileToUpload(path, Constants.PROFILE_IMAGE) //Adding file
+                    .addParameter(Constants.USER_ID, "1")//Adding text parameter to the request
                     .setMaxRetries(2)
                     //.setNotificationConfig(new UploadNotificationConfig())
                     .startUpload(); //Starting the upload
 
         } catch (Exception exc) {
-            Toast.makeText(MainActivity.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(HomeActivity.this, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
-    }*/
+    }
 
 }

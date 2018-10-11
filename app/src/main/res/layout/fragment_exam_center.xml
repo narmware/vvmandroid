@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rootview"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.ExamCenterFragment">
 
@@ -91,6 +92,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/horizontal"
+        android:layout_marginBottom="@dimen/personal_info_horizontal_margin"
+        android:layout_marginTop="@dimen/personal_info_horizontal_margin"
         android:layout_below="@+id/linear_top"
         android:background="@color/text_color"
         android:layout_width="match_parent"

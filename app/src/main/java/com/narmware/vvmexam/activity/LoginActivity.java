@@ -3,6 +3,8 @@ package com.narmware.vvmexam.activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -47,6 +49,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @BindView(R.id.txt_register) TextView mTxtRegister;
     @BindView(R.id.lin_register) LinearLayout mLinearRegister;
     @BindView(R.id.btn_help) ImageButton mImgBtnHelp;
+    @BindView(R.id.rootview) NestedScrollView mRootView;
 
     String username,password;
     int validData=0;
@@ -190,6 +193,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onErrorResponse(VolleyError error) {
                 //Log.e("RESPONSE ERR","That didn't work!");
                 dialog.dismiss();
+                showNoConnectionDialog();
             }
         }) {
             //adding parameters to the request
@@ -241,17 +245,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    public void showNoConnectionDialog() {
-        mNoConnectionDialog.setContentView(R.layout.dialog_no_internet);
-        mNoConnectionDialog.setCancelable(false);
-        mNoConnectionDialog.show();
-
-        Button tryAgain = mNoConnectionDialog.findViewById(R.id.txt_retry);
-        tryAgain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LoginUser();
-            }
-        });
+    public void showNoConnectionDialog(){
+        Snackbar.make(mRootView, getResources().getString(R.string.no_internet), Snackbar.LENGTH_SHORT)
+                /*.setAction("Ok", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS),10);
+                    }
+                })*/
+                //.setActionTextColor(Color.RED)
+                .show();
     }
 }
