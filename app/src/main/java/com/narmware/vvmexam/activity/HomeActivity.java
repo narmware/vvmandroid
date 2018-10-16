@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,7 +17,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,16 +25,15 @@ import com.narmware.vvmexam.R;
 import com.narmware.vvmexam.broadcast.SingleUploadBroadcastReceiver;
 import com.narmware.vvmexam.db.RealmController;
 import com.narmware.vvmexam.fragment.ExamCenterFragment;
+import com.narmware.vvmexam.fragment.ExamInfoFragment;
 import com.narmware.vvmexam.fragment.ProfilesFragment;
 import com.narmware.vvmexam.fragment.NotificationFragment;
 import com.narmware.vvmexam.fragment.OtherFragment;
-import com.narmware.vvmexam.fragment.SchoolProfileFragment;
 import com.narmware.vvmexam.fragment.StudentProfileFragment;
 import com.narmware.vvmexam.pojo.ImageUploadResponse;
 import com.narmware.vvmexam.pojo.Login;
 import com.narmware.vvmexam.support.Constants;
 import com.narmware.vvmexam.support.EndPoints;
-import com.narmware.vvmexam.support.SharedPreferencesHelper;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -50,7 +47,7 @@ import java.util.UUID;
 import io.realm.Realm;
 
 public class HomeActivity extends AppCompatActivity implements ProfilesFragment.OnFragmentInteractionListener,StudentProfileFragment.OnFragmentInteractionListener,
-        SchoolProfileFragment.OnFragmentInteractionListener,NotificationFragment.OnFragmentInteractionListener,OtherFragment.OnFragmentInteractionListener,ExamCenterFragment.OnFragmentInteractionListener
+        ExamCenterFragment.OnFragmentInteractionListener,NotificationFragment.OnFragmentInteractionListener,OtherFragment.OnFragmentInteractionListener,ExamInfoFragment.OnFragmentInteractionListener
     ,SingleUploadBroadcastReceiver.Delegate
 {
 
@@ -171,7 +168,7 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();*/
-            ExamCenterFragment.mImgProf.setImageURI(resultUri);
+            StudentProfileFragment.mImgProf.setImageURI(resultUri);
         }
 
         if (requestCode == Constants.CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
@@ -194,7 +191,7 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
 
             //Log.e("Image path",picturePath);
 
-            ExamCenterFragment.mImgProf.setImageBitmap(photo);
+            StudentProfileFragment.mImgProf.setImageBitmap(photo);
         }
     }
 
@@ -254,14 +251,14 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
         ImageUploadResponse imageUploadResponse=gson.fromJson(new String(serverResponseBody),ImageUploadResponse.class);
       //  Log.e("ServerUrl",imageUploadResponse.getUrl());
 
-     /*   realm.beginTransaction();
-        Login login=realm.createObject(Login.class);
+        realm.beginTransaction();
+        Login login=RealmController.with(HomeActivity.this).getStudentDetails();
         login.setProfile_path(imageUploadResponse.getUrl());
-        realm.commitTransaction();*/
+        realm.commitTransaction();
 
         Picasso.with(HomeActivity.this)
                 .load(imageUploadResponse.getUrl())
-                .into(ExamCenterFragment.mImgProf);
+                .into(StudentProfileFragment.mImgProf);
     }
 
     @Override

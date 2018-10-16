@@ -17,6 +17,7 @@ public class SharedPreferencesHelper {
     private static final String USER_CITY="city";
     private static final String PREFF_EXAM_STATE="exam_state";
     private static final String PREFF_EXAM_CITY="exam_city";
+    private static final String PREFF_EXAM_LANGUAGES="exam_lang";
     private static final String USER_NAME="name";
     private static final String USER_GENDER="gender";
     private static final String USER_MOBILE="mobile";
@@ -167,6 +168,21 @@ public class SharedPreferencesHelper {
         SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor edit=pref.edit();
         edit.putString(PREFF_EXAM_STATE,str);
+        edit.commit();
+    }
+
+    public static String getPreffExamLanguages(Context context)
+    {
+        SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(context);
+        String str=pref.getString(PREFF_EXAM_LANGUAGES,null);
+        return str;
+    }
+
+    public static void setPreffExamLanguages(String str, Context context)
+    {
+        SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor edit=pref.edit();
+        edit.putString(PREFF_EXAM_LANGUAGES,str);
         edit.commit();
     }
 

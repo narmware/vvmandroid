@@ -1,20 +1,28 @@
 package com.narmware.vvmexam.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.narmware.vvmexam.R;
 import com.narmware.vvmexam.activity.DemoActivity;
 import com.narmware.vvmexam.activity.LoginActivity;
 import com.narmware.vvmexam.db.RealmController;
 import com.narmware.vvmexam.pojo.Login;
+import com.narmware.vvmexam.support.Constants;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,8 +56,14 @@ public class StudentProfileFragment extends Fragment {
     @BindView(R.id.edt_std_district) EditText mEdtStdDistrict;
     @BindView(R.id.edt_std_city) EditText mEdtStdCity;
 
+    public static ImageView mImgProf;
+    @BindView(R.id.btn_edit_prof_img)
+    Button mBtnEditProf;
+    @BindView(R.id.btn_camera) Button mBtnCamera;
+
     private OnFragmentInteractionListener mListener;
     Realm realm;
+    RequestQueue mVolleyRequest;
 
     public StudentProfileFragment() {
         // Required empty public constructor
@@ -96,8 +110,20 @@ public class StudentProfileFragment extends Fragment {
     private void init(View view) {
         ButterKnife.bind(this,view);
         realm=Realm.getInstance(getActivity());
+        mImgProf=view.findViewById(R.id.prof_image);
+        mVolleyRequest = Volley.newRequestQueue(getContext());
+        realm= Realm.getInstance(getActivity());
 
         Login login= RealmController.with(getActivity()).getStudentDetails();
+        if(login!=null) {
+            String img=login.getProfile_path();
+            Log.e("Image",img+"  hello");
+            if(!img.equals("")) {
+                Picasso.with(getActivity())
+                        .load(img)
+                        .into(mImgProf);
+            }
+        }
 
         if(login!=null) {
             mEdtStdState.setText(login.getStudent_state());
@@ -111,6 +137,25 @@ public class StudentProfileFragment extends Fragment {
             mEdtStdMobile.setText(login.getStudent_mobile());
             mEdtStdEmail.setText(login.getStudent_email());
         }
+
+        mBtnEditProf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                getActivity().startActivityForResult(photoPickerIntent, Constants.GALLERY_REQUEST_CODE);
+            }
+        });
+
+        mBtnCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                getActivity().startActivityForResult(cameraIntent, Constants.CAMERA_REQUEST_CODE);
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event

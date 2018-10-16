@@ -95,7 +95,7 @@ public class ProfilesFragment extends Fragment {
         mViewPager.setAdapter(pagerAdapter);
 
        pagerAdapter.addFragment(new StudentProfileFragment(),"Student Profile");
-       pagerAdapter.addFragment(new SchoolProfileFragment(),"School Profile");
+       pagerAdapter.addFragment(new ExamCenterFragment(),"Exam Center");
 
         realm=Realm.getInstance(getActivity());
 
@@ -104,7 +104,7 @@ public class ProfilesFragment extends Fragment {
         if(login!=null) {
             if(login.getInst_id().equals(""))
             {
-                pagerAdapter.addFragment(new ExamCenterFragment(),"Exam Center");
+                pagerAdapter.addFragment(new ExamInfoFragment(),"Exam Information");
             }
             else{
             }

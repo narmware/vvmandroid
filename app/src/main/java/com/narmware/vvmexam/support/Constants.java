@@ -21,11 +21,14 @@ public class Constants {
     public static final String REGISTER="register";
     public static final String LOGIN="login";
     public static final String NOTIFICATION="notification";
+    public static final String LANGUAGE="language";
+    public static final String EXAM_INFO="exam_info";
 
     public static final String STATE_ID="state_id";
     public static final String DIST_ID="dist_id";
     public static final String MOBILE_NUMBER="mobileno";
     public static final String STD_NAME="student_name";
+    public static final String STD_ID="student_id";
     public static final String STD_MOBILE="student_mobile";
     public static final String USERNAME="username";
     public static final String PASSWORD="password";
@@ -34,6 +37,10 @@ public class Constants {
     public static final String SCHOOL_STATE_ID="school_state_id";
     public static final String SCHOOL_DIST_ID="school_dist_id";
     public static final String SCHOOL_CITY_ID="school_city_id";
+    public static final String EXAM_STATE_ID="exam_state_id";
+    public static final String EXAM_STATE="exam_state";
+    public static final String EXAM_CITY_ID="exam_city_id";
+    public static final String EXAM_LANGUAGE="exam_language";
 
     public static final String SUCCESS="200";
     public static final String ERROR="404";

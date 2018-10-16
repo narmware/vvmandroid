@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootview"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.ExamInfoFragment">
+
+    <LinearLayout
+        android:id="@+id/linear_top"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="@dimen/personal_info_padding"
+            android:layout_marginRight="@dimen/personal_info_padding"
+            android:layout_marginLeft="@dimen/personal_info_padding"
+            android:text="@string/exam_location"
+            android:textSize="@dimen/location_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/text_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_margin="@dimen/personal_info_padding"
+        android:layout_below="@+id/txt_title"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_margin="@dimen/location_spinner_margin"
+        android:background="@drawable/custom_edt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Spinner
+            android:id="@+id/spinner_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_margin="@dimen/location_spinner_margin"
+        android:background="@drawable/custom_edt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Spinner
+            android:id="@+id/spinner_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/horizontal"
+        android:layout_marginBottom="@dimen/personal_info_horizontal_margin"
+        android:layout_marginTop="@dimen/personal_info_horizontal_margin"
+        android:layout_below="@+id/linear_top"
+        android:background="@color/text_color"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_bottom"
+        android:layout_below="@+id/horizontal"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="@dimen/personal_info_padding"
+            android:layout_marginRight="@dimen/personal_info_padding"
+            android:layout_marginLeft="@dimen/personal_info_padding"
+            android:text="@string/exam_language"
+            android:textSize="@dimen/location_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/text_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_margin="@dimen/personal_info_padding"
+            android:layout_below="@+id/txt_title"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_margin="@dimen/location_spinner_margin"
+                android:background="@drawable/custom_edt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Spinner
+                    android:id="@+id/spinner_language"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_submit_info"
+        android:layout_alignParentBottom="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="Confirm Exam Location"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:textAllCaps="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

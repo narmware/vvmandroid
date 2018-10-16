@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1093423258715",
+    "firebase_url": "https://vvmandroid-f7da3.firebaseio.com",
+    "project_id": "vvmandroid-f7da3",
+    "storage_bucket": "vvmandroid-f7da3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1093423258715:android:edd524c7fb474256",
+        "android_client_info": {
+          "package_name": "com.narmware.vvmexam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1093423258715-9girrmijd1hmdb18gi83q5uqi2mtuckd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.narmware.vvmexam",
+            "certificate_hash": "5fe71a33245fd1e9d6393ffcf12ba068a9735718"
+          }
+        },
+        {
+          "client_id": "1093423258715-vprqh9k9a1hd7dg4d7ns9o8hnhmmapmh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeARSJOVz4Bc4Hi6hMKVY5p9XRAvzTgnE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1093423258715-vprqh9k9a1hd7dg4d7ns9o8hnhmmapmh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

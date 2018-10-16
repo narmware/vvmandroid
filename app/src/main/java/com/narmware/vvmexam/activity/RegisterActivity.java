@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
@@ -28,7 +27,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.narmware.vvmexam.R;
 import com.narmware.vvmexam.fragment.ConfirmFragment;
-import com.narmware.vvmexam.fragment.ExamCenterFragment;
+import com.narmware.vvmexam.fragment.ExamInfoFragment;
 import com.narmware.vvmexam.fragment.MobileVarifyFragment;
 import com.narmware.vvmexam.fragment.SelectLocationFragment;
 import com.narmware.vvmexam.pojo.OtpResponse;
@@ -46,7 +45,7 @@ import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class RegisterActivity extends AppCompatActivity implements SelectLocationFragment.OnFragmentInteractionListener,
-ExamCenterFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragmentInteractionListener,ConfirmFragment.OnFragmentInteractionListener{
+ExamInfoFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragmentInteractionListener,ConfirmFragment.OnFragmentInteractionListener{
 
     @BindView(R.id.container) ViewPager mViewPager;
     @BindView(R.id.progress) ProgressBar mProgressBar;
@@ -113,12 +112,12 @@ ExamCenterFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragment
                     if(pagerCount==1)
                     {
 
-                        if(ExamCenterFragment.mState==null || ExamCenterFragment.mState.isEmpty())
+                        if(ExamInfoFragment.mState==null || ExamInfoFragment.mState.isEmpty())
                         {
                             validData=1;
                             Toast.makeText(RegisterActivity.this, "Please select state", Toast.LENGTH_SHORT).show();
                         }
-                        if(ExamCenterFragment.mCity==null || ExamCenterFragment.mCity.isEmpty())
+                        if(ExamInfoFragment.mCity==null || ExamInfoFragment.mCity.isEmpty())
                         {
                             validData=1;
                             Toast.makeText(RegisterActivity.this, "Please select city", Toast.LENGTH_SHORT).show();
@@ -246,7 +245,7 @@ ExamCenterFragment.OnFragmentInteractionListener,MobileVarifyFragment.OnFragment
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         pagerAdapter.addFragment(new SelectLocationFragment(),"Select Location");
-        pagerAdapter.addFragment(new ExamCenterFragment(),"Personal Info");
+        pagerAdapter.addFragment(new ExamInfoFragment(),"Personal Info");
         pagerAdapter.addFragment(new MobileVarifyFragment(),"Mobile Varification");
         pagerAdapter.addFragment(new ConfirmFragment(),"Confirm");
 
