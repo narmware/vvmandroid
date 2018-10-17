@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import com.narmware.vvmexam.pojo.Login;
 import com.narmware.vvmexam.pojo.QuestionSequenceType;
 import com.narmware.vvmexam.pojo.Questions;
+import com.narmware.vvmexam.pojo.StateCoordDetails;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -67,7 +68,12 @@ public class RealmController {
         realm.clear(Questions.class);
         realm.commitTransaction();
     }
- 
+
+    public RealmResults<StateCoordDetails> getStateCoords() {
+
+        return realm.where(StateCoordDetails.class).findAll();
+    }
+
     //find all objects in the SchoolDetails.class
     public RealmResults<Questions> getQuestions() {
  

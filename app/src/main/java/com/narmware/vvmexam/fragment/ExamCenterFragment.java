@@ -4,6 +4,11 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +16,15 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.narmware.vvmexam.R;
+import com.narmware.vvmexam.adapter.StateCoordinatorAdapter;
 import com.narmware.vvmexam.db.RealmController;
 import com.narmware.vvmexam.pojo.Login;
+import com.narmware.vvmexam.pojo.StateCoordDetails;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,6 +49,12 @@ public class ExamCenterFragment extends Fragment {
     @BindView(R.id.edt_sch_district) EditText mEdtSchDistrict;
     @BindView(R.id.edt_sch_city) EditText mEdtSchCity;
     @BindView(R.id.edt_sch_name) EditText mEdtSchName;
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerCoord;
+
+    StateCoordinatorAdapter mAdapter;
+    RealmResults<StateCoordDetails> mData;
+
     Realm realm;
 
     public ExamCenterFragment() {
@@ -89,6 +103,7 @@ public class ExamCenterFragment extends Fragment {
         realm= Realm.getInstance(getActivity());
 
         Login login= RealmController.with(getActivity()).getStudentDetails();
+        setStateCoordAdapter();
 
         if(login!=null) {
             mEdtSchState.setText(login.getSch_state());
@@ -96,6 +111,24 @@ public class ExamCenterFragment extends Fragment {
             mEdtSchCity.setText(login.getSch_city());
             mEdtSchName.setText(login.getSch_name());
         }
+    }
+
+    public void setStateCoordAdapter()
+    {
+
+        SnapHelper snapHelper = new LinearSnapHelper();
+        mRecyclerCoord.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerCoord.setNestedScrollingEnabled(false);
+        mRecyclerCoord.setFocusable(false);
+        snapHelper.attachToRecyclerView(mRecyclerCoord);
+        final LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
+        mRecyclerCoord.setLayoutManager(linearLayoutManager);
+        mData=RealmController.with(getActivity()).getStateCoords();
+        mAdapter=new StateCoordinatorAdapter(getActivity(),mData);
+        mRecyclerCoord.setAdapter(mAdapter);
+
+        mAdapter.notifyDataSetChanged();
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

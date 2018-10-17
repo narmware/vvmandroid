@@ -29,6 +29,8 @@ import com.google.gson.Gson;
 import com.narmware.vvmexam.R;
 import com.narmware.vvmexam.pojo.Login;
 import com.narmware.vvmexam.pojo.LoginResponse;
+import com.narmware.vvmexam.pojo.StateCoordDetails;
+import com.narmware.vvmexam.pojo.StateCoordResponse;
 import com.narmware.vvmexam.support.Constants;
 import com.narmware.vvmexam.support.EndPoints;
 import com.narmware.vvmexam.support.SharedPreferencesHelper;
@@ -174,6 +176,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 realm.copyToRealm(data);
                                 realm.commitTransaction();
 
+                                GetStateCoordinators(data.getState_id());
                                 Toast.makeText(LoginActivity.this, "Login Successfull", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                 startActivity(intent);
@@ -208,7 +211,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mVolleyRequest.add(stringRequest);
     }
 
-    private void ForgetPassword() {
+    private void GetStateCoordinators(final String state_id) {
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoints.BASE_URL,
@@ -216,10 +219,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onResponse(String response) {
                         // Display the response string.
-                        //Log.e("RESPONSE",response);
+                        Log.e("STATE CO RESPONSE",response);
 
                         Gson gson=new Gson();
+                        StateCoordResponse dataResponse = gson.fromJson(response, StateCoordResponse.class);
+                        StateCoordDetails[] codata = dataResponse.getResult();
 
+                        if (dataResponse.getStatus_code().equals(Constants.ERROR)) {
+                            Toast.makeText(LoginActivity.this, dataResponse.getError_message(), Toast.LENGTH_SHORT).show();
+                        }
+                        if (dataResponse.getStatus_code().equals(Constants.SUCCESS)) {
+
+                            for(StateCoordDetails item:codata) {
+
+                                realm.beginTransaction();
+                                realm.copyToRealm(item);
+                                realm.commitTransaction();
+                            }
+
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -232,8 +250,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("key","VVM");
-                params.put("param", Constants.LOGIN);
-                params.put(Constants.USERNAME,username);
+                params.put("param", Constants.GET_COORDINATOR_DETAILS);
+                params.put(Constants.STATE_ID,state_id);
                 return params;
             }
         };

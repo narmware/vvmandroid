@@ -5,22 +5,34 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.narmware.vvmexam.R;
+import com.narmware.vvmexam.activity.DemoActivity;
 import com.narmware.vvmexam.activity.HomeActivity;
 import com.narmware.vvmexam.activity.LoginActivity;
 import com.narmware.vvmexam.activity.SplashActivity;
+import com.narmware.vvmexam.adapter.QuestionsAdapter;
+import com.narmware.vvmexam.adapter.StateCoordinatorAdapter;
 import com.narmware.vvmexam.db.RealmController;
+import com.narmware.vvmexam.pojo.Questions;
+import com.narmware.vvmexam.pojo.StateCoordDetails;
+import com.narmware.vvmexam.support.Constants;
 import com.narmware.vvmexam.support.SharedPreferencesHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -92,7 +104,7 @@ public class OtherFragment extends Fragment {
             public void onClick(View view) {
                 new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Are you sure")
-                        .setContentText("Your want to Logout")
+                        .setContentText("You want to Logout")
                         .setConfirmText("Yes")
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
@@ -118,6 +130,7 @@ public class OtherFragment extends Fragment {
             }
         });
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

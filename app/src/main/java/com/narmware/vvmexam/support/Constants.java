@@ -23,6 +23,7 @@ public class Constants {
     public static final String NOTIFICATION="notification";
     public static final String LANGUAGE="language";
     public static final String EXAM_INFO="exam_info";
+    public static final String GET_COORDINATOR_DETAILS="state_coordinator";
 
     public static final String STATE_ID="state_id";
     public static final String DIST_ID="dist_id";
