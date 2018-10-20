@@ -5,6 +5,7 @@ public class Constants {
     public static final String VERSION_NAME="app_version";
 
     public static final String LOGIN_DIALOG_TITLE ="Validating Credentials...";
+    public static final String GETTING_STUDENT_DETAILS ="Getting Student Details...";
     public static final String REGISTER_DIALOG_TITLE ="Registering you...";
     public static final String PLEASE_WAIT="Please Wait";
     public static final String NOTIFICATION_DIALOG ="Getting Notifications...";

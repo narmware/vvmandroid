@@ -1,23 +1,47 @@
 package com.narmware.vvmexam.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.narmware.vvmexam.R;
+import com.narmware.vvmexam.activity.HomeActivity;
+import com.narmware.vvmexam.activity.LoginActivity;
 import com.narmware.vvmexam.db.RealmController;
 import com.narmware.vvmexam.pojo.Login;
+import com.narmware.vvmexam.pojo.LoginResponse;
+import com.narmware.vvmexam.pojo.StateCoordDetails;
+import com.narmware.vvmexam.pojo.StateCoordResponse;
+import com.narmware.vvmexam.support.Constants;
+import com.narmware.vvmexam.support.EndPoints;
+import com.narmware.vvmexam.support.SharedPreferencesHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +65,7 @@ public class ProfilesFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     PagerAdapter pagerAdapter;
+    @BindView(R.id.rootview) FrameLayout mRootView;
     @BindView(R.id.view_pager) ViewPager mViewPager;
     @BindView(R.id.simpleTabLayout) TabLayout viewPagerTab;
     Realm realm;
@@ -190,7 +215,6 @@ public class ProfilesFragment extends Fragment {
             return POSITION_NONE;
         }
     }
-
 
 
 }

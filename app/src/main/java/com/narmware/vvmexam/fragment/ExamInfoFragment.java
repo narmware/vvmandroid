@@ -8,6 +8,11 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +22,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -30,12 +36,14 @@ import com.narmware.vvmexam.R;
 import com.narmware.vvmexam.adapter.CityAdapter;
 import com.narmware.vvmexam.adapter.LanguageAdapter;
 import com.narmware.vvmexam.adapter.StateAdapter;
+import com.narmware.vvmexam.adapter.StateCoordinatorAdapter;
 import com.narmware.vvmexam.db.RealmController;
 import com.narmware.vvmexam.pojo.City;
 import com.narmware.vvmexam.pojo.CityResponse;
 import com.narmware.vvmexam.pojo.Language;
 import com.narmware.vvmexam.pojo.LanguageResponse;
 import com.narmware.vvmexam.pojo.Login;
+import com.narmware.vvmexam.pojo.StateCoordDetails;
 import com.narmware.vvmexam.pojo.States;
 import com.narmware.vvmexam.pojo.StatesResponse;
 import com.narmware.vvmexam.support.Constants;
@@ -50,6 +58,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -86,6 +95,11 @@ public class ExamInfoFragment extends Fragment {
     ArrayList<City> mCitiesList;
 
     private OnFragmentInteractionListener mListener;
+
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerCoord;
+    StateCoordinatorAdapter mAdapter;
+    RealmResults<StateCoordDetails> mData;
 
     public static String mState,mCity,mLang;
     public static String mState_id,mCity_id,mLang_id;
@@ -134,6 +148,8 @@ public class ExamInfoFragment extends Fragment {
     private void init(View view) {
         ButterKnife.bind(this,view);
         mVolleyRequest = Volley.newRequestQueue(getContext());
+
+        setStateCoordAdapter();
 
         ActivityCompat.requestPermissions(getActivity(),
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -203,11 +219,28 @@ public class ExamInfoFragment extends Fragment {
                 realm= Realm.getInstance(getActivity());
                 Login login= RealmController.with(getActivity()).getStudentDetails();
 
-                setExamInfo(login.getStudent_id(),mCity,mCity_id,mState,mState_id,mLang);
+                setExamInfo(login.getStudent_id(),mLang);
             }
         });
     }
 
+    public void setStateCoordAdapter()
+    {
+
+        SnapHelper snapHelper = new LinearSnapHelper();
+        mRecyclerCoord.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerCoord.setNestedScrollingEnabled(false);
+        mRecyclerCoord.setFocusable(false);
+        snapHelper.attachToRecyclerView(mRecyclerCoord);
+        final LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
+        mRecyclerCoord.setLayoutManager(linearLayoutManager);
+        mData=RealmController.with(getActivity()).getStateCoords();
+        mAdapter=new StateCoordinatorAdapter(getActivity(),mData);
+        mRecyclerCoord.setAdapter(mAdapter);
+
+        mAdapter.notifyDataSetChanged();
+
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -406,7 +439,7 @@ public class ExamInfoFragment extends Fragment {
         mVolleyRequest.add(stringRequest);
     }
 
-    public void setExamInfo(final String student_id, final String city, final String city_id, final String state, final String state_id, final String lang) {
+    public void setExamInfo(final String student_id,final String lang) {
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoints.BASE_URL,
@@ -418,8 +451,11 @@ public class ExamInfoFragment extends Fragment {
 
                         try {
                             Gson gson = new Gson();
-                            //LanguageResponse dataResponse = gson.fromJson(response, LanguageResponse.class);
-                           // Language[] array = dataResponse.getResult();
+                           LanguageResponse languageResponse=gson.fromJson(response.toString(),LanguageResponse.class);
+                            if(languageResponse.getStatus_code().equals(Constants.SUCCESS))
+                            {
+                                Toast.makeText(getContext(), "Language updated successfully", Toast.LENGTH_SHORT).show();
+                            }
 
                         }catch (Exception e)
                         {
@@ -436,14 +472,12 @@ public class ExamInfoFragment extends Fragment {
             //adding parameters to the request
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+                Log.e("DATA RESPONSE",student_id+" "+lang);
+
                 Map<String, String> params = new HashMap<>();
                 params.put("key","VVM");
                 params.put("param", Constants.EXAM_INFO);
                 params.put(Constants.STD_ID,student_id);
-                params.put(Constants.EXAM_CITY,city);
-                params.put(Constants.EXAM_CITY_ID,city_id);
-                params.put(Constants.EXAM_STATE,state);
-                params.put(Constants.EXAM_STATE_ID,state_id);
                 params.put(Constants.EXAM_LANGUAGE,lang);
 
                 return params;

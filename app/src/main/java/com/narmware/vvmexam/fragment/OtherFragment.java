@@ -112,6 +112,7 @@ public class OtherFragment extends Fragment {
 
                                 SharedPreferencesHelper.setIsLogin(false,getContext());
                                 RealmController.with(getActivity()).clearAllStudents();
+                                RealmController.with(getActivity()).clearAllCoordinators();
 
                                 Intent intent=new Intent(getContext(),LoginActivity.class);
                                 getContext().startActivity(intent);

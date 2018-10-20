@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.narmware.vvmexam.R;
 import com.narmware.vvmexam.adapter.StateCoordinatorAdapter;
@@ -49,11 +51,9 @@ public class ExamCenterFragment extends Fragment {
     @BindView(R.id.edt_sch_district) EditText mEdtSchDistrict;
     @BindView(R.id.edt_sch_city) EditText mEdtSchCity;
     @BindView(R.id.edt_sch_name) EditText mEdtSchName;
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerCoord;
 
-    StateCoordinatorAdapter mAdapter;
-    RealmResults<StateCoordDetails> mData;
+    @BindView(R.id.linear_info) LinearLayout mLinearInfo;
+    @BindView(R.id.txt_not_alloted_msg) TextView mTxtNotAllotedMsg;
 
     Realm realm;
 
@@ -103,32 +103,23 @@ public class ExamCenterFragment extends Fragment {
         realm= Realm.getInstance(getActivity());
 
         Login login= RealmController.with(getActivity()).getStudentDetails();
-        setStateCoordAdapter();
 
         if(login!=null) {
-            mEdtSchState.setText(login.getSch_state());
-            mEdtSchDistrict.setText(login.getSch_dist());
-            mEdtSchCity.setText(login.getSch_city());
-            mEdtSchName.setText(login.getSch_name());
+            if(login.getSch_city().equals("") && login.getSch_dist().equals("") && login.getSch_city().equals("") && login.getSch_name().equals(""))
+            {
+                mLinearInfo.setVisibility(View.GONE);
+                mTxtNotAllotedMsg.setVisibility(View.VISIBLE);
+            }
+            else {
+                mLinearInfo.setVisibility(View.VISIBLE);
+                mTxtNotAllotedMsg.setVisibility(View.GONE);
+
+                mEdtSchState.setText(login.getSch_state());
+                mEdtSchDistrict.setText(login.getSch_dist());
+                mEdtSchCity.setText(login.getSch_city());
+                mEdtSchName.setText(login.getSch_name());
+            }
         }
-    }
-
-    public void setStateCoordAdapter()
-    {
-
-        SnapHelper snapHelper = new LinearSnapHelper();
-        mRecyclerCoord.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerCoord.setNestedScrollingEnabled(false);
-        mRecyclerCoord.setFocusable(false);
-        snapHelper.attachToRecyclerView(mRecyclerCoord);
-        final LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
-        mRecyclerCoord.setLayoutManager(linearLayoutManager);
-        mData=RealmController.with(getActivity()).getStateCoords();
-        mAdapter=new StateCoordinatorAdapter(getActivity(),mData);
-        mRecyclerCoord.setAdapter(mAdapter);
-
-        mAdapter.notifyDataSetChanged();
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event

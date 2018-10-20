@@ -40,22 +40,6 @@ public class SplashActivity extends AppCompatActivity {
         mVolleyRequest = Volley.newRequestQueue(SplashActivity.this);
         CheckVersion();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                if(SharedPreferencesHelper.getIsLogin(SplashActivity.this)==false)
-                {
-                    Intent intent=new Intent(SplashActivity.this,LoginActivity.class);
-                    startActivity(intent);
-                }else {
-                    Intent intent=new Intent(SplashActivity.this,HomeActivity.class);
-                    startActivity(intent);
-                }
-                finish();
-            }
-        },TIMEOUT);
-
     }
 
     private void CheckVersion() {
@@ -74,15 +58,30 @@ public class SplashActivity extends AppCompatActivity {
                         {
                             if(Constants.APP_VERSION.equals(dataResponse.getVersion_name()))
                             {
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        if(SharedPreferencesHelper.getIsLogin(SplashActivity.this)==false)
+                                        {
+                                            Intent intent=new Intent(SplashActivity.this,LoginActivity.class);
+                                            startActivity(intent);
+                                        }else {
+                                            Intent intent=new Intent(SplashActivity.this,HomeActivity.class);
+                                            startActivity(intent);
+                                        }
+                                        finish();
+                                    }
+                                },TIMEOUT);
 
                             }
                             else{
 
                                 SweetAlertDialog sweetAlertDialog= new SweetAlertDialog(SplashActivity.this, SweetAlertDialog.WARNING_TYPE);
                                 sweetAlertDialog.setCancelable(false);
-                                sweetAlertDialog.setTitleText("System Error")
-                                        .setContentText("Update your app")
-                                        .setConfirmText("Update")
+                                sweetAlertDialog.setTitleText("APP UPDATE AVAILABLE")
+                                        .setContentText(getResources().getString(R.string.update_app))
+                                        .setConfirmText("Update Now")
                                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                             @Override
                                             public void onClick(SweetAlertDialog sDialog) {
@@ -90,10 +89,11 @@ public class SplashActivity extends AppCompatActivity {
                                             }
                                         })
                                         .showCancelButton(true)
-                                        .setCancelText("Cancel")
+                                        .setCancelText("Exit")
                                         .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                             @Override
                                             public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                finish();
                                                 sweetAlertDialog.dismissWithAnimation();
                                             }
                                         })
@@ -109,6 +109,23 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("RESPONSE ERR","That didn't work!");
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if(SharedPreferencesHelper.getIsLogin(SplashActivity.this)==false)
+                        {
+                            Intent intent=new Intent(SplashActivity.this,LoginActivity.class);
+                            startActivity(intent);
+                        }else {
+                            Intent intent=new Intent(SplashActivity.this,HomeActivity.class);
+                            startActivity(intent);
+                        }
+                        finish();
+                    }
+                },TIMEOUT);
+
             }
         }) {
             //adding parameters to the request

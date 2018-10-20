@@ -9,6 +9,7 @@
 
     <LinearLayout
         android:id="@+id/linear_top"
+        android:visibility="gone"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -57,18 +58,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/horizontal"
-        android:layout_marginBottom="@dimen/personal_info_horizontal_margin"
-        android:layout_marginTop="@dimen/personal_info_horizontal_margin"
-        android:layout_below="@+id/linear_top"
-        android:background="@color/text_color"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"></LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linear_bottom"
-        android:layout_below="@+id/horizontal"
+        android:id="@+id/linear_top1"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -105,11 +95,50 @@
         </LinearLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/horizontal"
+        android:layout_marginBottom="@dimen/personal_info_horizontal_margin"
+        android:layout_marginTop="@dimen/personal_info_horizontal_margin"
+        android:layout_below="@+id/linear_top1"
+        android:background="@color/text_color"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="@dimen/profile_padding"
+        android:layout_below="@+id/horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="@dimen/personal_info_padding"
+            android:layout_marginRight="@dimen/personal_info_padding"
+            android:layout_marginLeft="@dimen/personal_info_padding"
+            android:layout_marginBottom="@dimen/personal_info_padding"
+            android:text="@string/contact"
+            android:textSize="@dimen/location_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/text_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_above="@id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
     <Button
         android:id="@+id/btn_submit_info"
         android:layout_alignParentBottom="true"
         android:foreground="?attr/selectableItemBackground"
-        android:text="Confirm Exam Location"
+        android:text="Confirm Exam Language"
         android:background="@color/colorPrimary"
         android:textColor="@android:color/white"
         android:textAllCaps="false"

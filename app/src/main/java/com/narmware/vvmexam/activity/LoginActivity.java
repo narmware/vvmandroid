@@ -161,7 +161,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onResponse(String response) {
                         // Display the response string.
-                        Log.e("RESPONSE",response);
+                      //  Log.e("RESPONSE",response);
 
                         try {
                             Gson gson = new Gson();
@@ -176,7 +176,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 realm.copyToRealm(data);
                                 realm.commitTransaction();
 
-                                GetStateCoordinators(data.getState_id());
+                                //SharedPreferencesHelper.setPreffExamLanguages(data.getExam_language(),LoginActivity.this);
+
+                                //GetStateCoordinators(data.getState_id());
                                 Toast.makeText(LoginActivity.this, "Login Successfull", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                 startActivity(intent);

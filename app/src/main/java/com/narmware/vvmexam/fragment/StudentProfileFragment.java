@@ -1,9 +1,11 @@
 package com.narmware.vvmexam.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,17 +14,33 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.narmware.vvmexam.R;
 import com.narmware.vvmexam.activity.DemoActivity;
 import com.narmware.vvmexam.activity.LoginActivity;
 import com.narmware.vvmexam.db.RealmController;
 import com.narmware.vvmexam.pojo.Login;
+import com.narmware.vvmexam.pojo.LoginResponse;
+import com.narmware.vvmexam.pojo.StateCoordDetails;
+import com.narmware.vvmexam.pojo.StateCoordResponse;
 import com.narmware.vvmexam.support.Constants;
+import com.narmware.vvmexam.support.EndPoints;
+import com.narmware.vvmexam.support.SharedPreferencesHelper;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,11 +73,11 @@ public class StudentProfileFragment extends Fragment {
     @BindView(R.id.edt_std_state) EditText mEdtStdState;
     @BindView(R.id.edt_std_district) EditText mEdtStdDistrict;
     @BindView(R.id.edt_std_city) EditText mEdtStdCity;
+    @BindView(R.id.rootview) FrameLayout mRootView;
 
     public static ImageView mImgProf;
-    @BindView(R.id.btn_edit_prof_img)
-    Button mBtnEditProf;
-    @BindView(R.id.btn_camera) Button mBtnCamera;
+    public static Button mBtnEditProf;
+    public static Button mBtnCamera;
 
     private OnFragmentInteractionListener mListener;
     Realm realm;
@@ -111,7 +129,12 @@ public class StudentProfileFragment extends Fragment {
         ButterKnife.bind(this,view);
         realm=Realm.getInstance(getActivity());
         mImgProf=view.findViewById(R.id.prof_image);
+        mBtnEditProf=view.findViewById(R.id.btn_edit_prof_img);
+        mBtnCamera=view.findViewById(R.id.btn_camera);
+
         mVolleyRequest = Volley.newRequestQueue(getContext());
+        Login loginDetails= RealmController.with(getActivity()).getStudentDetails();
+        getStudentDetails(loginDetails.getUsername(),loginDetails.getPassword());
         realm= Realm.getInstance(getActivity());
 
         Login login= RealmController.with(getActivity()).getStudentDetails();
@@ -121,6 +144,7 @@ public class StudentProfileFragment extends Fragment {
             if(!img.equals("")) {
                 Picasso.with(getActivity())
                         .load(img)
+                        .placeholder(R.drawable.vvm_logo_old)
                         .into(mImgProf);
             }
         }
@@ -142,9 +166,20 @@ public class StudentProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                photoPickerIntent.setType("image/*");
-                getActivity().startActivityForResult(photoPickerIntent, Constants.GALLERY_REQUEST_CODE);
+                Login login= RealmController.with(getActivity()).getStudentDetails();
+                if(login!=null) {
+                    String img=login.getProfile_path();
+                    if(!img.equals("")) {
+                        Toast.makeText(getContext(), getActivity().getResources().getString(R.string.profile_photo_warning), Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+
+                        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                        photoPickerIntent.setType("image/*");
+                        getActivity().startActivityForResult(photoPickerIntent, Constants.GALLERY_REQUEST_CODE);
+                    }
+                }
+
             }
         });
 
@@ -152,8 +187,18 @@ public class StudentProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                getActivity().startActivityForResult(cameraIntent, Constants.CAMERA_REQUEST_CODE);
+                Login login= RealmController.with(getActivity()).getStudentDetails();
+                if(login!=null) {
+                    String img=login.getProfile_path();
+                    if(!img.equals("")) {
+                        Toast.makeText(getContext(), getActivity().getResources().getString(R.string.profile_photo_warning), Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        getActivity().startActivityForResult(cameraIntent, Constants.CAMERA_REQUEST_CODE);
+                    }
+                }
+
             }
         });
     }
@@ -196,4 +241,130 @@ public class StudentProfileFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+    private void getStudentDetails(final String username, final String password) {
+
+        final ProgressDialog dialog = new ProgressDialog(getContext());
+        dialog.setTitle(Constants.PLEASE_WAIT);
+        dialog.setMessage(Constants.GETTING_STUDENT_DETAILS);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoints.BASE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the response string.
+                        //  Log.e("RESPONSE",response);
+
+                        try {
+                            Gson gson = new Gson();
+                            LoginResponse dataResponse = gson.fromJson(response, LoginResponse.class);
+                            Login data = dataResponse.getResult();
+                            if (dataResponse.getStatus_code().equals(Constants.ERROR)) {
+                                Toast.makeText(getContext(), dataResponse.getError_message(), Toast.LENGTH_SHORT).show();
+                            }
+                            if (dataResponse.getStatus_code().equals(Constants.SUCCESS)) {
+                                RealmController.with(getActivity()).clearAllStudents();
+                                realm.beginTransaction();
+                                realm.copyToRealm(data);
+                                realm.commitTransaction();
+
+                                SharedPreferencesHelper.setPreffExamLanguages(data.getExam_language(),getContext());
+
+                                GetStateCoordinators(data.getState_id());
+                            }
+                            dialog.dismiss();
+                        }catch (Exception e)
+                        {e.printStackTrace();
+                            dialog.dismiss();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Log.e("RESPONSE ERR","That didn't work!");
+                dialog.dismiss();
+                showNoConnectionDialog();
+            }
+        }) {
+            //adding parameters to the request
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("key","VVM");
+                params.put("param", Constants.LOGIN);
+                params.put(Constants.USERNAME,username);
+                params.put(Constants.PASSWORD,password);
+                return params;
+            }
+        };
+        // Add the request to the RequestQueue.
+        mVolleyRequest.add(stringRequest);
+    }
+
+    private void GetStateCoordinators(final String state_id) {
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoints.BASE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the response string.
+                        //Log.e("STATE CO RESPONSE",response);
+
+                        Gson gson=new Gson();
+                        StateCoordResponse dataResponse = gson.fromJson(response, StateCoordResponse.class);
+                        StateCoordDetails[] codata = dataResponse.getResult();
+
+                        if (dataResponse.getStatus_code().equals(Constants.ERROR)) {
+                            //Toast.makeText(LoginActivity.this, dataResponse.getError_message(), Toast.LENGTH_SHORT).show();
+                        }
+                        if (dataResponse.getStatus_code().equals(Constants.SUCCESS)) {
+                            RealmController.with(getActivity()).clearAllCoordinators();
+
+                            for(StateCoordDetails item:codata) {
+
+                                realm.beginTransaction();
+                                realm.copyToRealm(item);
+                                realm.commitTransaction();
+                            }
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("RESPONSE ERR","That didn't work!");
+            }
+        }) {
+            //adding parameters to the request
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("key","VVM");
+                params.put("param", Constants.GET_COORDINATOR_DETAILS);
+                params.put(Constants.STATE_ID,state_id);
+                return params;
+            }
+        };
+        // Add the request to the RequestQueue.
+        mVolleyRequest.add(stringRequest);
+    }
+
+
+    public void showNoConnectionDialog(){
+        Snackbar.make(mRootView, getResources().getString(R.string.no_internet), Snackbar.LENGTH_SHORT)
+                /*.setAction("Ok", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS),10);
+                    }
+                })*/
+                //.setActionTextColor(Color.RED)
+                .show();
+    }
+
 }

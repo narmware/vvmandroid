@@ -105,6 +105,13 @@ public class RealmController {
         realm.clear(Login.class);
         realm.commitTransaction();
     }
+
+    public void clearAllCoordinators() {
+
+        realm.beginTransaction();
+        realm.clear(StateCoordDetails.class);
+        realm.commitTransaction();
+    }
    /*
 
     public RealmResults<SchoolDetails> getPaidSchool() {
