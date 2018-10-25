@@ -73,6 +73,7 @@ public class StudentProfileFragment extends Fragment {
     @BindView(R.id.edt_std_state) EditText mEdtStdState;
     @BindView(R.id.edt_std_district) EditText mEdtStdDistrict;
     @BindView(R.id.edt_std_city) EditText mEdtStdCity;
+
     @BindView(R.id.rootview) FrameLayout mRootView;
 
     public static ImageView mImgProf;

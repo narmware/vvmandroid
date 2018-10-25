@@ -27,6 +27,7 @@
 
     <ImageButton
         android:id="@+id/btn_mark_review"
+        android:visibility="gone"
         android:layout_toLeftOf="@+id/btn_switch"
         app:srcCompat="@drawable/ic_bookmark"
         android:padding="8dp"

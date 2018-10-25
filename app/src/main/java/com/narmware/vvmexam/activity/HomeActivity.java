@@ -16,7 +16,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +47,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.Realm;
 
 public class HomeActivity extends AppCompatActivity implements ProfilesFragment.OnFragmentInteractionListener,StudentProfileFragment.OnFragmentInteractionListener,
@@ -51,6 +56,7 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
     ,SingleUploadBroadcastReceiver.Delegate
 {
 
+    @BindView(R.id.btn_exam) Button mBtnExam;
     private TextView mTextMessage;
     Realm realm;
     Dialog dialog;
@@ -80,6 +86,25 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
         }
     };
 
+   /*     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.nav_bar_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+
+
+        return super.onOptionsItemSelected(item);
+    }*/
 
     public void setFragment(Fragment fragment, String tag)
     {
@@ -99,12 +124,21 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         realm=Realm.getInstance(HomeActivity.this);
-
+        getSupportActionBar().hide();
+        ButterKnife.bind(this);
+        
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         setFragment(new ProfilesFragment(),"Edit");
 
+        mBtnExam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(HomeActivity.this,DemoActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
