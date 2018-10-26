@@ -34,7 +34,7 @@
         <ImageButton
             android:id="@+id/btn_call"
             android:layout_centerVertical="true"
-            android:foreground="?attr/selectableItemBackground"
+            android:foreground="?android:attr/selectableItemBackground"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:padding="10dp"

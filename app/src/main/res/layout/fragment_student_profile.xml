@@ -54,7 +54,7 @@
                 <Button
                     android:id="@+id/btn_edit_prof_img"
                     android:text="Choose from Gallery"
-                    android:foreground="?attr/selectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:background="@drawable/custom_img_button"
                     android:textColor="@color/colorPrimary"
                     android:textAllCaps="false"
@@ -68,7 +68,7 @@
                 <Button
                     android:id="@+id/btn_camera"
                     android:text="Capture from Camera"
-                    android:foreground="?attr/selectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:background="@drawable/custom_img_button"
                     android:textColor="@color/colorPrimary"
                     android:textAllCaps="false"

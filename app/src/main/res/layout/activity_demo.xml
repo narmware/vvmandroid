@@ -30,11 +30,16 @@
 
         <Button
             android:id="@+id/btn_next"
+            android:padding="@dimen/exam_btn_padding"
+            android:minHeight="1dp"
+            android:background="@drawable/custom_next_btn"
+            android:textColor="@android:color/white"
+            android:drawableRight="@drawable/ic_navigate_next"
             android:layout_centerVertical="true"
-            android:foreground="?attr/selectableItemBackground"
+            android:foreground="?android:attr/selectableItemBackground"
             android:text="Next"
             android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/exam_btn_width"
             android:layout_height="wrap_content" />
 
         <LinearLayout
@@ -48,7 +53,7 @@
 
             <Button
                 android:id="@+id/btn_opt_a"
-                android:foreground="?attr/selectableItemBackground"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:text="A"
                 android:background="@drawable/custom_round"
                 android:layout_alignParentLeft="true"
@@ -58,7 +63,7 @@
 
             <Button
                 android:id="@+id/btn_opt_b"
-                android:foreground="?attr/selectableItemBackground"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:text="B"
                 android:background="@drawable/custom_round"
                 android:layout_alignParentLeft="true"
@@ -68,7 +73,7 @@
 
             <Button
                 android:id="@+id/btn_opt_c"
-                android:foreground="?attr/selectableItemBackground"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:text="C"
                 android:background="@drawable/custom_round"
                 android:layout_alignParentLeft="true"
@@ -78,7 +83,7 @@
 
             <Button
                 android:id="@+id/btn_opt_d"
-                android:foreground="?attr/selectableItemBackground"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:text="D"
                 android:background="@drawable/custom_round"
                 android:layout_alignParentLeft="true"
@@ -94,11 +99,17 @@
 
         <Button
             android:id="@+id/btn_previous"
+            android:padding="@dimen/exam_btn_padding"
+            android:minHeight="1dp"
+            android:gravity="center"
+            android:background="@drawable/custom_prev_btn"
+            android:textColor="@android:color/white"
+            android:drawableLeft="@drawable/ic_navigate_prev"
             android:layout_centerVertical="true"
-            android:foreground="?attr/selectableItemBackground"
+            android:foreground="?android:attr/selectableItemBackground"
             android:text="Previous"
             android:layout_alignParentLeft="true"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/exam_btn_width"
             android:layout_height="wrap_content" />
 
     </RelativeLayout>

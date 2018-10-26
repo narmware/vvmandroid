@@ -137,7 +137,7 @@
     <Button
         android:id="@+id/btn_submit_info"
         android:layout_alignParentBottom="true"
-        android:foreground="?attr/selectableItemBackground"
+        android:foreground="?android:attr/selectableItemBackground"
         android:text="Confirm Exam Language"
         android:background="@color/colorPrimary"
         android:textColor="@android:color/white"

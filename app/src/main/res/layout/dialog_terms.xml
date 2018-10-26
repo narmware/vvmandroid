@@ -14,7 +14,7 @@
 
     <Button
         android:id="@+id/btn_ok"
-        android:foreground="?attr/selectableItemBackground"
+        android:foreground="?android:attr/selectableItemBackground"
         android:background="@drawable/custom_login_btn"
         android:text="Ok"
         style="@style/button_style"

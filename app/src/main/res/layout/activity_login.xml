@@ -27,7 +27,8 @@
 
             <ImageButton
                 android:id="@+id/btn_help"
-                android:foreground="?attr/selectableItemBackground"
+                android:visibility="gone"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:background="@android:color/transparent"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
@@ -81,7 +82,7 @@
         <Button
             android:id="@+id/btn_login"
             style="@style/button_style"
-            android:foreground="?attr/selectableItemBackground"
+            android:foreground="?android:attr/selectableItemBackground"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/login_btn_margin_bottom"
             android:layout_marginLeft="@dimen/login_btn_margin_left"
@@ -95,7 +96,7 @@
         <Button
             android:id="@+id/btn_forgot"
             android:visibility="gone"
-            android:foreground="?attr/selectableItemBackground"
+            android:foreground="?android:attr/selectableItemBackground"
             android:text="Forgot Password?"
             android:textAllCaps="false"
             android:layout_gravity="center_horizontal"
@@ -108,7 +109,7 @@
     <LinearLayout
         android:id="@+id/lin_register"
         android:visibility="gone"
-        android:foreground="?attr/selectableItemBackground"
+        android:foreground="?android:attr/selectableItemBackground"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"

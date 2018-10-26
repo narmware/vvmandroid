@@ -32,7 +32,7 @@
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/btn_previous"
-            android:foreground="?attr/selectableItemBackground"
+            android:foreground="?android:attr/selectableItemBackground"
             android:text="Cancel Registeration"
             android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
@@ -46,7 +46,7 @@
             android:layout_height="match_parent"></LinearLayout>
         <Button
             android:id="@+id/btn_next"
-            android:foreground="?attr/selectableItemBackground"
+            android:foreground="?android:attr/selectableItemBackground"
             android:text="Next Step"
             android:background="@color/colorPrimary"
             android:textColor="@android:color/white"

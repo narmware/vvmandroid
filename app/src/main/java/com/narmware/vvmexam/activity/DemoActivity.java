@@ -66,9 +66,12 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
     QNumAdapter qNumAdapter;
     public static Button mBtnNext,mBtnPrevious;
     public static Button mBtnOptA,mBtnOptB,mBtnOptC,mBtnOptD;
-    ImageButton mImgSwitch,mImgBtnMarkReview;
+    @BindView(R.id.btn_switch) ImageButton mImgSwitch;
+    @BindView(R.id.btn_mark_review) ImageButton mImgBtnMarkReview;
     private GestureDetector mDetector;
-    TextView mTxtTimer;
+    @BindView(R.id.txt_timer) TextView mTxtTimer;
+    @BindView(R.id.btn_switch_lang) Button mBtnLangSwitch;
+    @BindView(R.id.btn_end_exam) Button mBtnEndExam;
 
     int position=0;
     public static DialogPlus dialog;
@@ -86,6 +89,8 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
         hideSystemUI();
 
         setContentView(R.layout.activity_demo);
+        ButterKnife.bind(this);
+
         getSupportActionBar().hide();
         ButterKnife.bind(this);
         MyApplication.config_realm(DemoActivity.this);
@@ -224,9 +229,6 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
          mBtnOptB=findViewById(R.id.btn_opt_b);
          mBtnOptC=findViewById(R.id.btn_opt_c);
         mBtnOptD=findViewById(R.id.btn_opt_d);
-        mImgSwitch=findViewById(R.id.btn_switch);
-        mImgBtnMarkReview=findViewById(R.id.btn_mark_review);
-        mTxtTimer=findViewById(R.id.txt_timer);
 
         mBtnNext.setOnClickListener(this);
         mBtnPrevious.setOnClickListener(this);
@@ -236,6 +238,8 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
         mBtnOptD.setOnClickListener(this);
         mImgSwitch.setOnClickListener(this);
         mImgBtnMarkReview.setOnClickListener(this);
+        mBtnLangSwitch.setOnClickListener(this);
+        mBtnEndExam.setOnClickListener(this);
 
         mDetector = new GestureDetector(this, new MyGestureListener());
 
@@ -311,12 +315,12 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
 
                         if(questionsList.get(position).getqAnswertype() != Constants.ATTEMPTED)
                         {
-                            if(questionsList.get(position).getqAnswertype() != Constants.REVIEW)
-                            {
+                           /* if(questionsList.get(position).getqAnswertype() != Constants.REVIEW)
+                            {*/
                                 realm.beginTransaction();
                                 questionsList.get(position).setqAnswertype(Constants.VIEWED);
                                 realm.commitTransaction();
-                        }
+                        //}
 
                         }
 
@@ -474,14 +478,23 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
                 dialog.show();
                 break;
 
-            case R.id.btn_mark_review:
+            case R.id.btn_end_exam:
+                Toast.makeText(this, "End Exam", Toast.LENGTH_SHORT).show();
+                break;
+
+
+            case R.id.btn_switch_lang:
+                Toast.makeText(this, "Marathi", Toast.LENGTH_SHORT).show();
+                break;
+
+           /* case R.id.btn_mark_review:
                 realm.beginTransaction();
                 questionsList.get(position).setqAnswertype(Constants.REVIEW);
                 realm.commitTransaction();
 
                 questionAdapter.notifyDataSetChanged();
                 qNumAdapter.notifyDataSetChanged();
-                break;
+                break;*/
         }
     }
 

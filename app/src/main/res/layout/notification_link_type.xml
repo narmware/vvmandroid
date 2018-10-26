@@ -36,7 +36,7 @@
             android:id="@+id/img_btn_link"
             app:srcCompat="@drawable/ic_attach_link"
             android:padding="@dimen/note_padding"
-            android:foreground="?attr/selectableItemBackground"
+            android:foreground="?android:attr/selectableItemBackground"
             android:background="@android:color/transparent"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"

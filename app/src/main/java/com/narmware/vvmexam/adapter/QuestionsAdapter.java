@@ -51,8 +51,10 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.MyVi
      /*   byte[] decodedString = Base64.decode(question.getQname(), Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         holder.mImgQuestion.setImageBitmap(decodedByte);*/
-        holder.mTxtSelectedOpt.setText(question.getAnswer());
-        holder.mTxtQue.setText(question.getQname());
+
+        holder.mImgQuestion.setImageResource(R.drawable.question);
+        ///holder.mTxtSelectedOpt.setText(question.getAnswer());
+      //  holder.mTxtQue.setText(question.getQname());
     }
 
 

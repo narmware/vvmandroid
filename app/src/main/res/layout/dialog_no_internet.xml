@@ -47,7 +47,7 @@
             android:layout_marginBottom="10dp"
             android:layout_width="140dp"
             android:gravity="center"
-            android:foreground="?attr/selectableItemBackground"
+            android:foreground="?android:attr/selectableItemBackground"
             android:layout_height="wrap_content"/>
     </LinearLayout>
 </RelativeLayout>
