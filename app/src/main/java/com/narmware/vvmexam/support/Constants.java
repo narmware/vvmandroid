@@ -1,8 +1,10 @@
 package com.narmware.vvmexam.support;
 
 public class Constants {
-    public static final String APP_VERSION="1.0";
+    //public static final String APP_VERSION="1.0";
+    public static final String APP_TYPE="app_type";
     public static final String VERSION_NAME="app_version";
+    public static final String ADMIN="EXAM";
 
     public static final String LOGIN_DIALOG_TITLE ="Validating Credentials...";
     public static final String GETTING_STUDENT_DETAILS ="Getting Student Details...";

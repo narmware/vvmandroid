@@ -1,6 +1,7 @@
 package com.narmware.vvmexam.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ public class SplashActivity extends AppCompatActivity {
 
     static int TIMEOUT=2000;
     public RequestQueue mVolleyRequest;
+    String currentVersion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,14 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         getSupportActionBar().hide();
         mVolleyRequest = Volley.newRequestQueue(SplashActivity.this);
+
+        try {
+            currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            Log.e("Current version",currentVersion);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
         CheckVersion();
 
     }
@@ -56,7 +66,7 @@ public class SplashActivity extends AppCompatActivity {
                         AppVersionResponse dataResponse=gson.fromJson(response,AppVersionResponse.class);
                         if(dataResponse.getStatus_code().equals(Constants.SUCCESS))
                         {
-                            if(Constants.APP_VERSION.equals(dataResponse.getVersion_name()))
+                            if(currentVersion.equals(dataResponse.getVersion_name()))
                             {
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
@@ -134,6 +144,7 @@ public class SplashActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("key","VVM");
                 params.put("param", Constants.VERSION_NAME);
+                params.put(Constants.APP_TYPE, Constants.ADMIN);
                 return params;
             }
         };
