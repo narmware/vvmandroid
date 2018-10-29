@@ -23,8 +23,24 @@ public class SharedPreferencesHelper {
     private static final String USER_MOBILE="mobile";
     private static final String USER_PASSWORD="password";
     private static final String USER_PROFILE_IMAGE="profile_image";
+    private static final String INV_KEY="inv_key";
 
     private static final String MINIMIZE_COUNT="minimize_count";
+
+    public static void setInvKey(String state, Context context)
+    {
+        SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor edit=pref.edit();
+        edit.putString(INV_KEY,state);
+        edit.commit();
+    }
+
+    public static String getInvKey(Context context)
+    {
+        SharedPreferences pref= PreferenceManager.getDefaultSharedPreferences(context);
+        String state=pref.getString(INV_KEY,null);
+        return state;
+    }
 
     public static void setIsLogin(boolean login, Context context)
     {

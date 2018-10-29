@@ -96,9 +96,16 @@ public class QNumAdapter extends RecyclerView.Adapter<QNumAdapter.MyViewHolder> 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context,mItem.getQid(), Toast.LENGTH_SHORT).show();
-                    DemoActivity.dialog.dismiss();
-                    DemoActivity.mRecyclerView.smoothScrollToPosition(Integer.parseInt(mItem.getQid())-1);
+
+                    if(mItem.getqAnswertype()==Constants.NOT_VIEWED)
+                    {
+
+                    }
+                    else {
+                        Toast.makeText(context, mItem.getQid(), Toast.LENGTH_SHORT).show();
+                        DemoActivity.dialog.dismiss();
+                        DemoActivity.mRecyclerView.smoothScrollToPosition(Integer.parseInt(mItem.getQid()) - 1);
+                    }
                 }
             });
         }

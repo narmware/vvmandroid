@@ -9,9 +9,13 @@
     <Button
         android:id="@+id/btn_switch_lang"
         android:text="MR"
-        android:textColor="@android:color/white"
+        android:layout_margin="2dp"
+        android:textColor="@color/colorPrimary"
+        android:minWidth="1dp"
+        android:minHeight="1dp"
+        android:padding="10dp"
         android:layout_alignParentLeft="true"
-        android:background="@android:color/transparent"
+        android:background="@drawable/custom_white_btn"
         android:foreground="?android:attr/selectableItemBackground"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
@@ -25,6 +29,29 @@
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <Button
+            android:id="@+id/btn_end_exam"
+            android:text="End Exam"
+            android:layout_marginRight="12dp"
+            android:textColor="@color/red_700"
+            android:minWidth="1dp"
+            android:minHeight="1dp"
+            android:padding="10dp"
+            android:layout_toLeftOf="@+id/btn_switch"
+            android:background="@drawable/custom_white_btn"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
 <ImageButton
     android:id="@+id/btn_switch"
     app:srcCompat="@drawable/ic_arrow_drop"
@@ -36,28 +63,18 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/btn_end_exam"
-        android:padding="8dp"
-        android:text="End Exam"
-        android:textColor="@android:color/white"
-        android:layout_toLeftOf="@+id/btn_switch"
-        android:background="@android:color/transparent"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:layout_centerVertical="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
-    <ImageButton
-        android:id="@+id/btn_mark_review"
-        android:visibility="gone"
-        android:layout_toLeftOf="@+id/btn_switch"
-        app:srcCompat="@drawable/ic_bookmark"
-        android:padding="8dp"
-        android:background="@android:color/transparent"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:layout_centerVertical="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <!--    <ImageButton
+            android:id="@+id/btn_mark_review"
+            android:visibility="gone"
+            android:layout_toLeftOf="@+id/btn_switch"
+            app:srcCompat="@drawable/ic_bookmark"
+            android:padding="8dp"
+            android:background="@android:color/transparent"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />-->
+    </LinearLayout>
+
 
 </RelativeLayout>

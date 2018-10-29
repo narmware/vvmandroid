@@ -135,7 +135,7 @@ public class HomeActivity extends AppCompatActivity implements ProfilesFragment.
         mBtnExam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(HomeActivity.this,DemoActivity.class);
+                Intent intent=new Intent(HomeActivity.this,InvigilatorActivity.class);
                 startActivity(intent);
             }
         });

@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.annotation.RequiresApi;
@@ -19,18 +18,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Base64;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,23 +36,25 @@ import com.narmware.vvmexam.R;
 import com.narmware.vvmexam.adapter.QNumAdapter;
 import com.narmware.vvmexam.adapter.QuestionsAdapter;
 import com.narmware.vvmexam.db.RealmController;
-import com.narmware.vvmexam.pojo.QuestionSequenceType;
 import com.narmware.vvmexam.pojo.Questions;
 import com.narmware.vvmexam.services.NotificationService;
 import com.narmware.vvmexam.support.Constants;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnItemClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
+
+import static android.support.v7.widget.helper.ItemTouchHelper.Callback.makeMovementFlags;
 
 public class DemoActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -67,7 +65,7 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
     public static Button mBtnNext,mBtnPrevious;
     public static Button mBtnOptA,mBtnOptB,mBtnOptC,mBtnOptD;
     @BindView(R.id.btn_switch) ImageButton mImgSwitch;
-    @BindView(R.id.btn_mark_review) ImageButton mImgBtnMarkReview;
+   // @BindView(R.id.btn_mark_review) ImageButton mImgBtnMarkReview;
     private GestureDetector mDetector;
     @BindView(R.id.txt_timer) TextView mTxtTimer;
     @BindView(R.id.btn_switch_lang) Button mBtnLangSwitch;
@@ -80,6 +78,7 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
 
     long totalSeconds = 65;
     long intervalSeconds = 1;
+    String key;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -96,6 +95,10 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
         MyApplication.config_realm(DemoActivity.this);
         mRecyclerView=findViewById(R.id.recycler);
 
+        Intent intent=getIntent();
+        key=intent.getStringExtra("key");
+
+
         startService(new Intent(DemoActivity.this, NotificationService.class));
 
 
@@ -104,46 +107,30 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
                 1);
 
         realm=Realm.getInstance(DemoActivity.this);
+        RealmController.with(DemoActivity.this).clearAll();
         RealmResults<Questions> data=RealmController.with(DemoActivity.this).getQuestions();
         if(data.size()==0)
         {
 
-        /*set a - 1,2,3,4*
-           set b - 4,2,3,1
-           set c - 3,4,1,2
-
-         */
-
+            for(int i=1;i<4;i++)
+            {
                 realm.beginTransaction();
                 Questions questions=realm.createObject(Questions.class);
-                questions.setQname("Question 1");
-                questions.setQid("1");
-                questions.setSet_b_id("4");
-                questions.setSet_c_id("3");
+                questions.setQid(String.valueOf(i));
+                questions.setEngj("eng/j/ques_"+i+".txt");
+                questions.setEngs("eng/s/ques_"+i+".txt");
+                questions.setMarj("mar/j/ques_"+i+".txt");
+                questions.setMars("mar/s/ques_"+i+".txt");
+                questions.setTamj("tam/j/ques_"+i+".txt");
+                questions.setTams("tam/s/ques_"+i+".txt");
+                questions.setTelj("tel/j/ques_"+i+".txt");
+                questions.setTels("tel/s/ques_"+i+".txt");
+               // questions.setBitmap(BitMapToString(bitmap));
                 questions.setqAnswertype(Constants.NOT_VIEWED);
+                realm.commitTransaction();
+            }
 
-                Questions questions1=realm.createObject(Questions.class);
-                questions1.setQname("Question 2");
-                questions1.setQid("2");
-                questions1.setSet_b_id("2");
-                questions1.setSet_c_id("4");
-                questions1.setqAnswertype(Constants.NOT_VIEWED);
 
-                Questions questions2=realm.createObject(Questions.class);
-                questions2.setQname("Question 3");
-                questions2.setQid("3");
-                questions2.setSet_b_id("3");
-                questions2.setSet_c_id("1");
-                questions2.setqAnswertype(Constants.NOT_VIEWED);
-
-                Questions questions3=realm.createObject(Questions.class);
-                questions3.setQname("Question 4");
-                questions3.setQid("4");
-                questions3.setSet_b_id("1");
-                questions3.setSet_c_id("2");
-                questions3.setqAnswertype(Constants.NOT_VIEWED);
-
-            realm.commitTransaction();
 
         }
 
@@ -163,8 +150,17 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
         Log.e("Ip address",ip+"\n"+imei+"\n"+mac+"\n"+device_name);
+
     }
 
+
+    public String BitMapToString(Bitmap bitmap){
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b=baos.toByteArray();
+        String temp=Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -237,7 +233,7 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
         mBtnOptC.setOnClickListener(this);
         mBtnOptD.setOnClickListener(this);
         mImgSwitch.setOnClickListener(this);
-        mImgBtnMarkReview.setOnClickListener(this);
+        //mImgBtnMarkReview.setOnClickListener(this);
         mBtnLangSwitch.setOnClickListener(this);
         mBtnEndExam.setOnClickListener(this);
 
@@ -293,6 +289,9 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
 
         questionAdapter.notifyDataSetChanged();
 
+        //RecyclerView.OnItemTouchListener disabler = new RecyclerViewDisabler();
+        //mRecyclerView.addOnItemTouchListener(disabler);    // scolling disable
+
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -332,6 +331,25 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+
+    }
+
+    public class RecyclerViewDisabler implements RecyclerView.OnItemTouchListener {
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
 
     }
 
@@ -479,6 +497,7 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btn_end_exam:
+                finish();
                 Toast.makeText(this, "End Exam", Toast.LENGTH_SHORT).show();
                 break;
 
@@ -565,5 +584,10 @@ public class DemoActivity extends AppCompatActivity implements View.OnClickListe
             Log.d("TAG", "onFling: ");
             return true;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
     }
 }
